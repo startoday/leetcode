@@ -1,0 +1,37 @@
+#求一个数的很大的次方 对某个数的余数
+#用二分法来处理pow
+#需要用到的数学知识
+#(a*b)%n = (a%n)*(b%n)%n
+class Solution {
+    int MOD=1337;
+public:
+    int superPow(int a, vector<int>& b) {
+        if(b.empty()) return 0;
+        
+        // the exit is b only has one digit 
+        if(b.size() == 1){
+            return getMod(a, b[0]);
+        }
+        int lastD = b.back();
+        b.pop_back();
+        
+        return (getMod(a, lastD)*getMod(superPow(a,b),10)) % MOD;
+    }
+    
+    //define a function pass any pow number, will get the mod of it 
+    int getMod(int a, int pow){
+        a=a%MOD;
+        int product=1;
+        while (pow!=0){
+            if(pow&1){  //faster than (pow%2==1)
+                product=product*a;
+            }
+            pow=pow>>1;
+            a=(a*a)%MOD;   //如果最后再处理余数的问题（a=a*a)会overflow
+        }
+        return product%MOD;
+    }
+};
+
+#时间复杂度 O（）
+#空间 O（）
