@@ -20,14 +20,14 @@ public:
     
     //define a function pass any pow number, will get the mod of it 
     int getMod(int a, int pow){
-        a=a%MOD;
         int product=1;
         while (pow!=0){
+            a=a%MOD;   //除余防止overflow
             if(pow&1){  //faster than (pow%2==1)
                 product=product*a;
             }
             pow=pow>>1;
-            a=(a*a)%MOD;   //如果最后再处理余数的问题（a=a*a)会overflow
+            a=a*a;
         }
         return product%MOD;
     }
