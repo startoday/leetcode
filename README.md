@@ -1,6 +1,6 @@
 #      FIGHT
 #    FOR
-#      OFFER
+#      OBJECT
 # REALIZATION
 #     BEFORE
 #      NOVEMBER
