@@ -1,10 +1,9 @@
 <pre>
-      `F`IGHT
-    FO`R`
-      `O`BJECT
- REALI`Z`ATION
-     B`E`FORE
-      `N`OVEMBER
-
+      <b>F</b>IGHT
+    FO<b>R</b>
+      <b>O</b>BJECT
+ REALI<b>Z</b>ATION
+     B<b>E</b>FORE
+      <b>N</b>VEMBER
 </pre>
-----
+
