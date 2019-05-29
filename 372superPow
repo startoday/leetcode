@@ -33,5 +33,8 @@ public:
     }
 };
 
-#时间复杂度 O（）
-#空间 O（）
+#时间复杂度 O（N）： T（N）= T（N-1）+O（1）
+#空间 O（N）
+
+#比一些submission慢应该是因为每个helper里面我都%了，是一个比较慢的运算
+#直接用pow作为helper，return pow最后再mod会快一点
