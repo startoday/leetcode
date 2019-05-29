@@ -1,0 +1,44 @@
+#给一个数，判断是否是两个square数的和
+#想法是两根指针在（0-c的平方根）内搜索
+#用二分法实现sqrt
+
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        long right = mySqrt(c);
+        long left = 0 ;
+        while (left<right){
+            
+            if((left*left+right*right)==c){
+                return true;
+            }
+            else if((left*left+right*right)<c){
+                left++;
+            } else {
+                right--;
+            }
+        }
+         return 2*left*left==c;
+    }
+    int mySqrt(int c){
+        if (c==0) return 0;
+        long long start =1 ;
+        long long end =c;
+            
+        while(start+1<end){
+            long mid =(start -end) /2 + end;
+            if(mid*mid<c){
+                start =mid;
+            } else if(mid*mid >c) {
+                end =mid;
+            } else {
+                return mid;
+            }
+        }
+        if(end*end<=c) return end;
+        return  start;
+    }
+};
+
+#sqrt 的时间复杂度是 O（lgC），左右指针的区间长是 lgC 所以总复杂度是 O（lgC）
+#空间复杂度 O（1） 虽然脑补了但没有多用array其实。。。
