@@ -1,0 +1,38 @@
+#给一个旋转了的数列 用lgN的时间复杂度搜数，return -1 如果没有搜到
+#两侧区间是互斥的
+#先按照 mid 在左还是在右划分
+#再按照target对于mid的相对位置划分
+
+//O（lgN）is binary-search-like
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+    if(nums.empty()) return -1;    
+    int left = 0;
+    int right = nums.size()-1;
+
+    while(left+1<right){
+        int mid = (right -left)/2 + left;
+        if(nums[mid]<=nums[right]){
+            if(target>=nums[mid]&&target<=nums[right]){
+                left=mid;
+            } else {
+                right = mid;
+            }
+        } else{
+            if(target>=nums[left]&&target<=nums[mid]){
+                right =mid;
+            } else {
+                left = mid;
+            }
+        }
+    }
+    if(nums[left]==target) return left;
+    if(nums[right]==target) return right;
+    return -1;
+    }
+    
+};
+
+#time O（lgN）
+#时间 O（1）
