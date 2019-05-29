@@ -1,14 +1,7 @@
-# Hi! 
-#   FIGHT
-# FOR
-#   OFFER
-#
-#  BEFORE
-#   NOVEMBER
+#      FIGHT
+#    FOR
+#      OFFER
+# REALIZATION
+#     BEFORE
+#      NOVEMBER
 
-   FIGHT
- FOR
-#   OFFER
-#
-#  BEFORE
-#   NOVEMBER
