@@ -1,0 +1,38 @@
+#要merge sorted list， nums1 list 足够大，将2的数字放入1中
+#为了减少移动1中的元素，从后面开始比较，俩个list各有一根指针
+#如果list1的p 先为 0 说明 list2的q 还不为零，将q剩余的元素直接赋值给list1 即可
+#list2的q先为0则正好不用再忙活了
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int p = m-1;
+        int q = n-1;
+        while(q>=0 && p >=0){            
+            if(nums1[p] <= nums2[q]){
+                nums1[p+q+1]=nums2[q];
+                q--;
+            } else {
+                nums1[p+q+1]=nums1[p];
+                p--;
+            }
+            
+            //work
+            /* 
+            nums1[p+q+1] = (nums1[p] <= nums2[q]) ? nums2[q]:nums1[p];
+            nums1[p] <= nums2[q] ? q--: p--;
+            */
+            //not work, seems that ? : doesn't work for multiple statement
+            nums1[p] <= nums2[q] ? {nums1[p+q+1]=nums2[q];q--;}:{nums1[p+q+1]=nums1[p];p--;} 
+        }
+           
+        while(q>=0) {
+            nums1[q]=nums2[q];
+            q--;
+        }
+        
+    }
+};
+
+# 时间复杂度 只循环一次是 O（m+n）
+# 空间复杂度 O（1）。。。如果不用p和q直接用m-1和n-1的话是0？ 没有任何新建东西
