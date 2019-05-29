@@ -5,3 +5,10 @@
 #
 #  BEFORE
 #   NOVEMBER
+
+   FIGHT
+ FOR
+#   OFFER
+#
+#  BEFORE
+#   NOVEMBER
