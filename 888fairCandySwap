@@ -1,0 +1,40 @@
+#两个数组，交换一个数字使两边的和相等
+#直接想法是 算出difference，返回首个A和B之间满足difference的
+#可以用两个loop 时间复杂度O（NM）
+#使用数据结构 hashset的O（1）search
+
+class Solution {
+public:
+    vector<int> fairCandySwap(vector<int>& A, vector<int>& B) {
+        vector<int>res;
+        int sumA = 0, sumB = 0;
+        
+        //faster than use accumulate function, which has one more para is initial value
+        /*
+        int sumA = accumulate (A.begin(),A.end(),0);
+        int sum = accumulate(B.begin(),B.end(),sumA);
+        */
+        
+        for ( auto &elem : A)  sumA += elem;
+        for ( auto &elem : B)  sumB += elem;
+        int sum =sumA+sumB;
+        
+        //since it said it guaranteed an answer, so sum must be an even;
+        int diff = sum/2-sumA;
+        
+        int sizeA = A.size();
+        int sizeB = B.size();
+        unordered_set<int> hsB;
+        for(int j = 0; j<sizeB;j++){
+            hsB.insert(B[j]-diff);
+        }
+        for(int i=0;i<sizeA;i++){
+            auto search=hsB.find(A[i]);
+            if(search!= hsB.end()) return res={A[i],A[i]+diff};   
+        }
+        return res;
+    }
+};
+
+#时间复杂度O（N）--max（A.length(),B.length())
+#Spacs O(N) (length of B)
