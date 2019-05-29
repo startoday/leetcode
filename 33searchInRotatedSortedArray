@@ -1,4 +1,5 @@
 #给一个旋转了的数列 用lgN的时间复杂度搜数，return -1 如果没有搜到
+#lgN所以用二分法做
 #两侧区间是互斥的
 #先按照 mid 在左还是在右划分
 #再按照target对于mid的相对位置划分
@@ -13,6 +14,8 @@ public:
 
     while(left+1<right){
         int mid = (right -left)/2 + left;
+        // 如果加一步直接return 会快一些 4ms ->0ms if(nums[mid]==nums[right]) return mid;
+        // 但是下一步变成 else if 反而比一个 if的慢...0ms->4ms
         if(nums[mid]<=nums[right]){
             if(target>=nums[mid]&&target<=nums[right]){
                 left=mid;
