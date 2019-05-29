@@ -1,0 +1,17 @@
+#一个无序数列，数值是0....n 其中少了一个数，找出这个数
+#要求 O（N） 和O（1）空间
+#直接想法求和 依次递减nums里的值 余下的就是缺的
+
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int size = nums.size();
+        int sum=((size+1)*size)/2;
+        for(int i =size-1;i>=0;i--){
+            sum-=nums[i];
+        }
+        return sum;
+    }
+};
+
+#为什么这道题是从888分糖类似来的。。。难道是因为是数学问题么
