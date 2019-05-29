@@ -1,0 +1,45 @@
+#给一个sorted array， return 一个按照每个数字平方排序的array
+#直接的想法就是先平方再排序
+
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& A) {
+        for(auto i=A.begin();i<A.end();i++){
+            *i=*i*(*i);
+        }
+        sort(A.begin(),A.end());
+        return A;
+    }
+};
+
+# O(nlgn) for time o(1)for space
+
+
+#另一个想法 用两根指针从两侧比较 （左侧用绝对值，右侧不需要）
+#需要用额外的空间储存
+
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& A) {
+            int size =A.size();
+            int left =0; 
+            int right =size -1;
+            int count = size -1;
+            vector<int>res (size);
+            while(left<right){ 
+                if(abs(A[left])>=A[right]){
+                    res[count]=A[left]*A[left];
+                    left++;
+                } else {
+                    res[count]=A[right]*A[right];
+                    right--;
+                }
+                count--;
+            }
+            res[0]=A[left]*A[left];
+            return res; 
+    }
+};
+
+#只走了一遍 time： O（N）
+#space  O（N）
