@@ -1,5 +1,5 @@
-#      'F'IGHT
-#    FOR
+#      `F`IGHT
+#    F`O`R
 #      OBJECT
 # REALIZATION
 #     BEFORE
