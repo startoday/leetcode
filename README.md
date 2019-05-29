@@ -1,7 +1,7 @@
 #      `F`IGHT
-#    F`O`R
-#      OBJECT
-# REALIZATION
-#     BEFORE
-#      NOVEMBER
+#    FO`R`
+#      `O`BJECT
+# REALI`Z`ATION
+#     B`E`FORE
+#      `N`OVEMBER
 
