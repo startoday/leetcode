@@ -42,3 +42,7 @@ public:
 
 #sqrt 的时间复杂度是 O（lgC），左右指针的区间长是 lgC 所以总复杂度是 O（lgC）
 #空间复杂度 O（1） 虽然脑补了但没有多用array其实。。。
+
+
+
+#相似问题 367. Valid Perfect Square  --给一个数，判断是否是个平方数
