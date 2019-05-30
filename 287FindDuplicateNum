@@ -5,8 +5,34 @@
 
 #可以把每个点想象为一个带value的linked list，遇到相同的值则是一个回环， 用快慢指针的方法找到环的入口
 #想要在array 上奔跑的方法是将value作为index，所以在遇到下一个相同的value时会弹回之前走过的路形成环
+#[3,1,3,4,2] 像1在1号index时会形成死循环，操作正确时不会进入该点。所以千万注意是index转换
+#code格式与142 一样。 因为0可以作为起始点 等同于 head， 因为必有环，所以先do 一次 用while 判断
+
+####### 万分注意 接下来的ptr也要设置成head（0）(或者前面head 定义为nums[0] 的话 要和head 一致）不然两者步速一致 但一方少了一步永远无法赶上了555
 
 
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int slow = 0;
+        int fast = 0;
+        do{
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while(slow!=fast);
 
+        fast= 0;
+        while(fast!=slow){
+            fast = nums[fast];
+            slow = nums[slow];
+
+        }
+        return fast;
+    }
+};
+
+
+#time  O（N）
+#space O（1）
 
 
