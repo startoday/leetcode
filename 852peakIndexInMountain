@@ -1,0 +1,40 @@
+#规定了一个一定有峰的Array， 即先上升，再下降，要求return 峰的index
+#直接想法就是循环找断点
+class Solution {
+public:
+    int peakIndexInMountainArray(vector<int>& A) {
+        int size =A.size();
+        for(int i = 0;i<size-1;i++){
+            if(A[i]>A[i+1]) return i;
+        }
+        return size-1;
+    }
+};
+#time O （N）
+
+#可以转换思维成binary search 峰前都是A[i]>A[i-1] 峰后都是A[i]<A[i-1] //选择跟i-1而非i+1比较减少mid+1与boundary的麻烦
+#所以用bool 来表示这个等式的话 就是一个 前面都是T后面是F的 array TTTTTTTTTTFFFFFFFFF 寻找最后一个T
+
+
+class Solution {
+public:
+    int peakIndexInMountainArray(vector<int>& A) {
+        int start = 0;
+        int size = A.size();
+        int end =size-1;
+        int mid;
+        while(start+1<end){
+            int mid = (end -start)/2+start;
+            if(A[mid]>A[mid-1]){
+                start =mid;
+            } else {
+                end = mid;
+            }
+        }
+        if(A[start]>A[start+1]) return start;
+        return end;
+    }
+};
+
+# time O（lgN）
+# space O（1）
