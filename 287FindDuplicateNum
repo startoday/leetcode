@@ -1,0 +1,8 @@
+#给一个array，有n+1个数，range 是[1,n], 其中一定至少有一个duplicate 
+#假设只有一个dup，找出并return 这个dup，dup可以dup多次，which means 不是1到n中的所有数都必要存在。
+#要求是不可以modify 原始array 并用O（1）space， 所以不可以用sort。
+#时间复杂度需要小于 O（N^2)
+
+#可以把每个点想象为一个带value的linked list，遇到相同的值则是一个回环， 用快慢指针的方法找到环的入口
+
+
