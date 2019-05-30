@@ -1,6 +1,6 @@
 ##给一颗二叉树，返回中序遍历的各个节点，（无NULL）
 
-#recursive 做法
+# travese recursive 做法
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
@@ -14,5 +14,24 @@ public:
         inOrder(root->left, res);
         res.push_back(root->val);
         inOrder(root->right, res);
+    }
+};
+
+
+#divide and conquer recursion 做法
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int>res;
+        if(root == NULL ) return res;
+        
+        vector<int> left = inorderTraversal(root->left);
+        vector<int> right = inorderTraversal(root->right);
+        
+        res.insert(res.end(), left.begin(), left.end());
+        res.push_back(root->val);
+        res.insert(res.end(), right.begin(),right.end());
+        
+        return res;
     }
 };
