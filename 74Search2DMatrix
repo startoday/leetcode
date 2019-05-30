@@ -1,0 +1,48 @@
+#m*n矩阵
+#Integers in each row are sorted from left to right.
+#The first integer of each row is greater than the last integer of the previous row.
+Example Input:
+matrix = [
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+#只需要return bool
+
+#所以连续看是（单调）递增的
+#想法是用二分法先找第一列，确定行数，再对该行二分求解
+#找到的行数应该是小于且最靠近target的
+
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        //if(matrix.empty()) return false;
+        if(matrix.size()==0||matrix[0].size()==0) return false;
+        int start =0;
+        int end= matrix.size()-1;
+        while(start+1<end){
+            int mid = (end-start)/2+start;
+            if(matrix[mid][0]<= target) start =mid;
+            else end =mid;
+        }
+        int col;
+        if(matrix[end][0]<=target) col=end;
+        else col =start;
+        start = 0;
+        end = matrix[0].size()-1;
+        while(start+1<end){
+            int mid = (end-start)/2+start;
+            if(matrix[col][mid]<= target) start =mid;
+            else end =mid;
+        }
+        if(matrix[col][start]==target) return true;
+        return matrix[col][end]==target;
+    }
+};
+
+
+#time  O（lgn +lgm）
+#space O（1）
+
+      
