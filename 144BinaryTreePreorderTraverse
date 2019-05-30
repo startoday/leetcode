@@ -1,0 +1,35 @@
+#给一颗二叉树，返回前序遍历的各个节点，（无NULL）
+
+# recursion 做法
+class Solution {
+    
+public:
+    
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int>res;   
+        
+        preOrder(root, res);
+              
+        return res;
+    }
+    
+    //defination, given a root, add the root, left and right into res
+    void preOrder(TreeNode* root, vector<int> & res){
+        //exit of the function
+        if(root == NULL ) return ;
+        
+        //split
+        res.push_back(root->val);
+        /* 不需要加这块判断，直接run该function 即可
+        //exit of the function
+        if(root->left == NULL && root->right ==NULL ) return ;
+
+        if(root->left!= NULL) preOrder(root->left, res);
+        if(root->right!= NULL) preOrder(root->right, res);
+        */
+        
+        preOrder(root->left, res);
+        preOrder(root->right, res);
+        
+    }
+};
