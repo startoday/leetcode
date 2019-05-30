@@ -52,7 +52,7 @@ public:
         vector<int> left = preorderTraversal(root->left);
         vector<int> right = preorderTraversal(root->right);
         
-        res.push_back(root->val);
+        res.push_back(root->val); //加的是val！！！！！不要每次都打成root！
         res.insert(res.end(), left.begin(), left.end());
         res.insert(res.end(), right.begin(), right.end());
               
