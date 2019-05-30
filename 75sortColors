@@ -1,0 +1,31 @@
+#要求inplace sort 只含有0，1，2 三个数字的序列
+
+#想法：
+[0,1,0,2,0,1,2]
+可以左右各有一根指针，遇到0的时候和（最）左交换---保证 （最）左都是零； 遇到 2的时候 和右侧交换，并将右侧指针向里移动， 则右边都是2
+遇到1的时候直接increment即可 ； 为了保证左侧的交换（同样需要记录swap位置，不然重新挪动数组very costly） 还需要另一根指针来记录左侧位置
+
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int left = 0;
+        int travel = 0; 
+        int right = nums.size()-1;
+        // PAY ATTENTION we need <= not < here, otherwise miss a compare at right since we all check travel
+        while(travel<=right){  
+            if(nums[travel]==1) travel++;
+            else if(nums[travel]==2){
+                swap(nums[travel],nums[right]);
+                right--;   //don't need to move travel, maybe swith anoter 2 back, so stay travel for more check
+            } else {
+                swap(nums[left],nums[travel]);
+                left++;
+                travel++;
+            }
+        }
+    }
+};
+
+#time O(N)
+#space O(1)
