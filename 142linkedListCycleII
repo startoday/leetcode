@@ -19,3 +19,28 @@
    
    */
    
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(head == NULL || head->next == NULL) return NULL;
+        ListNode * slow = head;
+        ListNode * fast = head;
+        while(fast!=NULL && fast->next!=NULL){
+            slow = slow->next;
+            fast= fast->next->next;
+            if(fast == slow) break;
+        }
+        if(fast ==NULL || fast->next == NULL) return NULL;
+        ListNode* anotherPtr = head;
+        while(anotherPtr!=fast){
+            anotherPtr = anotherPtr->next;
+            fast = fast -> next;
+        }
+        return fast;
+    }
+};
+
+#space is O(1)
+#time is O(n) basically, the first one if it finds the meeting point, slow ptr runs less than N and next for anotherPtr to 
+remeet fast ptr is running less than slow(N)
+
