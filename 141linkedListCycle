@@ -1,0 +1,22 @@
+#给一个迷之表示的linked list ，判断有没有环
+#可以用快慢指针，快指针一次迈两步，慢指针一次走一步，只要是有缘/圆的，终归能遇上
+
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(head==NULL || head->next == NULL) return false;
+        ListNode * slow = head;
+        ListNode * fast = head;
+        //注意不要一上来就比较slow 和fast相等不， 因为大哥你自己设置的是从一个起点开始啊，还要不要进while 循环了您
+        while(fast != NULL && fast->next != NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow==fast) return true;
+        }
+        
+        return false;
+    }
+};
+
+#time O（N）快指针的步速是慢指针的两倍，最差一个大整环，2n 所以是O（N）
+#space O（1）
