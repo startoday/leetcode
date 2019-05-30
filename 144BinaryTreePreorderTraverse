@@ -63,4 +63,9 @@ public:
 # time
 # space
 
+#3.Non-recursive 做法： 需要用stack 来存取
+#循环检测stack是否为空，不空时去取top加载，踢出，如果存在的话，先加入右儿子（先左后右out），再加入左儿子
 
+
+# time
+# space
