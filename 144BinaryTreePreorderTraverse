@@ -35,9 +35,32 @@ public:
         
     }
 };
+# time
+# space
 
 #2. Divide and Conquer recursive ，一般不需要全局变量
 # divide：左， 右 conquer：根，左，右 合在一起
 
+class Solution {
+    
+public:
+    
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int>res;   
+        if (root== NULL) return res;
+        
+        vector<int> left = preorderTraversal(root->left);
+        vector<int> right = preorderTraversal(root->right);
+        
+        res.push_back(root->val);
+        res.insert(res.end(), left.begin(), left.end());
+        res.insert(res.end(), right.begin(), right.end());
+              
+        return res;
+    }
+};
+
+# time
+# space
 
 
