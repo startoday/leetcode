@@ -66,6 +66,23 @@ public:
 #3.Non-recursive 做法： 需要用stack 来存取
 #循环检测stack是否为空，不空时去取top加载，踢出，如果存在的话，先加入右儿子（先左后右out），再加入左儿子
 
+class Solution {  
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int>res;   
+        if (root== NULL) return res;
+        stack<TreeNode*> nodeStack;
+        nodeStack.push(root);
+        while(!nodeStack.empty()){
+            TreeNode * temp = nodeStack.top(); //搞一个node每次暂存信息
+            nodeStack.pop();
+            res.push_back(temp->val);
+            if(temp->right!=NULL) nodeStack.push(temp->right);
+            if(temp->left!=NULL) nodeStack.push(temp->left);
+        }
+        return res;
+    }
+};
 
 # time
 # space
