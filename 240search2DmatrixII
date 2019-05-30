@@ -10,3 +10,29 @@ Example of matrix：
   [18, 21, 23, 26, 30]
 ]
 #与1相比，没有保证下一行的第一个值一定大与上一行的最后一个值
+#所以可发现左下角和右上角的两个方向可以完成搜索
+#左下角开始的话比它小往上走，比他大往右走
+
+#ALWAYS ALWAYS ALWAYS CHECK EMPTY STUFF!!!!!!!!!
+
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int rowSize = matrix.size();
+        if(rowSize ==0 ) return false;  //先check这个防止NULL ptr
+        int colSize = matrix[0].size();
+        if(colSize ==0) return false;
+        int row = rowSize-1;
+        int col = 0;
+        while(col<colSize && row>=0){
+            if(matrix[row][col]==target) return true;
+            else if(matrix[row][col]>target) row--;
+            else col++;
+        }
+        return false;
+    }
+};
+
+#time complexity 最多O（M+N）
+#space O（1）
