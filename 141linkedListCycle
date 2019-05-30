@@ -20,3 +20,23 @@ public:
 
 #time O（N）快指针的步速是慢指针的两倍，最差一个大整环，2n 所以是O（N）
 #space O（1）
+
+#还可以用hash set check linkedNode 是否一致
+#search O（1） 也是O(N)的time 但是 space 为 O（N）：多了一个set
+
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(head==NULL || head->next == NULL) return false;
+        unordered_set<ListNode *> store;
+        store.insert(head);
+        while(head != NULL){
+            head=head->next;
+            auto res=store.find(head);
+            if(res==store.end()) store.insert(head);
+            else return true;
+        }
+        
+        return false;
+    }
+};
