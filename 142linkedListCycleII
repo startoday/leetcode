@@ -1,1 +1,21 @@
 #依然给一个迷之linkedlist，判断有么有环，并且return如果有环的Node；无环则return NULL
+#仍旧是快慢指针， 当两个指针汇合时，一个指针在该点，另一个指针从head 出发， 两个指针都一次只移动一步，那么会在 入口点汇合。
+
+/*解释：
+  「-----------」---------
+       a       /          \
+              |            |
+           c  |            |  b
+               \          /
+                -----|---
+                     first meeting point
+   fast ptr is twice step than slow, when they first met, slowPtr runs n cicles and fastPtr runs m circles, 
+   
+   then 2(a+n(b+c)+b) =a+ m(b+c)+b
+       ==>   a=(m+2n)(b+c)-b
+       ==>   a=(m+2n-1)(b+c)+c  //where b+c is the length of circle
+   Thus: if a ptr starts at head and needs to move 'a' length to the entrance, where the other ptr is running (m+2n-1) rounds
+   plus c length, so they will first time meet at the loop entrance.
+   
+   */
+   
