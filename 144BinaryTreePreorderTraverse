@@ -37,7 +37,7 @@ public:
 };
 
 #2. Divide and Conquer recursive ，一般不需要全局变量
-# divide：根， 左， 右 conquer：合在一起
+# divide：左， 右 conquer：根，左，右 合在一起
 
 
 
