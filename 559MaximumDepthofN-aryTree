@@ -1,0 +1,17 @@
+#找 n-ary tree的 最大高度
+#法1 继承自找二叉树的最大高度
+
+class Solution {
+public:
+    int maxDepth(Node* root) {
+        if(root == NULL) return 0;
+        
+        set<int> heightStorage;
+        if ((root->children).size() == 0) return 1;  // 这一行很重要 最后一行需要有值，否则set里面是空的
+        for(Node* child: root->children){
+            heightStorage.insert(maxDepth(child));
+        }
+        
+        return *(--heightStorage.end())+1;     //set 中找max的 写法
+    }
+};
