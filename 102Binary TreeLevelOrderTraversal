@@ -1,3 +1,31 @@
 #二叉树的层序遍历，返回vector<vector<int>>
 #用queue来实现。 一般BFS就不要用recursive了，正是BFS的优势
+#本题要求每一层都要return一个vector 可以用当前进入的queue的size来确定这一层有多少val；每次在循环中的时候pop并加入新的儿子们，先左后右
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        
+        vector<vector<int>>res;
+        if(!root) return res;
+        
+        queue<TreeNode * > nodeStore;
+        nodeStore.push(root);
+        
+        while(!nodeStore.empty()){
+            vector<int> aLevel;
+            int size =nodeStore.size();  //注意要先计算一下size值，不然每次会重复计算size，并不是加入儿子之前当前层node数的正确数量
+            for(int i =0;i<size;i++){
+                TreeNode * cur=nodeStore.front();
+                nodeStore.pop();
+                aLevel.push_back(cur->val);
+                if(cur->left!=NULL)  nodeStore.push(cur->left);
+                if(cur->right!=NULL) nodeStore.push(cur->right);
+            }
+            res.push_back(aLevel);
+        }
+        
+        return res;
+    }
+};
 
