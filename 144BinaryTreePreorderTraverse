@@ -1,7 +1,8 @@
 #给一颗二叉树，返回前序遍历的各个节点，（无NULL）
 
 #1. traverser recursion 做法
-#traverse 一般需要一个全局变量， 记录内容；helper function 记得传参数的时候需要 &！！！ 不然会return 空的 res（pass by copy）
+#traverse 一般需要一个全局变量来记录内容；一般不用return，传参数传当前节点
+#helper function 记得传参数的时候需要 &！！！ 不然会return 空的 res（pass by copy）
 
 class Solution {
     
@@ -38,7 +39,7 @@ public:
 # time
 # space
 
-#2. Divide and Conquer recursive ，一般不需要全局变量
+#2. Divide and Conquer recursive ，一般不需要全局变量，需要return 值
 # divide：左， 右 conquer：根，左，右 合在一起
 
 class Solution {
