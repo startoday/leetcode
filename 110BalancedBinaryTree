@@ -1,0 +1,28 @@
+#给一颗二叉树，判断是否是平衡的（左右树高度差不大于1）
+
+#想法 divide and conquer
+#是平衡树的要求是 左儿子和右儿子都是+自己当前也是（自己当前左右儿子高度差不大于1）
+#慢到令人发指的写法：
+
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        
+        if(!root) return true;
+        if(root->left == NULL && root->right == NULL){
+            return true;
+        }
+        bool left = isBalanced(root->left);
+        bool right = isBalanced(root->right);
+        
+        return checkBalance(root)&&left==true && right == true; 
+    }
+    
+    int height(TreeNode* root){
+        if(!root) return 0;
+        return max(height(root->left),height(root->right))+1;        
+    }
+    bool checkBalance(TreeNode* root){
+        return abs(height(root->left)-height(root->right))<=1;
+    }    
+};
