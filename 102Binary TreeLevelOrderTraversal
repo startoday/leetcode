@@ -29,4 +29,5 @@ public:
     }
 };
 
-#代码的一点点优化： 可以 for(int i = nodeStore.size();i>=0;i--) 这也是只计算了一次size，得到的是正确的循环次数
+#代码的一点点优化： 可以 for(int i = nodeStore.size();i>0;i--) 这也是只计算了一次size，得到的是正确的循环次数
+#但注意上述应该循环的次数是 size-1 次 所以i是> 0 not > =0 这个循环只需要次数正确
