@@ -35,3 +35,28 @@ public:
         return res;
     }
 };
+
+#iteratively method : 和 preoder相似， 因为 左 根 右 所以先加左节点进入stack 直到走到底  开始（从stack上提取及pop）print/add 当前点， 之后
+把cur指向右儿子
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int>res;
+        if(root == NULL ) return res;
+        
+        stack<TreeNode*> nodeStack;
+        TreeNode* cur = root;
+        while(cur||!nodeStack.empty()){
+            if(cur){
+                nodeStack.push(cur);
+                cur = cur->left;
+            } else {
+                cur = nodeStack.top();
+                res.push_back(cur->val);
+                nodeStack.pop();
+                cur = cur->right;
+            }
+        }
+        return res;
+    }
+};
