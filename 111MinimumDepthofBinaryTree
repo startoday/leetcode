@@ -1,0 +1,16 @@
+#给一棵二叉树， 返回root 到leaf的最低高度
+##有leaf 一定要到leaf， 所以和找tree的最高高度略有区别
+
+#divide and conquer 
+#左边空的时候 是1 + min 右边(因为右边可能有，一旦有就得算到root的1了）； 右边空 是1 + min左边
+
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(!root) return 0;
+        if(root->left == NULL) return 1+minDepth(root->right);
+        if(root->right == NULL) return 1+minDepth(root->left);
+        
+        return min(minDepth(root->left),minDepth(root->right))+1;
+    }
+};
