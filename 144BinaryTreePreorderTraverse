@@ -86,3 +86,31 @@ public:
 
 # time
 # space
+
+#4.iterative 另一种做法
+先用一个点P('cur' in my code) 存node，P加入stack，P加入result。P指向左节点，存在的时候重复向stack里加入p节点的信息，一旦没有左节点取stack的top 作为P指向右节点，
+并且pop掉stack top 相当于一路向左走到底再往上一级找右儿子，一直向上指root，root完成了看右侧树，每个subtree都是先左（但会先print/add根）
+
+class Solution {  
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int>res;   
+        if (root== NULL) return res;
+        stack<TreeNode*> nodeStack;
+        TreeNode *cur = root;
+        while(cur||!nodeStack.empty()){
+            if(cur){
+                nodeStack.push(cur);
+                res.push_back(cur->val);
+                cur=cur->left;
+            } else {
+                cur = nodeStack.top();
+                nodeStack.pop();
+                cur=cur->right;
+            }
+        }
+
+        return res;
+    }
+};
+
