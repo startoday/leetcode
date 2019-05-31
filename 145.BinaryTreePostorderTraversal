@@ -34,3 +34,29 @@ public:
         
     }
 };
+
+#iterative 做法，类似preOrder，因为是左右根，可以成 根右左再翻转（reverse加入即可--即每次都是在最前面insert）
+
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int>res;
+        if(root == NULL) return res;
+        
+        stack<TreeNode*> nodeStack;
+        TreeNode * cur = root;
+        
+        while(cur || !nodeStack.empty()) {
+            if(cur){
+                nodeStack.push(cur);
+                res.insert(res.begin(),cur->val);  //根  （翻转加入）
+                cur=cur->right;      //右
+            } else {
+                cur = nodeStack.top();
+                nodeStack.pop();
+                cur = cur->left;  //左
+            }
+        }
+        return res;        
+    }
+};
