@@ -1,0 +1,21 @@
+# 给一棵树，找其最大高度
+Given a binary tree, find its maximum depth.
+The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+#想法： 整个的高度： 看一眼左儿子，看一眼右儿子，取更大值+1 即可
+
+class Solution {
+public:
+
+    // defination: given a tree root, get the height of it
+    int maxDepth(TreeNode* root) {
+        
+        // exit
+        if(root == NULL) return 0;
+        
+        //compare left and right height, find the max child height and plus current height(1)
+        int leftMax = maxDepth(root->left);
+        int rightMax = maxDepth(root->right);
+        return max(leftMax,rightMax)+1;
+    }
+};
