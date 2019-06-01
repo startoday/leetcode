@@ -1,0 +1,66 @@
+#和binary tree的区别是可以有多个儿子
+
+#一个递归的解法：
+「The key is to merge vectors ret and r: 
+It is apparent that the child node is always ONE level lower than its parent node. 
+Suppose r = levelOrder(root->child), and ret a vector to store the final output for current level. 
+Hence, r[0], r[1], r[2], ..., should be merged to ret[1], ret[2], ret[3], ..., respectively.
+
+If ret[1] does NOT exist, i.e., ret.size() == 1, then ret.push_back(r[0]). 
+Otherwise, combine ret[1] with r[0] by ret[1].insert(ret[1].end(), r[0].begin(), r[0].end());. 
+To illustrate:
+
+level   N   N+1  N+2  N+3  N+4  N+5
+ret = [[1], [2], [3]]                              N    N+1    N+2   N+3  N+4  N+5
+                                      -->  ret = [[1], [2,4], [3,5], [6], [7], [8]]
+r   =      [[4], [5], [6], [7], [8]]
+」
+ref： https://leetcode.com/problems/n-ary-tree-level-order-traversal/discuss/157521/C%2B%2B-Easy-to-understand-recursive-solution-based-on-DFS-(44-ms-beats-98.67)
+
+
+
+
+
+
+#基本写法和binary BFS 是一样的 循环儿子们加入queue
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+class Solution {
+public:
+    vector<vector<int>> levelOrder(Node* root) {
+        vector<vector<int>> res;
+        if(!root) return res;
+        
+        queue<Node*> nodeStore;
+        nodeStore.push(root);
+        while(!nodeStore.empty()){
+            vector<int> aLevel;
+            
+            for(int i=nodeStore.size();i>0;i--){
+                Node* cur = nodeStore.front();
+                nodeStore.pop();
+                aLevel.push_back(cur->val);
+                
+                for(Node* child : cur->children){
+                    if(child!=NULL) nodeStore.push(child);
+                }
+            }
+            res.push_back(aLevel);
+        }
+        
+        return res;
+    }
+};
