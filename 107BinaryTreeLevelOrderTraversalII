@@ -1,7 +1,6 @@
 #给一棵树 层序遍历 和 I 不同的是要从叶子节点走向 根节点 （bottom up）
 
 #直接的想法是和1 一样但是 翻转res（利用insert函数反着加即可）
-
 #注意第一次写没注意的是 insert 里面直接加alevel即可。。。不是alevel的range；alevel和res的元素是一级的～
 class Solution {
 public:
@@ -24,5 +23,41 @@ public:
         }
         
         return res;
+    }
+};
+
+#看了一波大家的答案基本都是DFS/recursive写的
+#想法比如： 计算height， 从height 倒着recursive or 正着最后reverse； 都是通过[level]，来实现同层的
+#这样写的注意点在于res的size； 如果可以先知道height 要initial如此的大小，不然没法用[] 来加某一层；如果不一开始指定size 就要遇到空就增加一个新的
+
+#learning point: 关于2Dmatix 的reserve
+
+class Solution {
+public:
+    int getHeight(TreeNode* root){
+        if(!root) return 0;
+        return max(getHeight(root->left),getHeight(root->right))+1;
+    }
+    
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+
+        int height = getHeight(root);
+        vector<vector<int>> res(height,vector<int>{}); //前大小，后xx
+        //res.reserve(height);  //没法用reserve 因为会默认 call 空的 constuctor for each element. （不能传两个参数）
+        //所以只能产生 zero-sized vectors. CANOT use them unless you resize (not reserve) your vectors.
+        //别给自己找麻烦
+        dfsHelper(root, res, height-1);
+        return res;
+    }
+    
+    // give a node, add the same height node to the result list
+    void dfsHelper(TreeNode* root, vector<vector<int>> & res, int height ) {
+        //exit
+        if(!root) return;
+        res[height].push_back(root->val);
+        
+        //split
+        dfsHelper(root->left,res,height-1);
+        dfsHelper(root->right,res,height-1);
     }
 };
