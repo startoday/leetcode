@@ -1,4 +1,33 @@
 #给一颗没有重复元素的树 和两个value， 判断两个value是不是cousin
 #cousin的要求：高度一样并且父亲不能是同一个
+#本题限定了是树中的数字是unique的
+#搜索到x，y 记录x和y的高度并且记录父亲的val 要求x，y 高度相等并且父亲的val 不等
+#只有在找到x和y的时候才会更改高度及父亲的val。
 
-
+class Solution {
+public:
+    int depX,depY,prtX,prtY;
+    //a function will cal and store the depth and parent when find x and y
+    void findXYinfor(TreeNode* root, int x, int y, int depth, int parent){
+        //exit
+        if(!root) return;
+        depth++;  //每一轮查找都增加一个depth
+        if(root->val==x){
+            depX=depth;
+            prtX=parent;
+        }
+        if(root->val==y){
+            depY=depth;
+            prtY=parent;
+        } else{
+            findXYinfor(root->left,  x,  y, depth, root->val);
+            findXYinfor(root->right,  x,  y, depth, root->val);
+        }
+        
+    }
+    bool isCousins(TreeNode* root, int x, int y) {
+        depX=depY=0;
+        findXYinfor(root, x, y, 0, root->val);       //因为是unique val 所以传root 的val也不会出现重复
+        return (depX==depY)&&(prtX!=prtY);
+    }           
+};
