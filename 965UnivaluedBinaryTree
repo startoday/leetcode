@@ -1,0 +1,25 @@
+#判断树中的value有没有不一样的
+A binary tree is univalued if every node in the tree has the same value.
+Return true if and only if the given tree is univalued.
+
+
+#继续练习divide and conquer！
+#想一样左右儿子都要一样， 是null的话只和root比即可
+
+class Solution {
+public:
+    bool isUnivalTree(TreeNode* root) {
+        if(!root) return true;  //还是不可少滴，不然下一步可能有null ptr
+        
+        return isUnivalTree(root->left)&&isUnivalTree(root->right)&&checkUni(root);
+        
+    }
+    
+    bool checkUni(TreeNode * root){
+        if(!root) return true;
+        if(!root->left&&!root->right) return true;  //左右都没儿子 直接 欧壳
+        else if(!root->left) return root->val==root->right->val; //判断儿子的值是否和老子相等不然白搭
+        else if(!root->right) return root->val==root->left->val;
+        else return root->left->val==root->right->val;    //都有要判断左右儿子值是否相等
+    }
+};
