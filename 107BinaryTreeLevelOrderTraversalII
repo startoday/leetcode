@@ -44,7 +44,7 @@ public:
         int height = getHeight(root);
         vector<vector<int>> res(height,vector<int>{}); //前大小，后xx
         //res.reserve(height);  //没法用reserve 因为会默认 call 空的 constuctor for each element. （不能传两个参数）
-        //所以只能产生 zero-sized vectors. CANOT use them unless you resize (not reserve) your vectors.
+        //所以只能产生 zero-sized vectors. CANNOT use them unless you resize (not reserve) your vectors.
         //别给自己找麻烦
         dfsHelper(root, res, height-1);
         return res;
