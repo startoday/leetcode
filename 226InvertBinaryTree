@@ -16,3 +16,18 @@ Output:
  / \   / \
 9   6 3   1
 example [1,2,4,6,8,3,9,7,0,11,null,null,17,23]  return [1,4,2,9,3,8,6,null,23,17,null,null,11,0,7]
+
+#就是交换左右儿子 divide and conquer
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(!root) return root;
+        //分
+        invertTree(root->left);
+        invertTree(root->right);
+        //和
+        swap(root->left, root->right);
+        
+        return root;
+    }
+};
