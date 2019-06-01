@@ -1,0 +1,27 @@
+#判断t是不是s的一个子树
+
+#这道题花了好久。。一开始俺就想错了，想成找到一个点比较 下面是不是same tree 但是找点本身就有问题！可能是重复的点
+#其实正确想法非常直接，从s的root开始比，往左右搜索，只要有一侧是true 就OK！
+
+
+
+class Solution {
+public:
+    bool isSubtree(TreeNode* s, TreeNode* t) {
+        if(!s) return false;  //exit 在 s搜索到底的时候就return了
+        if(isSameTree(s, t)) return true;
+        return isSubtree(s->left,t)||isSubtree(s->right,t);
+        
+    }
+
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if(p ==NULL &&q == NULL)  return true;
+        
+        if(p ==NULL || q == NULL) return false;
+
+        if(p->val != q->val) return false;
+    
+        return isSameTree(p->left,q->left)&&isSameTree(p->right,q->right);
+    }
+    
+};
