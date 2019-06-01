@@ -1,6 +1,7 @@
 #和binary tree的区别是可以有多个儿子
 
-#一个递归的解法：
+#(慢）
+一个递归的解法：
 「The key is to merge vectors ret and r: 
 It is apparent that the child node is always ONE level lower than its parent node. 
 Suppose r = levelOrder(root->child), and ret a vector to store the final output for current level. 
@@ -17,7 +18,24 @@ r   =      [[4], [5], [6], [7], [8]]
 」
 ref： https://leetcode.com/problems/n-ary-tree-level-order-traversal/discuss/157521/C%2B%2B-Easy-to-understand-recursive-solution-based-on-DFS-(44-ms-beats-98.67)
 
-
+class Solution {
+public:
+    vector<vector<int>> levelOrder(Node* root) {
+        vector<vector<int>> res;
+        if (!root)
+            return res;
+        res.push_back(vector<int> {root->val}); 
+        for (Node* child : root->children) {
+            vector<vector<int>> chd = levelOrder(child); //get res for each subtree
+            for (int i = 0; i < chd.size(); ++i)
+                if (i + 1 > res.size() - 1)
+                    res.push_back(chd[i]); //father level not exist
+                else
+                    res[i + 1].insert(res[i + 1].end(), chd[i].begin(), chd[i].end());  //merge father level and chd level
+        }
+        return res;       
+    }
+};
 
 
 
