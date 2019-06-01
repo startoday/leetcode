@@ -1,0 +1,28 @@
+#给一棵树 层序遍历 和 I 不同的是要从叶子节点走向 根节点 （bottom up）
+
+#直接的想法是和1 一样但是 翻转res（利用insert函数反着加即可）
+
+#注意第一次写没注意的是 insert 里面直接加alevel即可。。。不是alevel的range；alevel和res的元素是一级的～
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        vector<vector<int>> res;
+        if(!root) return res;
+        queue<TreeNode*> nodeStore;
+        nodeStore.push(root);
+        
+        while(!nodeStore.empty()){
+            vector<int> aLevel;
+            for(int i=nodeStore.size();i>0;i--){
+                TreeNode * cur = nodeStore.front();
+                nodeStore.pop();
+                aLevel.push_back(cur->val);
+                if(cur->left!=NULL) nodeStore.push(cur->left);
+                if(cur->right!=NULL) nodeStore.push(cur->right);
+            }
+            res.insert(res.begin(),aLevel);  //利用insert函数翻转
+        }
+        
+        return res;
+    }
+};
