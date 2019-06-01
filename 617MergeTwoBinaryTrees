@@ -1,0 +1,25 @@
+#合并两棵树，对应位置为和， null的点相当于0
+
+#divide and conquer 可以实现
+#需要给树新建node， 参看注释里面的constructor
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
+        if(!t1) return t2;
+        if(!t2) return t1;
+        TreeNode * res = new TreeNode(t1->val+t2->val);
+        res->left= mergeTrees(t1 ->left,  t2 ->left);
+        res->right= mergeTrees(t1 ->right, t2 ->right);
+        return res;
+    }
+    
