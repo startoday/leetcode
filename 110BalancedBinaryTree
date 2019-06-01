@@ -26,3 +26,23 @@ public:
         return abs(height(root->left)-height(root->right))<=1;
     }    
 };
+
+#优化写法。两侧check height不对的直接return 不计算深度 return -1 ，只有是平衡的树才计算深度, 最后check root是不是-1即可
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        return checkHeight(root)!=-1;
+    }
+    
+    //check if the tree is balanced, -1 not otherwise return height
+    int checkHeight(TreeNode* root){
+        if(!root) return 0;
+        int left = checkHeight(root->left);
+        if(left == -1) return -1;
+        int right = checkHeight(root->right);
+        if(right == -1) return -1;
+        if(abs(left-right)>1) return -1;
+        return max(left,right)+1;     
+    }
+
+};
