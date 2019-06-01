@@ -2,3 +2,18 @@
 
 #BST是左根右的形态，所以中间的点应该是节点， root之下的左边节点是左半边的最中间，右侧同理，下同
 
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return insertTree(nums,0,nums.size()); //非size-1
+    }
+    
+    TreeNode* insertTree(const vector<int> & nums,int left,int right){
+        if(left>=right) return NULL;  //>=
+        int mid = (right -left)/2 + left;
+        TreeNode * newNode = new TreeNode(nums[mid]);
+        newNode->left= insertTree(nums, left,mid);
+        newNode->right= insertTree(nums, mid+1,right); //每次取中点是偏左的 
+        return newNode;
+    } 
+};
