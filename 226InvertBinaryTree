@@ -1,0 +1,18 @@
+#该题叫invert tree 其实是让对调左右儿子
+Example:
+
+Input:
+
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+Output:
+
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+example [1,2,4,6,8,3,9,7,0,11,null,null,17,23]  return [1,4,2,9,3,8,6,null,23,17,null,null,11,0,7]
