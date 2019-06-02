@@ -32,3 +32,11 @@ left part or the right part;
 Keep the answer number within the range [l, r] in each round.
 The time complexity will be O(nlognlogR) while n is the number of rows in the matrix 
 and R is the difference between the smallest and the biggest number in the matrix.
+
+Take [[1,4],[3,5]] 2 as an example. 
+If we use the index range as the searching space, l=0, r=3, 
+m=(0+3)/2=1 in the first round and then the numbers smaller than or equal to its number, 
+matrix[m/size][m%size]=matrix[1/2][1%2]=matrix[0][1]=4, are 3 (1, 4 and 3 respectively) and then we will set r=m=1. 
+Just now we have eliminated the potential answer number 3, 
+whose index should be 2 matrix[2/2][2%2]=matrix[1][0]. 
+All of these are because the index sequence is not linear to the matrix numbers whose order lies in two directions.
