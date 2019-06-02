@@ -21,3 +21,14 @@ public:
 
 #时间复杂度 n（总元素个数）*lgN 
 #空间 k
+
+#用二分查找，每次找出upperbound 的个数，直至upperbound的数为k-1时 返回二分查找点（第k大）
+
+Details
+Start with half of the smallest and biggest of the matrix,
+and then count how many numbers are smaller than or equal to it row by row;
+K directly becomes the comparison determining which direction we will go in the next round, 
+left part or the right part;
+Keep the answer number within the range [l, r] in each round.
+The time complexity will be O(nlognlogR) while n is the number of rows in the matrix 
+and R is the difference between the smallest and the biggest number in the matrix.
