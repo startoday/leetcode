@@ -22,7 +22,9 @@ public:
 #时间复杂度 n（总元素个数）*lgN 
 #空间 k
 
-#用二分查找，每次找出upperbound 的个数，直至upperbound的数为k-1时 返回二分查找点（第k大）
+#用二分查找，查找每一行upperbound（mid） 的个数的sum，再根据sum与k的关系改变mid，直至upperbound的总数为k-1时 返回二分查找点（第k大）
+#注意这里二分查找的不是index，而是最小值和最大值的差值 因为查找的是upperBound，是查找第一个大于目标的元素
+#如果target比该sorted Array 的尾元素大，则利用upper_bound返回该行元素的个数（index），如果target比sorted array首元素小，则upper_bound返回0
 
 Details
 Start with half of the smallest and biggest of the matrix,
@@ -33,10 +35,16 @@ Keep the answer number within the range [l, r] in each round.
 The time complexity will be O(nlognlogR) while n is the number of rows in the matrix 
 and R is the difference between the smallest and the biggest number in the matrix.
 
-Take [[1,4],[3,5]] 2 as an example. 
+Take [[1,4],
+      [3,5]] 
+     2 as an example. 
 If we use the index range as the searching space, l=0, r=3, 
 m=(0+3)/2=1 in the first round and then the numbers smaller than or equal to its number, 
-matrix[m/size][m%size]=matrix[1/2][1%2]=matrix[0][1]=4, are 3 (1, 4 and 3 respectively) and then we will set r=m=1. 
+
+*** reason I want to add***
+matrix[m/size][m%size]=matrix[1/2][1%2]=matrix[0][1]=4, are 3 (1, 4 and 3 respectively),lager than k, then we will set r=m=1. 
+***position with 2D array index and size!!当我们蛇形走位的时候 相连的 index是多少
+
 Just now we have eliminated the potential answer number 3, 
 whose index should be 2 matrix[2/2][2%2]=matrix[1][0]. 
 All of these are because the index sequence is not linear to the matrix numbers whose order lies in two directions.
