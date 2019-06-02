@@ -1,0 +1,23 @@
+#给一个2D matrix 寻找第 k 小的数字 matrix 从左至右递增，从上到下递增，但可以有重复元素，且不保证蛇形递增
+
+
+#直接想法，将元素加入 一个 size 为 k 的 heap （priority queue）heap 的top即是第k小的树（最小的在最下面，所以用的是 max_heap, 即 默认的 PQ）
+
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int row = matrix.size();
+        int col= matrix[0].size();
+        priority_queue <int> nums;
+        for(int i= 0; i<row;i++){
+            for(int j =0;j<col; j++){
+                nums.emplace(matrix[i][j]);  
+                if(nums.size()>k) nums.pop(); //当元素多于k时，新进来的元素会跟第k大的元素比较
+            }
+        }
+        return nums.top();
+    }
+};
+
+#时间复杂度 n（总元素个数）*lgN 
+#空间 k
