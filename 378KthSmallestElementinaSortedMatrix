@@ -48,3 +48,24 @@ matrix[m/size][m%size]=matrix[1/2][1%2]=matrix[0][1]=4, are 3 (1, 4 and 3 respec
 Just now we have eliminated the potential answer number 3, 
 whose index should be 2 matrix[2/2][2%2]=matrix[1][0]. 
 All of these are because the index sequence is not linear to the matrix numbers whose order lies in two directions.
+
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int row =matrix.size();
+        int left = matrix[0][0]; 
+        int right = matrix[row-1][row-1]; //n by n matrix
+        
+        while(left<right){
+            int mid = (right+left)>>1; // a little faster
+            int count = 0;
+            for(int i = 0; i< row ; i++){
+                count+=(upper_bound(matrix[i].begin(),matrix[i].end(),mid)-matrix[i].begin());
+            }
+            
+            
+            count <k ? left =mid+1:right =mid; // important
+        }
+        return left;
+    }
+};
