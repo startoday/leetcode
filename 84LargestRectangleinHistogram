@@ -1,2 +1,37 @@
 #给一个数组，设定每一个点都作为直方图，宽度为1，高度为数字高度，求直方图中可以包含的最大长方形面积
 
+#和收集雨水问题类似， 这道题我们还是关注最短板。可以用单调递增stack, 当从左向右推移的时候，总是记录递增的板子们。
+#因为width is represented by index，所以在stack里我们记录index的值 就可以轻松通过index 差 获得宽度，并且 vec[index] 获得高度来计算面积
+#当遇到一个比当前小的板子时 就开始计算之前的面积，从最高且跟当前index最近的板子开始计算,高度就是之前的最高，宽度是从当前i至之前次高的距离减1（每次都不计算当前量）
+#如果还是比当前高继续往前推移；更新储存的最大面积if needed
+#这个过程中check的只是遇到新板子时前面的情况，所以最后一块板子的作用没有更新，一个简单且智慧的方法是在元素末尾加入0，就可以强制计算vector里面的所有数了
+
+
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int maxArea = 0; //initial
+        heights.push_back(0); //introduce the last but didn't change max area
+        stack<int> boardIndex;
+        int size =heights.size();
+        for(int i = 0; i<size;i++){
+            while(!boardIndex.empty()&& heights[boardIndex.top()]>=heights[i]){
+                int highestIndex =boardIndex.top();
+                boardIndex.pop();
+                //the width is the range of next top and i -1 (cause we don't
+                // calculate the current board
+                int width=(boardIndex.empty()? i: i-boardIndex.top()-1);
+                int preArea = heights[highestIndex]*width;
+                maxArea = max (maxArea, preArea);
+            }
+            boardIndex.push(i); //remember to put the newest one it to stack
+        }
+        
+        return maxArea;
+    }
+};
+
+
+#time complexity O（N）
+#space O（N）
