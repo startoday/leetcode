@@ -16,7 +16,7 @@ public:
         stack<int> boardIndex;
         int size =heights.size();
         for(int i = 0; i<size;i++){
-            while(!boardIndex.empty()&& heights[boardIndex.top()]>=heights[i]){
+            while(!boardIndex.empty()&& heights[boardIndex.top()]>heights[i]){ //大佬们的code此处是 >= 但是可以优化为> 少了一些计算，速度变快
                 int highestIndex =boardIndex.top();
                 boardIndex.pop();
                 //the width is the range of next top and i -1 (cause we don't
