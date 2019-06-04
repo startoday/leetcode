@@ -1,0 +1,27 @@
+#给一个整数，判断是不是2的次方数
+#这种跟2相关的可以多考虑bit mani
+#2的次方的 二进制数最高位是1，其余位都是0
+
+#法1: n-1 会出一个最高位是0，剩余位都是1的，所以相交为0
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if(n<=0) return false;
+        
+        return !(n&(n-1)); // 注意 ！（取否）后要有括号才可，不然运算！n优先
+        
+    }
+};
+
+#法2: 依次右移，只有最后一位才能是1
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if(n<=0) return false;
+        while(n>1){
+            if((n&1)==1) return false;
+            n=n>>1;
+        }
+        return true;
+    }
+};
