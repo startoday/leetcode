@@ -22,3 +22,23 @@ public:
         else return leftNode;
     }
 };
+
+#对于二叉树，有左<根<右的条件，所以最小公共节点必定为左右中间的一个数，
+#如果root大于 p q 间的最大值，那么答案应该在左子树中搜索
+#如果root小于 p q 间的较小值，那么答案应该在右子树中搜索
+#否则的话 递归会给你return 最小的公共祖先
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root || p == root || q == root) return root;
+        if(root->val> max(p->val, q->val)){
+            root = lowestCommonAncestor(root->left, p, q);
+        }
+        if(root->val < min(p->val, q->val)){
+            root = lowestCommonAncestor(root->right, p, q);
+        }
+
+        return root;
+    }
+};
