@@ -2,11 +2,14 @@
 definition of LCA“The lowest common ancestor is defined between two nodes p and q as the lowest node in T 
 that has both p and q as descendants (where we ALLOW a node to be a descendant of itself).”
 #如果其中一个是另一个的子树的话，允许公共祖先是两个点其中的一个
+题目条件：
+点都不同 All of the nodes' values will be unique.
+p和q都存在于该树中  p and q are different and both values will exist in the BST.
 
 #想法，丢给左子树找，左边找到了return LCA， 右边return为空
       丢给右子树找，右边找到了return LCA，左边return为空
       两个点一左一右 return 该root
-      特殊情况下 p 或者 q == root return root即可
+      exit 条件 root为空/ p 或者 q == root return root即可
       
 class Solution {
 public:
