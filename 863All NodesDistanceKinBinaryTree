@@ -1,0 +1,10 @@
+#给一个树的node 和target，以及距离K， 要求返回所有跟target距离是K的数字，顺序不限，可以往回走
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], target = 5, K = 2
+Output: [7,4,1]
+#备注 
+树非空 The given tree is non-empty.
+没有重复元素 Each node in the tree has unique values 0 <= node.val <= 500.
+target肯定在树中 The target node is a node in the tree.
+要求的距离K有限 0 <= K <= 1000.
+
+#想法：从root 开始，若target到root的距离为3， 那么root的右子树里面距离为k-3的就是选项。
