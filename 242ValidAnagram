@@ -1,0 +1,38 @@
+#判断两个只有小写字母的string是否只含有相同元素且个数相等
+
+#用hashMap可以轻松实现（但是运行时较长）
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;
+        unordered_map<char, int> store;
+        for(char c :s){
+            store[c]++;
+        }
+        
+        for(char c : t){            
+            if(--store[c]<0) return false;            
+        }
+        return true;
+    }
+};
+
+
+
+#可以用类似的array直接实现，运行时间减少很多-注意char 和int的转换 
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;
+        int store[26] = {0};
+        for(char c :s){
+            store[c-'a']++;
+        }
+        
+        for(char c : t){            
+            if((--store[c-'a'])<0) return false;            
+        }
+        return true;
+    }
+};
+
