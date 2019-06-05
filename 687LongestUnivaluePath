@@ -1,0 +1,32 @@
+#给一棵二叉树，找到最长相同数字路径的长度，该路径可以往回走
+
+#首先这道题让返回的是路径数，不是相同节点个数！能让路径长度增加的唯一方法，是儿子和根节点一样！
+#所以只要左儿子和根节点相同，path+1，否则是0； 右儿子和根节点相同，path加1， 否则是0
+#想要连续相加需要的是上一步和根节点相同，所以helper return 的应该是能够和根节点连接的最大长度
+#至于res，应该每次都和当前最大长度对比，即左边加右边 
+
+class Solution {
+public:
+    #求的是多少个路径，不是多少个连续点，所以是和根节点相同路径数直接+1即可
+    int longestUnivaluePath(TreeNode* root) {
+        int res = 0 ;
+        helper(root,res);
+        return res;
+
+    }
+    
+    // a function will return the max longest univalue path, and modify res record.
+    int helper( TreeNode * root ,int & res){
+        if(!root) return 0;
+        int leftMax= helper(root->left,res);
+        int rightMax=helper(root->right,res);
+        if(root->left&& root->left->val==root->val){
+            leftMax++;
+        } else leftMax=0;
+        if(root->right&& root->right->val==root->val){
+            rightMax++;
+        } else rightMax=0;
+        res=max(res, leftMax+rightMax);
+        return max(leftMax,rightMax);     
+        
+    }
