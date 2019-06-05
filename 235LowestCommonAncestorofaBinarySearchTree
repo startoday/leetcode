@@ -3,3 +3,19 @@ definition of LCA“The lowest common ancestor is defined between two nodes p an
 that has both p and q as descendants (where we ALLOW a node to be a descendant of itself).”
 #如果其中一个是另一个的子树的话，允许公共祖先是两个点其中的一个
 
+#想法，丢给左子树找，左边找到了return LCA， 右边return为空
+      丢给右子树找，右边找到了return LCA，左边return为空
+      两个点一左一右 return 该root
+      特殊情况下 p 或者 q == root return root即可
+      
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root || p == root || q == root) return root;
+        TreeNode * leftNode = lowestCommonAncestor(root->left, p, q);
+        TreeNode * rightNode = lowestCommonAncestor(root->right, p, q);
+        if(leftNode && rightNode) return root;
+        else if(!leftNode) return rightNode;
+        else return leftNode;
+    }
+};
