@@ -1,0 +1,21 @@
+#给一棵树，返回the number of paths that sum to a given value
+#这个path不需要是从根到叶子，可以是中间的一段，但必须自上而下，不能往回走
+
+#divide and conquer
+#需要是左边子树的解总数+右边解的总数+当前节点的数（搜索的是左右子树-当前节点的数）
+class Solution {
+public:
+    
+    int pathSum(TreeNode* root, int sum) {        
+        if(!root) return 0;
+        return curPathNum(root,sum)+pathSum(root->left, sum)+pathSum(root->right,sum);
+    }
+    
+    int curPathNum(TreeNode * root, int sum){      
+        if(!root) return 0;
+        int cnt =0;
+        if(root->val==sum) cnt=1; //注意此时返回值要加1
+        return cnt+curPathNum(root->left, sum-root->val)+curPathNum(root->right, sum-root->val);            
+    }
+    
+};
