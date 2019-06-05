@@ -1,0 +1,38 @@
+#输入是一个doubly linked list，儿子指针可能指向另一个doubly linked list
+Input:
+ 1---2---3---4---5---6--NULL
+         |
+         7---8---9---10--NULL
+             |
+             11--12--NULL
+
+Output:
+1-2-3-7-8-11-12-9-10-4-5-6-NULL
+
+#思路： 这道题要求的扁平化就是遇到儿子里面非空的就把儿子的list加到父亲的list中，最后所有的儿子节点都是NULL
+#在例子的list 图中可以明显看到，当遇到儿子节点，父亲的next指向儿子，儿子的prev指向父亲，
+#父亲原本的next成为儿子节点末尾的next，并且其prev指向儿子的末尾
+#此题要return 一个Node ***注意用一个cur 代替 head 最后return head， 不然一直用head迭代的话会出现NULL ptr
+
+class Solution {
+public:
+    Node* flatten(Node* head) {
+        Node * cur =head;
+        while(cur){       
+            if(cur->child){ 
+                Node* newList = flatten(cur->child);
+                newList->prev= cur;
+                Node * temp = cur->next;
+                cur->next = newList;
+                cur -> child = NULL;
+                while(newList->next) newList=newList->next;
+                newList->next = temp;
+                if(temp)  temp->prev = newList;
+
+            }
+            cur=cur->next;
+        }
+        return head;
+            
+    }
+};
