@@ -33,3 +33,29 @@ public:
 
 #time O(N) each node has been processed once
 #space O(height) we go deeper by height
+
+#其实可以直接令helper return 含有根节点相同的最大值（因为这样才能和上一级连续上）
+#想要直接比较的话需要传递父节点的val值
+
+class Solution {
+public:
+    #求的是多少个路径，不是多少个连续点，所以是和根节点相同路径数直接+1即可
+    int longestUnivaluePath(TreeNode* root) {
+        int res = 0 ;
+        if(!root) return 0; //因为下面传值的时候dereference root的val了，所以一定要先判断root是不是空
+        helper(root,root->val,res);
+        return res;
+
+    }
+    
+    // a function will return the max longest univalue path, and modify res record.
+    int helper( TreeNode * root ,int parentVal, int & res){
+        if(!root) return 0;
+        int leftMax= helper(root->left,root->val, res);
+        int rightMax=helper(root->right,root->val, res);      
+        res=max(res, leftMax+rightMax);       
+        if(root->val==parentVal){
+           return max(leftMax,rightMax)+1;
+        } else return 0;  //注意这块因为没连上一定是return 0
+    }
+};
