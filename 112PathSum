@@ -1,0 +1,14 @@
+#给一棵树和一个sum，判读从 根 到 叶子 （不是中间一段）是否存在 和为sum的
+
+#判断左边有没有sum -当前值的，判断右边有没有sum减当前值的
+#因为要从从根到叶子，所以是true 条件是 当前的root没有左右儿子且 其值等于这个一直在被计算的sum
+#剩余判断只要左右两侧有一个return true 即可 （||）
+
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        if(root == NULL) return false;
+        if(root->val ==sum && root ->left == NULL  && root ->right ==NULL  ) return true;
+        return hasPathSum(root->left, sum- root->val) || hasPathSum(root->right, sum- root->val);
+    }
+};
