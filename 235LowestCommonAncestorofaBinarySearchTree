@@ -1,0 +1,5 @@
+#寻找二叉树两个点的最小公共祖先
+definition of LCA“The lowest common ancestor is defined between two nodes p and q as the lowest node in T 
+that has both p and q as descendants (where we ALLOW a node to be a descendant of itself).”
+#如果其中一个是另一个的子树的话，允许公共祖先是两个点其中的一个
+
