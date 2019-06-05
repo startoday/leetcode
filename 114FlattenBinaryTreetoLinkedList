@@ -17,3 +17,23 @@ make it into
         5
          \
           6
+
+
+#思路：这个题是把左节点连到右节点， 还是可以用divide and conque， 每个扁平化都是把左“插入”到原本根的右节点的上面，左节点设为NULL
+#具体“插入”的操作应该是 用一个temp暂存右节点，把左节点放到根的右节点，原本左节点位置设为NULL，把右节点连接到新的右节点的末尾
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(root == NULL ) return;
+        
+        if(root->left) flatten(root->left);
+        if(root->right) flatten(root->right);
+        
+        TreeNode* temp = root->right;
+        root->right = root->left;
+        root->left = NULL;
+        while(root->right) root = root->right;
+        root->right = temp;
+    }
+};
+
