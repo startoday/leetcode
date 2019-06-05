@@ -1,0 +1,42 @@
+#给一个整数，判断是不是4的次方数
+
+#最直接的做法可能是一直除以4看最终余数是否为1
+
+#power of 4 和power of 2 的 区别：
+1 1 
+2 10
+4 100
+8 1000
+16 10000
+#可以发现4的奇数位是1，（每次要多乘以两个2嘛，从1个1开始要移动两位）
+#可以count最后的那位是不是奇数位
+
+class Solution {
+public:
+    bool isPowerOfFour(int num) {
+        if(num<=0) return false;
+        int count = 1;
+        while(num>1){
+            if(num&1) return false;
+            count++;
+            num>>=1;
+        }
+        return count%2;
+    }
+};
+
+
+#或者是与一个 1010101010101类的数字相交 == 自己 即可
+#这个10101010101（偶数位为0，奇数位为1）的数可以选择在INT_MAX 范围内的最大数 （0x55555555）十六进制一堆5
+#或者是与1010101010类数相交= 0 即可， ---0xAAAAAAAA
+
+class Solution {
+public:
+    bool isPowerOfFour(int num) {
+        if(num<=0) return false;
+        return  !(num &(num-1)) && !(num &(0xAAAAAAAA));
+    }
+};
+
+
+#4的次方数还有一个特点
