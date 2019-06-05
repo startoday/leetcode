@@ -1,0 +1,30 @@
+#给一棵树和一个target 要求返回所有根到叶子的和为sum的路径
+#return是vector of vector
+
+#想法和前一题类似，还可以用递归，写helper，helper需要传 一个总vector， 一个路径的，以及root 和 sum
+#helper的思路是 加入当前值 遇到了满足和为sum时 把该 vector 加入 result， 对左右子树继续递归，都不在的话 pop掉已经加入的那个值
+#因为是从根到叶子，所以每次只要 root 不为空就加入 oneAnswer的vector， 递归之后只pop掉上一个数即可（也就是最后一个数）
+
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<vector<int>>res;
+        vector<int> oneAnswer;
+        helper(root, sum, res, oneAnswer);
+        return res;
+    }
+        // a function will add node into vector for the path
+    void helper(TreeNode* root, int sum,vector<vector<int>> & res, vector<int>& oneAns){
+        if(!root) return ;
+        oneAns.push_back(root->val);
+        if(root->val == sum && root->left == NULL && root ->right == NULL ){
+            res.push_back(oneAns);
+        }
+        helper(root->left,sum-root->val,res,oneAns);
+        helper(root->right,sum-root->val,res,oneAns);
+        
+        oneAns.pop_back();
+    
+    }
+    
+};
