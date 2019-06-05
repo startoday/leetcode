@@ -30,3 +30,6 @@ public:
         return max(leftMax,rightMax);     
         
     }
+
+#time O(N) each node has been processed once
+#space O(height) we go deeper by height
