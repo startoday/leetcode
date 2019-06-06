@@ -1,0 +1,32 @@
+// 其实题目里可以有空格的。。。我每次还特意删除空格的意义是什么。。？ 
+#判断是不是BST
+#这道题的要求是左子树的node必须小于node的key， 右子树必须大于，所以不会有重复数字
+#左右子树也需要是BST
+
+#注意哈，所以应该是左边的max（左最右） 要小于node ， 右边的min（右最左）要大于node
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        if(!root) return true;
+        if(!root->left && !root ->right) return true;
+        return isValidBST(root->right) && isValidBST(root->left) && checkMax(root) && checkMin(root); //这传root了就
+    }
+    //注意点， 我原本写的是 返回 int 再比较，这种情况没有我就return INT_MAX or MIN 了，然而，这种corner case就过不了，所以直接写包活的helper吧
+    bool checkMax(TreeNode* root){        
+        if(!root->left) return true; //注意这块先测的左子树，下面往右走，别写反了
+        TreeNode * traverse = root->left ;
+        while(traverse->right) {
+            traverse = traverse->right;
+        }
+        return root->val > traverse->val;
+    }
+    
+    bool checkMin(TreeNode* root){        
+        if(!root->right) return true;
+        TreeNode * traverse = root->right ;
+        while(traverse->left) {
+            traverse = traverse->left;
+        }
+        return root->val < traverse->val;
+    }
+};
