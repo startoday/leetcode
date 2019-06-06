@@ -1,0 +1,36 @@
+#给一棵树，转化成有（可能需要）（）表示 NULL的 字符串，要求前序遍历
+
+#仔细观察一下到底要求的输出结构是啥！父节点的儿子如果存在就用括号圈起来
+#如果只有右儿子就保留 左儿子的empty 括号， 如果只有左儿子或没儿子就不用
+
+class Solution {
+public:
+    string tree2str(TreeNode* t) {
+
+        //仔细观察一下到底要求的啥！父节点的儿子如果存在就用括号圈起来
+        //如果只有右儿子就保留 左儿子的empty 括号， 如果只有左儿子或没儿子就不用
+        if(!t) return "";
+        if(t->left&&t->right)  return "" + to_string(t->val) + '(' + tree2str(t->left) + ')' + '('+tree2str(t->right) + ')';
+        else if(t->right)  return "" + to_string(t->val) + "()" + '(' + tree2str(t->right) + ')'; //注意左右儿子各有自己的包围括号
+        else if(t->left)  return "" + to_string(t->val) + '(' + tree2str(t->left) + ')';
+        else return "" + to_string(t->val);
+    }
+};
+
+//发现用res存一下快很多啊。。也整洁了倒是
+class Solution {
+public:
+    string tree2str(TreeNode* t) {
+
+        //仔细观察一下到底要求的啥！父节点的儿子如果存在就用括号圈起来
+        //如果只有右儿子就保留 左儿子的empty 括号， 如果只有左儿子或没儿子就不用
+        if(!t) return "";
+    
+        string res = to_string(t->val);
+    
+        if(t->left&&t->right)  return res + '(' + tree2str(t->left) + ')' + '('+tree2str(t->right) + ')';
+        else if(t->right)  return res + "()" + '(' + tree2str(t->right) + ')';
+        else if(t->left)  return res + '(' + tree2str(t->left) + ')';
+        else return res;
+    }
+};
