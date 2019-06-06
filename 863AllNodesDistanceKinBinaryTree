@@ -1,0 +1,56 @@
+#给一个树的node 和target，以及距离K， 要求返回所有跟target距离是K的数字，顺序不限，可以往回走
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], target = 5, K = 2
+Output: [7,4,1]
+#备注 
+树非空 The given tree is non-empty.
+没有重复元素 Each node in the tree has unique values 0 <= node.val <= 500.
+target肯定在树中 The target node is a node in the tree.
+要求的距离K有限 0 <= K <= 1000.
+
+#想法：从root 开始，若target到root的距离为3， 那么root的右子树里面距离为k-3的就是选项。可以找到root到target的距离，
+#target以下距离为K的可以通过BFS几层来得到， target以上的某个root的距离在右子树的K-x距离的点也是所求的
+#写法的困难之处在于需要记录target所在的位置于root的路线，这样才能找另一侧root的反向。。最后code并没有想到合适的实现方法
+#---其实记录一下parent的指针就可以了，参见下面的学习code
+
+
+#学习：其实有往parent的指针的话会方便一些， hashmap记录当前点和parent的关系。用一个hashset记录这个点有没有被visited 过
+#对于添加点进入parentMap就是 当前点的左右儿子作为key，当前点作为value，对左右儿子继续recursive
+#则，对parentNode call helper即可实现查找 查找的时候如果该点已经visit过了则return即可。
+#想通过这个helper实现查找到k距离的点并且加入的functionality
+#helper 退出的条件是 点已经查过或者 root 为 NULL 或者 k == 0的时候代表当前点就是距离为k的点（找到了），应该加入list，并return 
+#搜索左子树，右子树和父亲树时K-1,
+#由此可以推出，这个helper 要传参数 node(target), k hashmap ,hashset,以及结果res的vector
+
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
+        vector<int> res;
+        if(!root) return res;
+        unordered_map<TreeNode *, TreeNode*> parentMap;
+        unordered_set<TreeNode *> visited;
+        getParent(root, parentMap);
+        helper(target, K, parentMap,visited,res); //别忘了应该传target而不是root啊啊啊
+        return res;
+    }
+    void getParent(TreeNode* root,unordered_map<TreeNode *, TreeNode*> & parentMap){
+        if(!root) return;
+        if(root->left) parentMap[root->left]= root;
+        if(root->right) parentMap[root->right]= root;
+        getParent(root->left, parentMap);
+        getParent(root->right, parentMap);
+    }
+    void helper(TreeNode* root,  int k, unordered_map<TreeNode *, TreeNode*> & parentMap,unordered_set<TreeNode *> &visited,vector<int>& res){
+        if(visited.count(root)) return;
+        if(!root) return;
+        else visited.insert(root);
+        if(k==0) {
+            res.push_back(root->val); 
+            return; //别忘了这也是退出的条件之一
+        }
+        
+        helper(root->left, k-1, parentMap,visited,res);
+        helper(root->right, k-1, parentMap,visited,res);
+        helper(parentMap[root],k-1, parentMap,visited,res); //理应更加熟悉这种写法
+        
+    }
+};
