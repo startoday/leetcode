@@ -1,0 +1,30 @@
+#给一个正数N， return binary写法 两个1 之间的最长距离
+eg  22 （10110） -2 
+    5（101）-2
+    6（110） -1
+如果是8（1000）的话因为只有1个1， return 0
+
+#随便写的居然beat100%了，记录一下思路好了
+#如果是2的平方数直接return 0
+#不然找到1最开始开始的位置，右移一位，之后是零的话递增count，当碰到下一个1的时候 于storeMax 比较，并且将即时count清零
+#最后一位的1 因为右移时计算不到，return前将max+1；
+
+class Solution {
+public:
+    int binaryGap(int N) {
+        int maxCount = 0;
+        int count = 0;
+        bool meetOne = false;
+        if(!(N&(N-1)))return 0;
+        while(N > 0) {
+            if(!meetOne && (N&1)) meetOne = true;
+            if(meetOne && (N&1)) { 
+                maxCount = max(maxCount, count);
+                count = 0;
+            }
+            if(meetOne && !(N&1)) count++;
+            N = N>>1;
+        }
+        return ++maxCount; //注意这儿要++X 哈 X++就先return回去了！
+    }
+};
