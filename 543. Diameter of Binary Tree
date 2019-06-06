@@ -1,0 +1,41 @@
+#给一棵树，返回任意两个节点中最长路径
+#注意可能不需要经过root节点---不是complete tree
+
+#直接的想法慢如牛车。
+class Solution {
+public:
+    //注意，此题限定了，不complete，不一定从root过就是最长的
+    int diameterOfBinaryTree(TreeNode * root) {
+        //root 左子树的height+右子树的height
+        if(!root) return 0;
+        int res = getHeight(root->left)+getHeight(root->right);
+        return max(res, max(diameterOfBinaryTree(root->left), diameterOfBinaryTree(root->right)));
+    }
+    int getHeight(TreeNode * root) {
+        if(!root) return 0;
+        return 1 + max(getHeight(root->left), getHeight(root->right));
+    }
+};
+
+
+
+#优化 还是老毛病，这个helper可以直接写成计算最大height的，提供一个res每次运行的时候与当前最大比较，修改，这类联结爸爸节点的题都很类似
+class Solution {
+public:
+    //注意，此题限定了，不complete，不一定从root过就是最长的
+    int diameterOfBinaryTree(TreeNode* root) {
+        //root 左子树的height+右子树的height
+        //不需要先判断root是否为0
+        int res = 0;
+        getMaxHeight(root, res);
+        return res;
+    }
+    int getMaxHeight(TreeNode * root, int & res) {
+        if(!root) return 0;
+        int left = getMaxHeight(root->left,res);
+        int right = getMaxHeight(root->right,res);
+        res = max(res, left + right);
+        return max(left, right) +1;
+        
+    }
+};
