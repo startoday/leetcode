@@ -1,0 +1,22 @@
+#写BST里面的插入function
+#题目条件：不会提供重复的数据，有很多插入方式，return any of them 的root 
+
+#作为叶子节点插入
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if(!root) return new TreeNode(val);
+        if(val < root->val) root->left = insertIntoBST(root->left, val); //值小往左插
+        else root->right = insertIntoBST(root->right, val);
+        return root;
+    }
+};
