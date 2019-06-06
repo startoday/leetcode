@@ -29,28 +29,28 @@ public:
         unordered_map<TreeNode *, TreeNode*> parentMap;
         unordered_set<TreeNode *> visited;
         getParent(root, parentMap);
-        helper(target, K, parentMap,visited,res); //别忘了应该传target而不是root啊啊啊
+        helper(target, K, parentMap, visited, res); //别忘了应该传target而不是root啊啊啊
         return res;
     }
-    void getParent(TreeNode* root,unordered_map<TreeNode *, TreeNode*> & parentMap){
+    void getParent(TreeNode* root,unordered_map<TreeNode *, TreeNode*> & parentMap) {
         if(!root) return;
-        if(root->left) parentMap[root->left]= root;
-        if(root->right) parentMap[root->right]= root;
+        if(root->left) parentMap[root->left] = root;
+        if(root->right) parentMap[root->right] = root;
         getParent(root->left, parentMap);
         getParent(root->right, parentMap);
     }
-    void helper(TreeNode* root,  int k, unordered_map<TreeNode *, TreeNode*> & parentMap,unordered_set<TreeNode *> &visited,vector<int>& res){
+    void helper(TreeNode* root,  int k, unordered_map<TreeNode *, TreeNode*> & parentMap,unordered_set<TreeNode *> &visited,vector<int>& res) {
         if(visited.count(root)) return;
         if(!root) return;
         else visited.insert(root);
-        if(k==0) {
+        if(k == 0) {
             res.push_back(root->val); 
             return; //别忘了这也是退出的条件之一
         }
         
-        helper(root->left, k-1, parentMap,visited,res);
-        helper(root->right, k-1, parentMap,visited,res);
-        helper(parentMap[root],k-1, parentMap,visited,res); //理应更加熟悉这种写法
+        helper(root->left, k-1, parentMap,visited, res);
+        helper(root->right, k-1, parentMap,visited, res);
+        helper(parentMap[root], k-1, parentMap,visited, res); //理应更加熟悉这种写法
         
     }
 };
