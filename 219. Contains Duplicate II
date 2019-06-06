@@ -1,0 +1,47 @@
+#给一个array of int 判断是否有相同的两个数在距离K以内
+
+#有个用set的解法还挺nice的
+#还是loop，遇到i>k 的时候清空相应距离位置的元素(在当前i时已经不在有效距离内了）
+#如果遇到插入不成功（.second ==false)的时候说明有有效位置的有效元素
+#em..可惜该方法并不快哦
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        int size = nums.size();
+        set<int> store;
+        for(int i =0 ;i<size; i++){
+            if(i>k) store.erase(nums[i-k-1]);
+            if(store.insert(nums[i]).second == false) return true;
+        }
+        return false;
+    }
+};
+
+#快1丢丢
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        int size = nums.size();
+        set<int> store;
+        for(int i =0 ;i<size; i++){
+            if(i>k) store.erase(nums[i-k-1]);
+            if(store.count(nums[i])) return true;
+            store.insert(nums[i]); //不要忘记insert！
+        }
+        return false;
+    }
+};
+
+
+#常规hashmap做法
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map<int, int> store;
+        for(int i = 0; i < nums.size(); ++i) {
+            if(store.find(nums[i]) != store.end() &&
+              i - store[nums[i]] <= k) return true;                           
+                store[nums[i]] = i;  //直接可以给.second赋值
+        }
+        return false;
+    }
+};
