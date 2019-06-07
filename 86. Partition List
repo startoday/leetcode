@@ -1,0 +1,74 @@
+#给一个linked list 和一个值，要求比该值小的全出现在 大于等于该值的后面 并且不能改变原本list的出现顺序
+
+# 可以遍历 该list 然后生成一个被踢掉的较小值的list，作为头，末尾联结已经踢掉较小值的 原list
+# 注意都要使用dummyNode 来maintain 头部，一个技巧是放在最前面，return dummy—>next即是正确的头部
+
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(!head) return head;
+        ListNode* dummyHead1 = new ListNode (-1);
+        dummyHead1->next = head;
+        ListNode* cur = dummyHead1;
+        ListNode* dummyHead2 = new ListNode (-1);
+        ListNode* cur2 = dummyHead2;
+        while (cur->next) {
+            if(cur->next->val < x) {
+                cur2->next = cur->next;
+                cur2 = cur2->next;
+                cur->next = cur ->next->next;           
+                //注意这地儿不能直接 cur  = cur ->next 可能会NUll ptr
+            }
+            else cur = cur ->next;
+        }
+        cur2->next = dummyHead1->next; //head may be moved, so can't just cur2->next = head;
+        return dummyHead2 ->next;
+    }   
+};
+
+#另一种做法，记录当前位置等，更改list即可
+#第一次犯的错误是当 第一个元素就是满足条件的值的时候 beforeInsert的位置很尴尬，会死循环
+#第二个错误是 要return 正确的 head 还是得需要dummy Node啊。。。
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        
+        //看题意要找到第一个大于等于X的数，有小于的往其前面插入即可
+        if(!head) return head;
+        
+        ListNode * cur = head;
+        ListNode * beforeInsert = new ListNode(-1);
+        beforeInsert->next = head;
+        ListNode * dummyHead = beforeInsert;
+        while(cur) {
+            if(cur->val < x) {
+                beforeInsert = cur;
+                cur = cur->next;
+            }
+            else break;
+        }
+        bool start = false;
+        if(cur==head) start = true;
+        ListNode * before = cur;
+        while(cur) {
+            if(cur-> val < x) {
+                before->next = cur -> next;
+                cur->next = beforeInsert->next;
+                beforeInsert->next = cur;
+                cur = before->next; 
+                beforeInsert = beforeInsert->next;
+                
+            } else {
+                before = cur;
+                cur = cur->next;
+            }
+        }
+        
+        //if(start) return dummyHead->next; 
+        //return head;
+        return dummyHead->next;  //反正有dummy Node... 别掰扯了就。。。这就是为啥需要dummyNode啊23333
+        
+    }
+};
+
+
