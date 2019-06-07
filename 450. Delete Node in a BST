@@ -4,7 +4,32 @@
 #注意node作为root的情况！！！ 如果0 case的话return NULL了的root （不可以直接return NULL ）1case的话update dummyRoot，2case的话没影响
 #ref http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/9-BinTree/BST-delete2.html
 
+#树最爱的递归
+#利用二叉树的性质定位目标在哪，目标在右子树就对右子树递归删除，左子树对左子树递归删除。当目标即是root的时候分析情况
+# 无子嗣直接删除；一子嗣看一下子嗣在哪 把root 托付给存在的子嗣即可；二子嗣找到继任者后 交换继任者（比如在右子树）和root， 后对右子树递归删除即可
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
 
+        if(!root) return root;        
+        if ( root-> val > key) {
+            root -> left = deleteNode(root->left, key);
+        } else if ( root-> val < key) {
+            root -> right = deleteNode(root->right, key);
+        } else {
+           if(!root->left || !root->right){ //其实不用分离出来没有子嗣的情况了
+               root = (root->left)?  root->left : root->right; //短啊开心
+           } else {
+               TreeNode* suc = root ->right; 
+               while(suc->left) suc = suc->left;
+               root->val = suc ->val;
+               root->right = deleteNode(root->right, suc->val); // 注意return的还是head
+           }
+        }    
+        return root; // 不可以用dummyRoot了
+    }
+        
+};
 
 #拆之一
 class Solution {
