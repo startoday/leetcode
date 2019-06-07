@@ -1,0 +1,33 @@
+#给一棵树，蛇形层序遍历 第一层（root） 第二层右向左，第三层左向右
+
+#第一想法是根据单双层改变加载顺序，会混乱，又拿deque 折腾半天 中间顺序还是会混乱，其实只要在insert入vector的时候往前插入就好了嘛 == |||
+
+
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        if (!root) return res;
+        queue<TreeNode *> nodes;
+        nodes.push(root);
+        TreeNode * temp;
+        int count = 1;
+        while(!nodes.empty()){
+            vector<int> aLevel;
+            for(int i = nodes.size(); i>0; i--) {
+                temp = nodes.front();
+                nodes.pop();
+                if(temp->left) nodes.push(temp->left);
+                if(temp->right) nodes.push(temp->right);
+                
+                if(count) aLevel.push_back(temp->val);  //拆开有重复代码那种往往会快一些。。少了很多判断
+                else aLevel.insert(aLevel.begin(),temp->val);
+                
+            }
+            if(count) count = 0;
+            else count =1;
+            res.push_back(aLevel);
+        }
+        return res;
+    }
+};
