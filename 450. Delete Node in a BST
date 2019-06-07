@@ -2,7 +2,7 @@
 #想法都是先找到要删除的点， 再分三种情况，0儿子直接删，1儿子爸爸指向儿子，2儿子与继任者交换之后删
 #对于细节：记得别把一个function写的太长 拆拆拆！
 #注意node作为root的情况！！！ 如果0 case的话return NULL了的root （不可以直接return NULL ）1case的话update dummyRoot，2case的话没影响
-#ref http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/9-BinTree/BST-delete2.html
+#可供参考 http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/9-BinTree/BST-delete2.html
 
 
 
