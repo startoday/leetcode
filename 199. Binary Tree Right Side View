@@ -16,7 +16,7 @@ public:
             for(int i = nodes.size(); i>0; i--) {
                 TreeNode * temp = nodes.front();
                 nodes.pop();
-                res[count]=temp->val;
+                res[count] = temp->val;
                 if(temp->left) nodes.push(temp->left);
                 if(temp->right) nodes.push(temp->right);
             }
@@ -25,5 +25,37 @@ public:
         }
         res.pop_back();
         return res;
+    }
+};
+
+#上面的方法beat 较少，先设置size 即可beat 92%
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        int size = height(root);
+        vector<int> res(size);
+        //res.reserve(size);   //用reserve 来做有迷之bug。 size最后变为1 了。。。。待研究 >_<
+        if (!root) return res ;
+        queue<TreeNode * > nodes;
+        nodes.push(root);
+        int count = 0;
+        //res.push_back(0);
+        while(!nodes.empty()) {
+            for(int i = nodes.size(); i>0; i--) {
+                TreeNode * temp = nodes.front();
+                nodes.pop();
+                res[count] = temp->val; //想直接用[]的话需要size诶。。
+                if(temp->left) nodes.push(temp->left);
+                if(temp->right) nodes.push(temp->right);
+            }
+            count++;
+            //res.push_back(0);
+        }
+        //res.pop_back();
+        return res;
+    }
+    int height( TreeNode * root) {
+        if(!root) return 0;
+        return 1+max(height(root->left), height(root->right));
     }
 };
