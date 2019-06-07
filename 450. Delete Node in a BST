@@ -1,0 +1,95 @@
+#给一个BST 删掉一个点，需要update back
+#想法都是先找到要删除的点， 再分三种情况，0儿子直接删，1儿子爸爸指向儿子，2儿子与继任者交换之后删
+#对于细节：记得别把一个function写的太长 拆拆拆！
+#注意node作为root的情况！！！
+#ref http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/9-BinTree/BST-delete2.html
+
+
+#第一次写的。太长 仅留作纪念233333（可以看到删除那有重复代码，可以用function 解决）
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        TreeNode * dummyRoot = root; //dummyRoot要作为return的head而存活！
+        TreeNode * dummyNode;
+        
+        if(!root) return root;
+        while(root){ //不能直接 root->val != key ,可能会NULL ptr        
+            if ( root-> val > key) {
+                dummyNode = root;
+                root = root -> left;
+            } else if ( root-> val < key) {
+                dummyNode = root;
+                root = root -> right;
+            } else break;
+        }
+        
+        //找到点之后 root 是该点，dummyNode是爸爸
+        if(!root);
+        else if(!root->left && !root->right){
+            if(root == dummyRoot) {
+                root = NULL;
+                return root ;
+            }
+            if(dummyNode->val > root ->val) dummyNode->left =NULL;
+            else dummyNode -> right = NULL;
+        } else if(!root->left) { // 该删除的点有右儿子
+                if(root == dummyRoot) { //该删除点是根节点
+                return dummyRoot ->right ;
+            }
+            if(dummyNode->val > root ->val) dummyNode->left =root->right;
+        
+            else dummyNode -> right = root->right;
+        } else if(!root->right) { //该删除点有左儿子
+            if(root == dummyRoot) { //该删除点是根节点
+                return dummyRoot ->left ;
+            }
+            if(dummyNode->val > root ->val) dummyNode->left =root->left;
+            else dummyNode -> right = root->left;
+        } else {
+            TreeNode * temp = root;
+            TreeNode * prev = root;
+            root = root->right;
+            bool left2 =false;
+            while(root->left){
+                prev = root;
+                root = root->left;
+                left2 =true;
+            }
+            //findSuccessor(root);
+            temp->val = root->val;
+            //root = deleteNode(prev, root->val);
+            if(!root ->left && !root ->right) {
+                if (left2) prev -> left = NULL;  
+                else prev ->right = NULL;
+            } else if (!root->left) {
+                if (left2) prev -> left = root->right;  
+                else prev ->right =root->right;
+            } else {
+                if (left2) prev -> left = root->left;  
+                else prev ->right =root->left;
+            }
+            
+        }
+               
+        return dummyRoot;
+    }
+    
+    TreeNode *  findPrecessor(TreeNode * node){
+        node = node->left;
+        while (node ->right) {
+            node = node ->right;
+        }
+        if(node ->left) node= node->left;
+        return node;
+    }
+    
+    // successor 好找一点呢
+    void findSuccessor(TreeNode *  & node){
+        node = node->right;
+        while (node ->left) {
+            node = node ->left;
+        }
+        //return node;
+    }
+    
+};
