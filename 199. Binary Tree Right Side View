@@ -2,3 +2,28 @@
 
 #就是return 该树从上到下的最右边一个数字哈
 
+想法：可以根据层数，不断覆盖即可，同层的最后一个就是最右的
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> res;
+        if (!root) return res ;
+        queue<TreeNode * > nodes;
+        nodes.push(root);
+        int count = 0;
+        res.push_back(0);
+        while(!nodes.empty()) {
+            for(int i = nodes.size(); i>0; i--) {
+                TreeNode * temp = nodes.front();
+                nodes.pop();
+                res[count]=temp->val;
+                if(temp->left) nodes.push(temp->left);
+                if(temp->right) nodes.push(temp->right);
+            }
+            count++;
+            res.push_back(0);
+        }
+        res.pop_back();
+        return res;
+    }
+};
