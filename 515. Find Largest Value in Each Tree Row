@@ -1,0 +1,26 @@
+#给一棵树，找到每层的最小值
+
+#BFS 加入当前层最大值即可
+#记录的原因是忘了每次重制maxNum 没有一次过。。。以后多注意啊！！！
+class Solution {
+public:
+    vector<int> largestValues(TreeNode* root) {
+        vector<int> res;
+        if(!root) return res;
+        queue<TreeNode* > nodes;
+        nodes.push(root);
+        int maxNum;
+        while(!nodes.empty()){
+            maxNum = INT_MIN; //别忘了每一层重置maxNum！！！！
+            for(int i = nodes.size(); i>0; i--){
+                TreeNode * temp = nodes.front();
+                nodes.pop();
+                if(temp->left) nodes.push(temp->left);
+                if(temp->right) nodes.push(temp->right);
+                maxNum=max(maxNum, temp->val);
+            }
+            res.push_back(maxNum);
+        }
+        return res;
+    }
+};
