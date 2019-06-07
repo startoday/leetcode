@@ -1,0 +1,36 @@
+# 每一层的末尾的next指向 NULL，其余指向 同层右侧
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+
+#BFS 题，练了一下拆helper。。。结果从beat 99%到beat 83%了 23333
+class Solution {
+public:
+    Node* connect(Node* root) {
+        //每层当前往下指，到该层最后一个 指向NULL
+        if(!root) return root;
+        Node * cur = root;
+        queue< Node *> nodes;
+        nodes.push(cur);
+        Node * temp;
+        while(!nodes.empty()){
+            for(int i = nodes.size(); i>1; i--) {
+                helpPoint(nodes, temp);
+                temp->next = nodes.front();
+            }
+            helpPoint(nodes, temp);
+            temp->next = NULL;
+        }
+        return root;
+    }
+    
+    void helpPoint (queue< Node *> & nodes, Node * & temp) {
+                temp = nodes.front();
+                nodes.pop();               
+                if(temp->left) nodes.push(temp->left);
+                if(temp->right) nodes.push(temp->right);
+    }
+};
