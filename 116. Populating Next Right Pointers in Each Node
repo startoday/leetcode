@@ -7,6 +7,8 @@ struct Node {
 }
 
 #BFS 题，练了一下拆helper。。。结果从beat 99%到beat 83%了 23333
+#其实116题说的是perfect BT （不过已经beat 99%了就没再想更优解法了）
+#刚好117题是随便一个BT 233， BFS的做法都可handle
 class Solution {
 public:
     Node* connect(Node* root) {
