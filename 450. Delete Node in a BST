@@ -5,6 +5,66 @@
 #ref http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/9-BinTree/BST-delete2.html
 
 
+
+#拆之一
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        TreeNode * dummyRoot = root;
+        TreeNode * dummyNode;
+        
+        if(!root) return root;
+        while(root){ //不能直接 root->val != key ,可能会NULL ptr        
+            if ( root-> val > key) {
+                dummyNode = root;
+                root = root -> left;
+            } else if ( root-> val < key) {
+                dummyNode = root;
+                root = root -> right;
+            } else break;
+        }        
+        //找到点之后 root 是该点，dummyNode是爸爸       
+        deleteCase(root,  dummyNode, dummyRoot);
+               
+        return dummyRoot;
+    }
+    
+    // successor 好找一点呢， function过后 node 变为找到的successor, return 爸爸
+    TreeNode * findSuccessor(TreeNode *  & node){
+        TreeNode * prev = node;
+        node = node->right;
+        while (node ->left) {
+            prev = node;
+            node = node ->left;
+        }
+        return prev;
+    }
+    
+    void deleteCase(TreeNode *  & root, TreeNode *  & dummyNode, TreeNode *  & dummyRoot ) {            
+        if(!root); //还得先判断一下
+        else if(!root->left && !root->right){ //没有子嗣
+            if(root == dummyRoot) dummyRoot = NULL;   
+            if(dummyNode->val > root ->val) dummyNode->left =NULL;
+            else dummyNode -> right = NULL;
+        } else if(!root->left) { // 该删除的点有右儿子
+            //该删除点是根节点    
+            if(root == dummyRoot)  dummyRoot = dummyRoot ->right ;
+            if(dummyNode->val > root ->val) dummyNode->left =root->right;       
+            else dummyNode -> right = root->right;
+        } else if(!root->right) { //该删除点有左儿子
+            //该删除点是根节点
+            if(root == dummyRoot) dummyRoot = dummyRoot ->left ;
+            if(dummyNode->val > root ->val) dummyNode->left =root->left;
+            else dummyNode -> right = root->left;
+        } else {
+            TreeNode * temp = root;
+            TreeNode * prev = findSuccessor(root);
+            temp->val = root->val;
+            deleteCase(root, prev, temp);
+        }
+    }    
+};
+
 #第一次写的。太长 仅留作纪念233333（可以看到删除那有重复代码，可以用function 解决）
 class Solution {
 public:
