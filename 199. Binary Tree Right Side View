@@ -59,3 +59,25 @@ public:
         return 1+max(height(root->left), height(root->right));
     }
 };
+
+#其实 直接加入最后一个元素就好了啊 ==|||
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> res;
+        if (!root) return res ;
+        queue<TreeNode * > nodes;
+        nodes.push(root);
+        while(!nodes.empty()) {
+            res.push_back(nodes.back()->val);  //有效利用queue的最后。。。
+            for(int i = nodes.size(); i>0; i--) {
+                TreeNode * temp = nodes.front();
+                nodes.pop(); 
+                if(temp->left) nodes.push(temp->left);
+                if(temp->right) nodes.push(temp->right);
+            }
+        }      
+        return res;
+    }
+
+};
