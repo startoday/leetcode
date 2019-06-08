@@ -1,0 +1,36 @@
+#给一棵树 each node has a value from 0 to 25 representing the letters 'a' to 'z': 
+#a value of 0 represents 'a', a value of 1 represents 'b', and so on.
+
+#找从叶子到根能组成的最小string
+
+#好像。。理解错了，没有说短的一定比长的小。。2333
+#所以可以按照叶子比较大小。。再往上跑 
+
+#理解错误的情况下直接想法暴力解 reversve 比较
+#take home point string initialize的方法！cool！
+class Solution {
+public:
+    string smallestFromLeaf(TreeNode* root) {
+        int size = height(root);
+        string store (size, 'z');   //确保起始数据是最小的   
+        helper(root, "", store);
+        return store;
+    }
+    
+    void helper(TreeNode* root, string res, string & store){
+        if(!root);
+        else{
+            res += root->val + 'a';
+            if(!root->left && !root->right) {
+                 reverse(res.begin(), res.end()); 
+                 if(res < store) store = res;
+            }
+            helper(root->left, res, store);
+            helper(root->right, res, store);
+        }
+    }
+    int height(TreeNode * root){
+        if(!root) return 0;
+        return 1+max(height(root->left), height(root->right));
+    }
+};
