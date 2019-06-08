@@ -28,8 +28,7 @@ public:
         //Cn = nEi(Ci * Cn-i)
         long res = 1;        
         for(int i = n+1; i<=2*n; i++) {
-            res = res* i/(i-n); //重要啊同志！ 长点记性啊！ res *= 就不行了 只能是res = res* XX 不然有强制砍数啊，还想debug多久？？？
-            
+            res = res* i/(i-n); //重要啊同志！ 长点记性啊！ res *= 就不行了 只能是res = res* XX 不然有强制砍数啊，还想debug多久？？？          
         }        
         return res/ (n+1); //啥玩意，这地儿你也能没注意到括号？
     }  
