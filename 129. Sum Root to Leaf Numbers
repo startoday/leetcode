@@ -41,3 +41,20 @@ public:
         return sum;
     }
 };
+
+#再来一个recursive哒！
+#遇到叶子可以return, 否则一直update Sum。 return 左右子树的和
+#这里的sum不能是pass by reference。。。不然值会被改乱
+
+class Solution {
+public:
+    int sumNumbers(TreeNode* root) {
+       return helper(root, 0);       
+    }
+    int helper(TreeNode * root, int sum){
+        if(!root) return 0;
+        sum = sum*10 + root->val; // update first
+        if(!root->left && !root->right) return sum;
+        return helper(root->left, sum) + helper(root->right, sum);
+    }
+};
