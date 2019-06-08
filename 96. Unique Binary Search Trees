@@ -1,0 +1,23 @@
+#给n，代表1-n 个数，问有多少种不同的BST组合
+Given n, how many structurally unique BST's (binary search trees) that store values 1 ... n?
+
+Example:
+
+Input: 3
+Output: 5
+Explanation:
+Given n = 3, there are a total of 5 unique BST's:
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+   
+
+Cn+1 = summation (Ci * C n-i ) (i=0...n)
+
+#传说中的卡塔兰数 （ 好吧 我没听说过这个传说。。。）
+#通项公式  Cn = （2n)!/((n+1)! * n!)
+
+
