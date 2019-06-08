@@ -21,3 +21,16 @@ Cn+1 = summation (Ci * C n-i ) (i=0...n)
 #通项公式  Cn = （2n)!/((n+1)! * n!)
 
 
+class Solution {
+public:
+    int numTrees(int n) {
+        //画几个例子分析一下，刨除几个数和剩下的数的组合
+        //Cn = nEi(Ci * Cn-i)
+        long res = 1;        
+        for(int i = n+1; i<=2*n; i++) {
+            res = res* i/(i-n); //重要啊同志！ 长点记性啊！ res *= 就不行了 只能是res = res* XX 不然有强制砍数啊，还想debug多久？？？
+            
+        }        
+        return res/ (n+1); //啥玩意，这地儿你也能没注意到括号？
+    }  
+};
