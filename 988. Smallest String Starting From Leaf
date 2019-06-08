@@ -4,15 +4,20 @@
 #找从叶子到根能组成的最小string
 
 #好像。。理解错了，没有说短的一定比长的小。。2333
-#所以可以按照叶子比较大小。。再往上跑 
+#所以可以按照叶子比较大小。。recursive的写法时如果从叶子开始算可以直接比较大小（还没动笔尝试，先刷到今天的题量再说）
+
+
 
 #理解错误的情况下直接想法暴力解 reversve 比较
 #take home point string initialize的方法！cool！
 class Solution {
 public:
     string smallestFromLeaf(TreeNode* root) {
-        int size = height(root);
-        string store (size, 'z');   //确保起始数据是最小的   
+        //int size = height(root);
+        //string store (size, 'z');   //确保起始数据是最小的   
+        //优化！ 找一个在a-Z之后的数就可以。。。而且这个只是26个小字母
+        string store = "~";     
+        
         helper(root, "", store);
         return store;
     }
@@ -34,3 +39,4 @@ public:
         return 1+max(height(root->left), height(root->right));
     }
 };
+#或者可以不用reverse，每次都往前面加。。。 28行改为 res = string (1, root->val + 'a') + res; 去掉reverse， 慢一些却。。。
