@@ -1,0 +1,29 @@
+#给一棵树， return 所有一样的subtrees， 对每一个相同的 subtree，只return the root of any one of them
+#Two trees are duplicate if they have the same structure with same node values.
+
+#从序列化和去序列化引申而来的题。。
+#提示可以通过类似的方法来判断
+#所以在字符串中其实是右侧有一致的段落即可--这个要判断有点复杂啊
+#简单可行的方式是对每个子树都序列化比较一致，可以用map来存, 别set 因为无法挡住重复多次的
+
+
+class Solution {
+public:
+    vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
+        vector<TreeNode*> res;
+        //store the infor of trees' string 
+        //use map instead of set cause need to check times, avoid duplicate out put
+        unordered_map<string, int> checker;
+        helper(root, checker, res);
+        return res;
+    }
+    
+    // a helper will return the serialzation of any tree, provided with root
+    string helper(TreeNode* root, unordered_map<string, int> & checker, vector<TreeNode*>& res) {
+        if (!root) return "#";
+        string aTree = to_string(root->val) + " " + helper(root->left, checker, res) + " " + helper(root->right, checker, res);
+        if (checker[aTree]==1) res.push_back(root);
+        checker[aTree]++;
+        return aTree;
+    }
+};
