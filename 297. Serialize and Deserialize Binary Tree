@@ -1,0 +1,66 @@
+#给一棵数，实现序列化（转换为string）和去序列化 （ 从string 转换成 Tree）
+
+#相似题449. Serialize and Deserialize BST
+
+
+#可以用BFS来实现
+#比起string，也可以用 ostream 来实现 以及queue上可以push NULL node
+#提供一个参考答案，学习一下一些点～
+#ref： https://www.cnblogs.com/grandyang/p/4913869.html 
+
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+
+        ostringstream out;
+        queue<TreeNode *> nodes; //可以push NULL节点啊
+        if(root) nodes.push(root);
+        
+        while(!nodes.empty()){
+            TreeNode * temp = nodes.front();
+            nodes.pop();
+            if(temp){
+                out << temp->val << ' ';
+                nodes.push(temp->left);
+                nodes.push(temp->right);
+            } else {
+                out << "# "; //注意这里有空格啊。。。。。debug了快半小时我也是醉了
+            }
+        }
+        return out.str();
+    }
+    
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if(data.empty() ) return NULL; //str 也可以用empty
+        istringstream in(data); //split by white space 
+        queue<TreeNode*> q;
+        string val;
+        in >> val;
+        TreeNode *res = new TreeNode(stoi(val)), *cur = res;
+        q.push(cur);
+        while (!q.empty()) {
+            TreeNode *t = q.front(); 
+            q.pop();    
+            if (!(in >> val)) break; // all nums are processed
+            if (val != "#") {
+                cur = new TreeNode(stoi(val)); // is the left node
+                q.push(cur);
+                t->left = cur;  //t is the storage for the current handling root
+            }
+            if (!(in >> val)) break;
+            if (val != "#") {
+                cur = new TreeNode(stoi(val));
+                q.push(cur);
+                t->right = cur;
+            } 
+            //if is # which means NULL, shouldn't have any child
+        }
+        
+        return res;
+   } 
+
+};
