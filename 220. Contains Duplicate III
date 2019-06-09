@@ -1,0 +1,26 @@
+#给一个int vector 让判断是否有 两个值差的绝对值不大于t 并且两个值的坐标差绝对值不大于k
+
+#注意这道题说了是absolute difference，所以t 和 k 肯定不小于0 。。。所以 nums[i]-t 一定小于等于 nums[i]+t。。（浪费了好久才反应过来。。）
+#原本的想法是利用upperbound 和lower bound check range 其实lower bound 自己就可以搞定了。。
+#加上upperbound 返回的是大于的第一个，所以比较range的话是upperbound 的前一个..真正不好实现的是 map的iter 不像vector 一样可以直接用+，— 直接比较！！
+#除非你自己overload一个。。。。em。。
+
+
+#来看直接用lowerbound就能限制的方法
+class Solution {
+public:
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+        //用一个map， A<val, index> 
+        map<long, int> store; // 注意 t 和nums [i]都很大的时候 可能overflow
+        int j = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (i - j > k) store.erase(nums[j++]); //和 I and II 一样，控制了能check的大小
+            auto lower = store.lower_bound((long)nums[i]-t);
+            //lower 肯定满足绝对值的负值要求，只需要跟正值比较；如果这个正值过不了，后面的也过不了正值！，所以只检查一个就够
+            if (lower != store.end() && lower->first <= (t+ (long)nums[i])) return true; 
+            
+            store[nums[i]] = i;
+        }
+        return false;
+    }
+}; 
