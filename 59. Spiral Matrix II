@@ -1,0 +1,50 @@
+#螺旋手里剑章二！
+fill 一个array with 1- n方的数字， 按照顺时针螺旋 即可
+
+Input: 3
+Output:
+[
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+]
+
+
+#随便改改 54的那道 I ，54题debug de的心太累了当时，就让这题随风而逝吧。。。
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> res (n, vector<int> (n));
+        int count = 1;
+        int end = pow(n,2);
+        int colR = n-1;
+        int rowB = n-1;
+        int colL = 0;
+        int rowT = 0;
+        while(count<=end ) {
+            for(int j = colL; j <= colR ; j++) {
+                res[rowT][j] = count;
+                count++;
+            }           
+            for (int i = rowT + 1; i <= rowB; i++) {
+                res[i][colR] = count;
+                count++;
+            }           
+            if (count <= end) {
+                for (int j = colR - 1; j > colL; j--) {
+                    res[rowB][j] = count;
+                    count++;
+                }
+                for (int i = rowB; i > rowT; i--) {
+                    res[i][colL] = count;
+                    count++;
+                }
+            }
+            rowT++;
+            colL++;
+            rowB--;
+            colR--;
+        }
+        return res;
+    }
+};
