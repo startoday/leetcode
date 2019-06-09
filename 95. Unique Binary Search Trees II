@@ -19,3 +19,34 @@ The above output corresponds to the 5 unique BST's shown below:
      3     2     1      1   3      2
     /     /       \                 \
    2     1         2                 3
+
+#因为是BST 所以永远是 左 根 右的 大小顺序， 我们每次确定好根节点之后，划分左右区间，左区间的数可以成为左子树的根节点，右边同理，逐渐加到vector里
+#divide and conquer 注意要所有的，所以mid不能从中间开始，要一个一个的加
+class Solution {
+public:
+    vector<TreeNode*> generateTrees(int n) {
+        if(n == 0) return {};  
+        return helper(1,n);
+    }
+    //不必传递vector...传 start 和 end 即可
+    //res 保存每一层的有效root， 每一层都会新建一个root
+    vector<TreeNode*> helper(int start, int end) {        
+        if (start > end) return {NULL};
+        vector<TreeNode*> res;
+        for(int mid = start; mid <= end ; mid++) {
+            auto leftStore = helper(start,mid-1), rightStore = helper(mid+1,end);
+            for(TreeNode * leftNode : leftStore) {
+                for( TreeNode * rightNode : rightStore) {
+                    TreeNode * root = new TreeNode (mid);
+                    root->left = leftNode;
+                    root->right = rightNode;
+                    res.push_back(root);  
+                }
+            }
+        }
+        return res;
+    }
+    
+};
+
+#ref：https://www.cnblogs.com/grandyang/p/4301096.html
