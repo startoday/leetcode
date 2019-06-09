@@ -23,6 +23,6 @@ public:
             }
         }
         
-        return *min_element(triangle.back().begin(),triangle.back().end());
+        return *min_element(triangle.back().begin(),triangle.back().end()); //咋老忘这哥return的是iter呢！
     }
 };
