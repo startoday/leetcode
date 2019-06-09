@@ -1,0 +1,21 @@
+#要求只return需要层的杨辉三角
+
+#依然作为巩固vector的写法来练习～与I相比，只需要储存上一层即可
+
+#稍微注意一下题里 that the row index starts from 0.
+
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        ++rowIndex; //传的参数和 常理解的层数 差了1
+        vector<int> prev (rowIndex, 1);
+        vector<int> res (rowIndex, 1);
+        for(int i = 2 ;i < rowIndex ; ++i) {
+            for(int j = 1 ;j < i; ++j) {
+                res[j] = prev[j-1] + prev[j];
+            }
+            prev = res;
+        }
+        return res;
+    }
+};
