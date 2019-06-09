@@ -1,0 +1,59 @@
+#螺旋手里剑！
+Given a matrix of m x n elements (m rows, n columns), 
+return all elements of the matrix in spiral order.
+#顺时针螺旋
+Example 1:
+
+Input:
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+Output: [1,2,3,6,9,8,7,4,5]
+Example 2:
+
+Input:
+[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9,10,11,12]
+]
+Output: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+
+#不想说啥了，思路就是按照顺序打印嘛。。记录上下左右的边界
+#我坚持我的while loop结果各种细节问题debug了一个小时。。
+#用forloop吧还是。。。
+
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
+        if(matrix.empty()) return res;
+        int rowB = matrix.size() -1;
+        int colR = matrix[0].size() -1;
+        int rowT = 0;
+        int colL = 0;
+
+        while(colR >= colL && rowT <= rowB ) {
+            for(int j = colL; j <= colR ; j++) {
+                res.push_back(matrix[rowT][j]);
+            }           
+            for (int i = rowT + 1; i <= rowB; i++) {
+                res.push_back(matrix[i][colR]); //别这么死心眼了非得都用i 和 j
+            }           
+            if (rowT < rowB && colL < colR) {
+                for (int j = colR - 1; j > colL; j--) res.push_back(matrix[rowB][j]);
+                for (int i = rowB; i > rowT; i--) res.push_back(matrix[i][colL]);
+            }
+
+            rowT++;
+            colL++;
+            rowB--;
+            colR--;
+        }
+        return res;
+    }
+};
