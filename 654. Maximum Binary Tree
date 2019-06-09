@@ -1,0 +1,24 @@
+#这道题的题意真的很难懂啊。。
+#给一个没有重复数字的array 搞成一个maximum tree ，where
+1. root需要是array中的最大值
+2. The left subtree is the maximum tree constructed from left part subarray divided by the maximum number.
+#好像哦意思是左子树需要从左侧subarray中的得出，也是一个max BT， 
+#也就是说 左子树的根（lr）是左边最大，lr的【0 左】array继续from lr的左子树， lr的【右-root】 form lr的右子树
+#俺只是根据example猜的。。。读英文divided by什么鬼啦 ？
+3. The right subtree is the maximum tree constructed from right part subarray divided by the maximum number.
+
+Example 1:
+Input: [3,2,1,6,0,5]
+Output: return the tree root node representing the following tree:
+
+      6
+    /   \
+   3     5
+    \    / 
+     2  0   
+       \
+        1
+        
+#这道题如果按照我的理解来说的话，直接的念头应该是分治吧，不停的划分左右子树，找最大值
+
+
