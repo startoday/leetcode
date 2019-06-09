@@ -1,0 +1,43 @@
+#给出层数，return 杨辉三角
+
+#关于vector： 没有确定size时不可以用[] ~!!!! 
+
+
+
+#因为是要return 每层，所以每层是得都存啊。。
+#诶发现我的解法和 solution的一毛一样。。。没想到这玩意就叫DP了
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>>res (numRows, vector<int> ());
+        if(numRows == 0) return res;
+        res[0].push_back(1);
+
+        for(int i = 1; i<numRows; i++) {
+            res[i].push_back(1);
+            for(int j = 1; j < i; j++) {
+                //res[i][j]=res[i-1][j-1]+res[i-1][j]; //can't use it !
+            res[i].push_back(res[i-1][j-1]+res[i-1][j]);
+            }
+            res[i].push_back(1);
+        } 
+        return res;
+    }
+};
+
+#来一个对于vector 应用更好更美丽的解法，但是时间跟上面的一样的 只要都换成 ++i的话 
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> res(numRows, vector<int>());
+        for (int i = 0; i < numRows; ++i) { // ++i 确实会比 i++ 快嗷
+            res[i].resize(i + 1, 1);  //resize 赛高！学习了！
+            for (int j = 1; j < i; ++j) {
+                res[i][j] = res[i - 1][j - 1] + res[i - 1][j]; //现在可以用了！
+            }
+        }
+        return res;
+    }
+};
+
+ref https://leetcode.com/problems/pascals-triangle/discuss/38150/My-C%2B%2B-code-0ms
