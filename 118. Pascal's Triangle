@@ -9,7 +9,7 @@
 class Solution {
 public:
     vector<vector<int>> generate(int numRows) {
-        vector<vector<int>>res (numRows, vector<int> ());
+        vector<vector<int>>res (numRows, vector<int> ());  //直接光 （numRows 会慢一点，还得再call default）
         if(numRows == 0) return res;
         res[0].push_back(1);
 
