@@ -1,0 +1,28 @@
+#DP 基础题，不能当层横着走！
+Given a triangle, find the minimum path sum from top to bottom. 
+Each step you may move to adjacent numbers on the row below.
+
+For example, given the following triangle
+
+[
+     [2],
+    [3,4],
+   [6,5,7],
+  [4,1,8,3]
+]
+
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int height = triangle.size();
+        for(int i = 1; i < height; i++) {
+            for(int j = 0; j <= i; j++) {
+                if(j == i)  triangle[i][j] += triangle[i-1][j-1];
+                else if(j == 0) triangle[i][j] += triangle[i-1][j]; // 注意！三选其一，刚开始写成俩 if 后面一个else了 会跪！（第二次还会执行一波--之前好像没太注意过 特别是在修改code时很容易就遗忘了--这种恼人的小细节要从coding的良好习惯养成来避免）
+                else triangle[i][j] += min(triangle[i-1][j], triangle[i-1][j-1]);
+            }
+        }
+        
+        return *min_element(triangle.back().begin(),triangle.back().end());
+    }
+};
