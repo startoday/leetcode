@@ -15,3 +15,21 @@ Output:
 [5,6]
 
 
+#看题就是要操作index，可以想像 如果根据index来modify 比如，这行数缺少5，0-based的那么第4个就永远不会被modify到，没被modify的数的index+1就是缺少的数
+#这个modify要可以区分mo没modi的 还得不影响后续操作。。。修改成负值，到时候回取绝对值就还能实现index的奔跑！
+
+class Solution {
+public:
+    vector<int> findDisappearedNumbers(vector<int>& nums) {
+        vector<int> res;
+        int size = nums.size();
+        for(int i = 0; i < size; i++) {
+            int index = abs(nums[i])-1;
+            if(nums[index] > 0) nums[index] = -nums[index];
+        }
+        for(int i = 0; i < size; i++) {
+            if(nums[i] > 0) res.push_back(i+1); 
+        }
+        return res;
+    }
+};
