@@ -29,7 +29,7 @@ public:
         //注意另一个要求是所有的人除了法官都得是投法官，所以法官票数 N-1
         vector<int> B (N);
         vector<int> A (N);
-        vector<int> res;
+        //vector<int> res;
         int size = trust.size();
         for(int i = 0; i < size; i++) {
             A[trust[i][0]-1]++;
@@ -37,11 +37,12 @@ public:
         }
         
         for(int i = 0 ; i< N; i++){            
-            if((B[i]) == (N-1) && A[i] == 0) res.push_back(i+1);
+            //if((B[i]) == (N-1) && A[i] == 0) res.push_back(i+1); //其实能满足这个条件的只能有一个，直接return 就行。。
+             if((B[i]) == (N-1) && A[i] == 0) return i+1; //多个满足judge时---达不到N-1
         }
         
-        if(res.size() != 1) return -1;
-       
-        return res[0];
+        return -1;
+        //if(res.size() != 1) return -1;
+        //return res[0];
     }
 };
