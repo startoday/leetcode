@@ -1,0 +1,25 @@
+#给一个array， pivot的左侧和等于pivot的右侧和（不包括 pivot）
+#多个pivot return 最左面的，没有符合条件的return -1
+Input: 
+nums = [1, 7, 3, 6, 5, 6]
+Output: 3
+Input: 
+nums = [1, 2, 3]
+Output: -1
+
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        if(nums.empty()) return -1;
+        int size = nums.size()-1;
+        for(int i = 1; i <=size; i++){
+            nums[i] += nums[i-1];    //因为要长期求和，直接求前面的所有和比较快
+        }
+        
+        if(nums[size] == nums[0] ) return 0;
+        for(int i = 1; i <= size; i++){
+            if(nums[i-1] == (nums[size] - nums[i])) return i;
+        }
+        return -1;
+    }
+};
