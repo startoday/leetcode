@@ -1,0 +1,17 @@
+#给一个数组，数组里的数的大小只有1-n（提示我们可以针对坐标操作），有的数存在两次，有的一次，找出那些缺少的数
+#要求也是难点，不能用额外空间并且需要是 O（N）
+Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+
+Find all the elements of [1, n] inclusive that do not appear in this array.
+
+Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
+
+Example:
+
+Input:
+[4,3,2,7,8,2,3,1]
+
+Output:
+[5,6]
+
+
