@@ -1,0 +1,4 @@
+#给一个string作为input preorder遍历所得，dash数量代表层数， root的 dash量是0， return tree的root
+##如果只有一个child的话，guarantee是left child
+
+
