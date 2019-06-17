@@ -1,0 +1,42 @@
+#有K个sorted List merge他们
+
+#用divide and conquer 的思想
+#这种divide和mergeSort也类似 每次对半divide，把后面的merge到前面去
+#注意对半的mid应该是（n+1）/2 来处理奇偶数的区别 （奇数时中间会留下）， merge完的数量还是对的
+
+
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.empty()) return NULL;
+        int size = lists.size();
+        while(size > 1){
+            int mid = (1+size)/2;
+            for(int i = 0; i < size/2; ++i) {
+                //merge to lists into the first one
+                lists[i]= mergeTwoLists(lists[i],lists[i+mid]);
+            }
+            size = mid; //don't forgot to update!!!
+        }
+        return lists[0];
+    }
+    ListNode* mergeTwoLists(ListNode* &l1, ListNode* &l2) {
+        if(!l1 && !l2) return NULL;
+        ListNode* dummyHead = new ListNode(-1);
+        ListNode* cur = dummyHead;
+        while(l1 && l2) {
+            if(l1->val <= l2->val) {
+                cur->next = l1;
+                l1 = l1->next;
+            } else {
+                cur->next = l2;
+                l2 = l2->next;
+            }
+            cur = cur->next;
+        }
+        if(!l2) cur->next = l1;
+        if(!l1) cur->next = l2;
+        return dummyHead->next;
+    }
+};
