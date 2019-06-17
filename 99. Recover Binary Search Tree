@@ -22,4 +22,43 @@ public:
   }  
 };
 
-#不过这道题要求的是constant、
+#不过这道题要求的是constant space, 利用螺纹二叉树（Morris Traversal）
+#Morris 的中序遍历： cur 无左子时 print cur， 将 cur往右节点走（走到没有路的时候回走进螺纹）； 
+有左节点时：用一个pre指针找到predecessor 第一轮的时候就是在左侧最大值处，在此处联结到 cur，形成螺旋，cur往左走（顺流而下） pre随即不动，
+第二轮cur走完一圈 之后可以pre的右侧不为空，pre的右指回空，打印cur（已经是最右/根了） 将cur继续指向右边（走入螺纹回到上一步）
+#可以利用这个方法找到并记录位置错误的两个点 并swap
+
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode *first = NULL, *second = NULL, *parent = NULL;
+        TreeNode *cur, *pre;
+        cur = root;
+        while (cur) {
+            if (!cur->left) { //无左
+                if (parent && parent->val > cur->val) {
+                    if (!first) first = parent; //第一个点只发现一次 -->part不应该比较大，记录
+                    second = cur;
+                }
+                parent = cur;
+                cur = cur->right;
+            } else {  // 有左
+                pre = cur->left;
+                while (pre->right && pre->right != cur) pre = pre->right; //predecessor
+                if (!pre->right) { //左子树没有右子树的时候
+                    pre->right = cur; //下降操作
+                    cur = cur->left;
+                } else {
+                    pre->right = NULL;
+                    if (parent->val > cur->val) {  //转了一圈时应该是小于的
+                        if (!first) first = parent;
+                        second = cur;
+                    }
+                    parent = cur;
+                    cur = cur->right;
+                }
+            }
+        }
+        swap(first->val, second->val);
+    }
+};
