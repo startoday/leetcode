@@ -1,0 +1,25 @@
+#一棵二叉树 只有两个点调换了 请复原这棵数
+
+#如果允许O（N）的话可以中序遍历一波，sort 一下 重新赋值
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        vector<TreeNode*> store;
+        vector<int> valStore;
+        inOrder(root, store, valStore);
+        int size = store.size();
+        sort(valStore.begin(),valStore.end());
+        for(int i = 0; i<size; i++) {
+            store[i]->val = valStore[i];   
+        }
+    }
+    void inOrder(TreeNode * root, vector<TreeNode*> & store, vector<int> & valStore) {
+        if(!root) return;
+        inOrder(root->left, store, valStore);
+        valStore.push_back(root->val);
+        store.push_back(root);    
+        inOrder(root->right, store, valStore);
+  }  
+};
+
+#不过这道题要求的是constant、
