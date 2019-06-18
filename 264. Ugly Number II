@@ -1,0 +1,49 @@
+#丑数仍然是那个只有2，3，5 作为质数因子的丑数
+#此题要求你找到第 n 个丑数
+
+Example:
+
+Input: n = 10
+Output: 12
+Explanation: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 is the sequence of the first 10 ugly numbers.
+Note:  
+
+# 1 is typically treated as an ugly number.
+# n does not exceed 1690.
+
+#想法应该就是一个一个算呃。。。就是几个质数因子相乘而已， min的加入，计数++
+
+#嗯。。。注意！只能有2，3，5 这几个质因子，所以不可以用加的方式update！！所以要从之前的数来update！
+#乘以2，3，5 都从已有的丑数组中出来，每乘完一个就把乘了的index update（+1）
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        if(n <= 0) return -1;
+        if(n == 1) return 1;
+        int count = 2; 
+        int temp = 2;
+        int m2, i2 = 0;
+        int m3, i3 = 0;
+        int m5, i5 = 0;
+        vector<int> res (1,1);        
+        while(count <= n) {
+            m2 = res[i2] *2;
+            m3 = res[i3] *3;
+            m5 = res[i5] *5;
+            temp = min(m2,min(m3,m5));
+            res.push_back(temp);
+            count ++;
+            if (temp == m2){
+                i2++;
+            }
+            if (temp == m3){
+                i3++;
+            }
+            if (temp == m5){
+                i5++;
+            }
+        }
+        
+        return res.back();
+    }
+};
