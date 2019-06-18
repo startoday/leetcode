@@ -1,0 +1,27 @@
+#一个array 有的数字出现了一次有的出现了两次
+#找出出现两次的数字
+
+#要求Could you do it without extra space and in O(n) runtime?
+
+#如果没有的此要求的话可以sort或者用map来记录
+
+#有这个要求的话 想到的应该还是array上的奔跑，调整成 负数，如果已经成为负数并且再次visit的话说明了是有两个的
+
+
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> res;
+        if(nums.empty()) return res;
+        int size = nums.size();
+        for(int i = 0 ;i < size; ++i) {
+            int index = abs(nums[i]) - 1;
+            if(nums[index] < 0) res.push_back(index+1);
+            else {
+              nums[index]=-nums[index];  
+            }
+            
+        }
+        return res;
+    }
+};
