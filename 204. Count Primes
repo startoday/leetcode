@@ -20,3 +20,7 @@ public:
         return res;
     }
 };
+
+#in hint 2 actually it states that:
+As we know the number must not be divisible by any number > n / 2, 
+we can immediately cut the total iterations half by dividing only up to n / 2. 
