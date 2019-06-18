@@ -39,3 +39,22 @@ public:
 
 
 #瞅了一眼貌似死循环不是1就是4，出现4就false，1就true，则不需要用set 储存了
+class Solution {
+public:
+    bool isHappy(int n) {
+        
+        if(n <= 0) return false;
+        int temp = 0;
+        while(n > 0) {
+            temp += pow(n%10, 2);
+            n /= 10;
+            if(n == 0) {
+                if(temp == 1) return true;
+                if(temp == 4) return false;
+                n = temp;
+                temp = 0;
+            }        
+        }
+        return false;
+    }
+};
