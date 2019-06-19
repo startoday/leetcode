@@ -2,8 +2,50 @@
 #note链子没有环
 #要求O（N）的时间 O（1）的空间并且不能改变原本的链子结构
 
-#O（1）空间就不可以用找到点们再比较intersection值的方法，也不能直接链接两个list，不能暴力解（O（n方）找相同点）
+#O（1）空间就不可以用找到点们再比较intersection值的方法，不能暴力解（O（n方）找相同点）
 
-#嗯不过不直接连接list一个走完走另一个的开头也是环嘛，就 快慢指针咯
+#想法是list一个走完走另一个的开头也是环，快慢指针...//但是 注意，这两个环没有连起来，不能直接check fast 死掉，fast每次都得重新连接另一个list，
+#想check的话应该是slow走完两个list后死掉
+#em, 即使两个list 的点都相同，也不一定就是那个入口 ---所以不能比较点来着
+比如：
+[4,1,8,4,5]
+[5,0,1,8,4,5]
+2
+3  第一个list前有2个，第二个前面有三个，这个intersection是8，不是1！
+
+#其实有个简单的做法。。两个指针分别从两个list开始走，一个走完了就走另一个的开头，要么在intersection相遇（走的路是相等的），要么都在最后的结尾
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(!headA || !headB) return NULL;
+        ListNode * travelA = headA;
+        ListNode * travelB = headB;
+        while(travelA != travelB) {
+            travelA =travelA->next;
+            travelB =travelB->next;
+            if((!travelA) &&(!travelB)) break;
+            else if(!travelA) travelA = headB;
+            else if(!travelB) travelB = headA;
+        }
+        return travelA;
+    }
+};
+
+#话说无论在哪里都可以return啊
+#code简化版--但是其实会慢一点嗷
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(!headA || !headB) return NULL;
+        ListNode * travelA = headA;
+        ListNode * travelB = headB;
+        while(travelA != travelB) {
+            travelA = travelA ? travelA->next: headB;
+            travelB = travelB ? travelB->next: headA;
+        }
+        return travelA;
+    }
+};
 
 
