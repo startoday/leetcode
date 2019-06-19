@@ -1,0 +1,52 @@
+#给一个正数n， 找到都是由平方数相加，要求平方数最少，和为n， return这个最小值
+
+#优化问题，想到要用DP解决
+#想法，找到最靠近它的平方根，选择取或者不取 用recursive，再记录
+#普通的recursive
+class Solution {
+public:
+    int numSquares(int n) {
+        if(n < 4) return n;
+        int end = sqrt(n);
+        if(end * end == n) return 1;
+        return helper (n, end);
+    }
+    int helper(int n, int end) {
+        if(n <= 1 || end == 1) return n;
+        if(n >=end*end) return min( (1+ helper((n-end*end), end)), helper(n, end-1));
+        else return helper(n, end-1);
+    }
+};
+
+#可以发现还是一个2D array 想要知道 f（n，end） 只需要f（n-end*end， end）和 f（n，end-1）
+#咋写出来慢成狗了2333
+class Solution {
+public:
+    int numSquares(int n) {
+        if(n < 4) return n;
+        int end = sqrt(n);
+        if(end * end == n) return 1;
+        return helper (n, end);
+    }
+    int helper(int n, int end) {
+        vector<vector<int>> store (n+1, vector<int>(end+1));
+        for(int i = 0; i< n+1; i++){
+            store[i][1]=i;
+        }
+        for(int i = 0; i< end+1; i++){
+            store[0][i]=0;
+            store[1][i]=1;
+        }
+        //if(n <= 1 || end == 1) return n;
+        for(int i = 2; i < n+1; ++i){
+            for(int j = 2; j < end+1; ++j){
+                if(i >= j*j) store[i][j] = min (1+store[i-j*j][j], store[i][j-1]);
+                else store[i][j] = store[i][j-1];
+                                    
+            }
+        }
+        return store[n][end];
+        //if(n >=end*end) return min( (1+ helper((n-end*end), end)), helper(n, end-1));
+        //else return helper(n, end-1);
+    }
+};
