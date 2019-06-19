@@ -1,0 +1,24 @@
+Remove all elements from a linked list of integers that have value val.
+
+Example:
+
+Input:  1->2->6->3->4->5->6, val = 6
+Output: 1->2->3->4->5
+
+#没啥可说的，基础训练。注意 if 和 else 处！
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        if(!head) return head;
+        ListNode * dummyHead = new ListNode(-1);
+        dummyHead->next = head;
+        ListNode* dummyRoot = dummyHead;
+        while(head) {
+            if(head->val == val) dummyRoot ->next = head->next;
+            else dummyRoot = head;
+            head = head->next;
+            
+        }
+        return dummyHead->next;
+    }
+};
