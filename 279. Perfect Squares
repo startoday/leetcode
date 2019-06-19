@@ -50,3 +50,31 @@ public:
         //else return helper(n, end-1);
     }
 };
+
+#这道题有一个 四平方和定理，任何一个正整数都可以表示为小于等于4个整数的平方和
+#而且可以一直除以4，没差的（拆一下就知道不会改变因子的个数）
+#一个数除以8余7的话肯定由4个完全平方数组成
+
+class Solution {
+public:
+    int numSquares(int n) {
+        while ((n & 3) == 0) {// n%4 == 0  
+            n >>= 2;  
+        }
+        if ((n & 7) == 7) { // n%8 == 7
+            return 4;
+        }
+        if(n < 4) return n;
+        int end = sqrt(n);
+        if(end * end == n) return 1;
+        for(int i = 1; i<= end; ++i) {
+            int remain = n - i*i;
+            int possible= sqrt(remain);
+            if(possible* possible == remain) return 2;
+        }
+        return 3;
+    }
+};
+
+
+
