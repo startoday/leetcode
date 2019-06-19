@@ -1,0 +1,29 @@
+Write a program to find the nth super ugly number.
+
+Super ugly numbers are positive numbers whose all prime factors are in the given prime list primes of size k.
+
+#跟丑数的区别是这次给你一个list，不再是2，3，5了！
+
+#用一个 min heap 存， 对应更新 list里每个质数因子处在的位置就行 --但发现heap比直接用array存就是慢诶。。
+#vector的写法，很容易转化成array
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        vector<int> res (n,1);
+        int size = primes.size();
+        vector<int> posStore (size, 0);
+        priority_que
+        for(int i = 1; i < n; ++i) {
+            res[i] = INT_MAX;
+            for(int j = 0 ; j < size; ++j) {
+                res[i] = min(res[i], primes[j] * res[posStore[j]]);
+            }
+            for(int j = 0 ; j < size; ++j) {
+                if(res[i] == primes[j] * res[posStore[j]]) posStore[j]++;
+            }
+        }
+        
+        return res[n-1];
+    }
+};
+
