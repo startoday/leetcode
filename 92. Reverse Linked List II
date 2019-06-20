@@ -7,3 +7,40 @@ Example:
 
 Input: 1->2->3->4->5->NULL, m = 2, n = 4
 Output: 1->4->3->2->5->NULL
+
+#和第19题 delete Node from Nth end 类似
+#保证距离就好，先控制距离，在找点交换 ---很好。。又理解错题意了。。。reverse form pos m to n。。。
+#其实是多重向前插入了 m-n 次
+1 -> 2 -> 3 -> 4 -> 5 -> NULL 
+1 -> 3 -> 2 -> 4 -> 5 -> NULL 
+1 -> 4 -> 3 -> 2 -> 5 -> NULL
+
+
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        //很好。。又理解错题意了。。。reverse form pos m to n。。。
+        int dis = n - m;
+        ListNode * dummyHead = new ListNode (-1);
+        dummyHead-> next = head;
+        ListNode * pre = dummyHead;
+        while(m >1) {
+            pre = pre ->next;
+            m--;
+        }
+        ListNode * cur = pre ->next;
+        while (dis) {
+            ListNode * temp = cur->next;    //能向下走的重点！
+            
+            cur->next= temp ->next;
+            temp ->next = pre->next;
+            pre->next = temp; 
+            
+            dis--;
+        }
+        return dummyHead-> next;
+    }
+};
+
+
+#ref: https://www.cnblogs.com/grandyang/p/4306611.html 
