@@ -1,0 +1,40 @@
+#词可以有词根，followed by another word 来形成一个successor
+#给一句话，给一个词根list，让把这句话里所有的successor都改成词根，如果有多个词根，改成短的那个
+
+#其实应该用prefix tree（trie）来解决。。。
+
+#记录一下split 和find function好了
+class Solution {
+public:
+    string replaceWords(vector<string>& dict, string sentence) {
+        if(sentence =="") return "";
+        if(dict.empty()) return sentence;
+        vector<string> sep = split(sentence);
+        int size = sep.size();
+        sort(dict.begin(),dict.end());
+        string res ="";
+        for(int j = 0; j < size; j++) {
+            for(int i = dict.size()-1; i>=0; i--) {
+                sep[j] = helper(dict[i], sep[j]); 
+                if(dict[i] == "") break;
+                if(i == 0 && j != size-1) res += sep[j] + " ";
+                if(i == 0 && j == size-1) res += sep[j];
+           }
+        }
+        return res;
+    }
+    string helper(string root, string ori) {
+        auto found = ori.find(root);
+        if (found == 0) return root;
+        else return ori;
+    }
+    vector<string> split(string sentence) {
+        vector<string> sep;
+        string buffer;
+        stringstream ss(sentence); // Insert the string into a stream
+        while (ss >> buffer) {
+            sep.push_back(buffer);
+        }
+        return sep;
+    }
+};
