@@ -3,7 +3,31 @@ Example:
 
 Given linked list: 1->2->3->4->5, and n = 2.
 
-After removing the second node from the end, the linked list becomes 1->2->3->5.
-Note:
+After removing the second node from the end, the linked list becomes 1->2->3->5.（4是倒数第二个）
 
 # Given n will always be valid & Could you do this in one pass?
+
+#只能有一个pass 所以得用两根指针，有一根指针先走n步，如果n已经是尾巴了说明我们remove 的是第一个元素 return head->next
+#如果该指针还存活，另一根指针开始走，走到末尾前面的指针的位置就刚好---所以cur——>next空的时候直接return late
+
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode * cur = head;
+        ListNode * late = head;
+        
+        while (n>1) {
+            cur = cur->next;
+            n--;
+        }
+        if(!cur->next) return head->next;
+        ListNode*pre;
+        while (cur->next){
+            cur = cur->next;
+            pre = late;
+            late = late ->next;   
+        }
+        pre->next = pre->next->next;
+        return head;
+    }
+};
