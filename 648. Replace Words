@@ -38,3 +38,5 @@ public:
         return sep;
     }
 };
+
+#类似题 208 implement tire
