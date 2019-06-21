@@ -10,3 +10,43 @@ Input: -1->5->3->4->0
 Output: -1->0->3->4->5
 
 
+//divide and conquer 吧 nlogN merge sort
+
+
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        
+        if(!head || !head->next) return head;
+
+        //divide and conquer 
+        ListNode * slow = head;
+        ListNode * fast = head->next;
+        while(fast && fast->next) {  //这样写就不需要 pre node了 如果都从 head 开始需要一个pre在slow前，pre位置就是中点
+            fast = fast -> next ->next;
+            slow = slow ->next;
+        }
+        
+        ListNode * dummyMid = slow->next; //注意sort 后半段， slow算是前半段的不能有交叉啊！一定要从next开始
+        slow ->next =NULL;
+        return merge(sortList(head), sortList(dummyMid));
+    }
+
+    
+    ListNode* merge (ListNode * l1, ListNode * l2) {
+
+        ListNode * start = new ListNode (-1);
+        ListNode * dummyHead = start;
+        while(l1 && l2) {
+            start->next = l1->val < l2->val ? l1 : l2;
+            if(l1->val < l2 ->val) l1 = l1->next;
+            else l2 = l2 ->next;
+            start = start->next;
+        }  
+        if(!l1) start->next = l2;
+        if(!l2) start->next = l1;
+        
+        return dummyHead ->next;
+    }
+    
+};
