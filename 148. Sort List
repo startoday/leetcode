@@ -10,8 +10,8 @@ Input: -1->5->3->4->0
 Output: -1->0->3->4->5
 
 
-//divide and conquer 吧 nlogN merge sort
-
+#divide and conquer 吧 nlogN merge sort
+#这个写法不够快诶。。。看了一眼快的也是是merge sort。。。
 
 class Solution {
 public:
