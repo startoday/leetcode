@@ -1,0 +1,73 @@
+Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+# You may not modify the values in the list's nodes, only nodes itself may be changed.
+
+Example 1:
+
+Given 1->2->3->4, reorder it to 1->4->2->3.
+Example 2:
+
+Given 1->2->3->4->5, reorder it to 1->5->2->4->3.
+
+#跟着sort list那道题来的，
+#提示我们可以先reverse 后半段 再一一merge！
+
+
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(!head || ! head->next) return; //居然忘了这一步，醉 不可以return！
+        ListNode * dummyHead = head;
+        ListNode * mid = findMid(dummyHead);
+        
+        ListNode * behind = reverseBehind (mid ->next); // 后面reverse了
+        mid ->next =NULL;
+        merge(head, behind);
+    }
+    
+    ListNode * findMid (ListNode * head) {
+        if(!head || ! head->next) return head;
+        ListNode * slow = head;
+        ListNode * fast = head ->next;
+        while(fast && fast ->next) {
+            slow = slow ->next;
+            fast = fast ->next ->next;
+        }
+        return slow;
+    }
+    
+    void merge(ListNode * l1, ListNode * l2) {
+        ListNode * dummyHead = new ListNode (-1);
+        ListNode * start = dummyHead;
+        
+        while (l1 && l2) {
+            start->next = l1;
+            l1 = l1 ->next;
+            start = start ->next;
+            start->next = l2;
+            l2 = l2 ->next;
+            start = start ->next;
+        }
+        if(!l1) start ->next = l2;
+        if(!l2) start ->next = l1;
+        //return dummyHead ->next;
+        l1 = dummyHead ->next;
+    }
+     
+    ListNode * reverseBehind (ListNode * head) {
+        if(!head || ! head ->next) return head;
+        ListNode * dummyHead = new ListNode (-1);
+        dummyHead ->next = head; //注意注意注意！你动head的话要从head 前面开始搞！
+        ListNode * cur = head;  //才能够动到head
+        head = dummyHead;
+        while(cur->next) {
+            ListNode * temp = cur ->next;
+            cur ->next = temp ->next;
+            temp ->next = head ->next;
+            head ->next = temp;
+        }
+        return dummyHead->next;
+    }
+    
+};
