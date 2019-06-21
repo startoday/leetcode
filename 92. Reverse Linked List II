@@ -30,8 +30,7 @@ public:
         }
         ListNode * cur = pre ->next;
         while (dis) {
-            ListNode * temp = cur->next;    //能向下走的重点！
-            
+            ListNode * temp = cur->next;    //做的是把temp插入pre后， 保持 pre ->next 到cur的中间那段不变
             cur->next= temp ->next;  // 1->2（cur）->3 （temp）->4   先断开cur and temp  
             temp ->next = pre->next; // 移动要动的点到 断开点的前面 （首个点和后面的点）
             pre->next = temp;  //连上首个点和temp
