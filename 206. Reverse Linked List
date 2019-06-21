@@ -18,6 +18,21 @@ public:
         return dummyHead->next;
     }
 };
+#另一种写法
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(!head  || !head->next) return head;
+        ListNode * pre = NULL;
+        while(head) {
+            ListNode * temp = head ->next;
+            head ->next = pre;
+            pre = head; //不是往pre = pre->next 的方向
+            head = temp; // head 也往前移动，因为已经断开了直接赋值
+        }
+        return pre;  //注意return的是pre！不是head！！！
+    }
+};
 
 
 #recursive
