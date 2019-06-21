@@ -1,0 +1,32 @@
+Given a sorted linked list, delete all duplicates such that each element appear only once.
+
+Example 1:
+
+Input: 1->1->2
+Output: 1->2
+Example 2:
+
+Input: 1->1->2->3->3
+Output: 1->2->3
+
+
+#链表基本题，分成查找和删除两步，因为是sorted list， 查找就是比较前后两个元素一不一样而已
+
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(!head || !head->next) return head;
+
+        ListNode * cur = head;
+        while (cur && cur->next) {
+            if(cur->val == cur->next ->val) {
+                cur->next = cur->next ->next;
+            } else {   //注意一定得是else 才走，删干净了才走啊！
+            cur = cur ->next;
+            }
+        }
+
+        return head;
+     
+    }
+};
