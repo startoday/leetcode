@@ -1,0 +1,38 @@
+#就是reverse 一个linked list 
+#iteratively
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        //还是insert的题啊。。只要想着把遇到的点insert到前面就行了！
+        if(!head) return head;
+        ListNode * dummyHead = new ListNode (-1);
+        dummyHead ->next = head;
+        ListNode * pre = dummyHead;
+        ListNode * cur = pre->next;
+        while(cur->next) {
+            ListNode * temp = cur->next;    
+            cur->next = temp->next;          
+            temp->next = pre->next;
+            pre->next = temp;
+        }
+        return dummyHead->next;
+    }
+};
+
+
+#recursive
+#实在是太睿智了！！
+class Solution {
+public:
+    //recursive的方法
+    //定义这个函数会reverse传入的点 return转好的head
+    //假设后面的点都reverse好了，只观察当前的点
+    ListNode* reverseList(ListNode* head) {
+       
+        if(!head  || !head->next) return head;
+        ListNode * dummy = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL; //otherwise is a cycle
+        return dummy;
+    }
+};
