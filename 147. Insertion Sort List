@@ -1,0 +1,32 @@
+#按照insertion sort的方法sort list
+# O (n^2)
+
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if(!head || !head->next) return head;
+        ListNode * dummyHead = new ListNode (-1);
+        dummyHead ->next = head;
+        
+        ListNode * pre = head;
+        ListNode * cur = head->next;
+        while (cur) {
+            ListNode * anotherHead = dummyHead->next;
+            if(cur -> val >= pre->val) {
+                pre = cur;
+                cur = cur ->next;
+            } else {
+                ListNode * preHead = dummyHead;
+                while (cur->val > anotherHead->val) {
+                    preHead = anotherHead;
+                    anotherHead = anotherHead->next;
+                }
+                pre->next = cur ->next;
+                preHead->next = cur;
+                cur->next = anotherHead;
+                cur = pre->next;
+            }
+        }
+        return dummyHead ->next;
+    }
+};
