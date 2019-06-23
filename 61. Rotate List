@@ -7,7 +7,7 @@ rotate 2 steps to the right: 1->2->0->NULL
 rotate 3 steps to the right: 0->1->2->NULL
 rotate 4 steps to the right: 2->0->1->NULL
 
-#想法和split list 一样 求余数， 不过有点慢啊
+#想法和split list 一样 求余数，faster than 91%
 class Solution {
 public:
     ListNode* rotateRight(ListNode* head, int k) {
@@ -41,3 +41,30 @@ public:
         return dummyHead ->next;
     }
 };
+
+#一个更快的解法是 获得链表长度n的时候把链表连起来，再走 n - k % n 就达到了 新 链表的断开节点 beat 99%
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head) return head;
+        ListNode * cur = head;
+        int length = 0;
+        while(cur->next) {
+            cur = cur ->next;
+            length ++;
+        }
+        length ++;
+        int step = length - k % length;
+        cur->next = head;
+        while (step) {
+            cur = cur ->next;
+            step --;
+        }
+        ListNode * dummy = cur ->next;
+        cur ->next = NULL;
+        
+        return dummy;
+    }
+};
+        
