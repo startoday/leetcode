@@ -48,9 +48,7 @@ public:
         }
         return pre; //return 中点前面的那个点
     }
-    
-    
-    
+
     ListNode * findMid (ListNode * head) {
         if(!head || ! head->next) return head;
         
@@ -62,5 +60,32 @@ public:
             slow = slow ->next;
         }
         return slow; //return 偏左的点 (中点的前一个点)
+    }
+};
+
+
+#既然都需要之前的点，code可以简化一点
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if(!head) return NULL;
+        if (!head->next) return new TreeNode(head->val);
+        
+        ListNode * pre = NULL;
+        ListNode * fast = head->next;
+        ListNode * slow = head;
+        
+        while (fast && fast ->next) {
+            fast = fast ->next ->next;
+            pre = slow;
+            slow = slow ->next;
+        }
+        TreeNode * root = new TreeNode (slow ->val);
+        root ->right = sortedListToBST(slow ->next);
+        if(pre) {
+            pre ->next = NULL;
+            root ->left = sortedListToBST(head);
+        } else root ->left = NULL;
+        return root;
     }
 };
