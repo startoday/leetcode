@@ -1,0 +1,51 @@
+We are given head, the head node of a linked list containing unique integer values.
+
+We are also given the list G, a subset of the values in the linked list.
+
+Return the number of connected components in G, where two values are connected if they appear consecutively in the linked list.
+
+Example 1:
+
+Input: 
+head: 0->1->2->3
+G = [0, 1, 3]
+Output: 2
+Explanation: 
+0 and 1 are connected, so [0, 1] and [3] are the two connected components.
+Example 2:
+
+Input: 
+head: 0->1->2->3->4
+G = [0, 3, 1, 4]
+Output: 2
+Explanation: 
+0 and 1 are connected, 3 and 4 are connected, so [0, 1] and [3, 4] are the two connected components.
+
+
+#这道题最难的是理解题意吧？？？？？？？！！！！！！
+#from answers 猜想意思是能连上就把G里的点划掉，看几次能把G里的点划完， 如此的智障表达！赶紧写完拜拜了您那
+
+class Solution {
+public:
+    int numComponents(ListNode* head, vector<int>& G) {
+        if(!head || G.empty()) return 0;
+        int res = 0;
+        unordered_set <int> store (G.begin(),G.end()); //学习一下新写法
+        while(head) {
+            if(!store.count(head->val)) { 
+                head = head->next;
+            } else {
+                res ++;  //能连接上再开始消消乐
+                while(head && store.count(head->val)) {
+                    head = head->next;
+                } 
+            }
+        }
+        return res;
+    }
+};
+
+
+
+#遍历一次 O （N） space O（G.size)
+
