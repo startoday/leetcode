@@ -1,0 +1,43 @@
+# Given a linked list, rotate the list to the right by k places, where k is non-negative.
+Input: 0->1->2->NULL, k = 4
+Output: 2->0->1->NULL
+Explanation:
+rotate 1 steps to the right: 2->0->1->NULL
+rotate 2 steps to the right: 1->2->0->NULL
+rotate 3 steps to the right: 0->1->2->NULL
+rotate 4 steps to the right: 2->0->1->NULL
+
+#想法和split list 一样 求余数， 不过有点慢啊
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head) return head;
+        ListNode * cur = head;
+        int length = 0;
+        while(cur) {
+            cur = cur ->next;
+            length ++;
+        }
+        int base = k % length;
+        cout<<base<<endl;
+        if(base == 0) return head;
+        ListNode * dummyHead = new ListNode (-1);
+        dummyHead ->next = head;
+        ListNode * c2 = head;
+        while (base) {
+            c2 = c2->next;
+            base --;
+        }
+        cur = head;
+        while (c2 ->next) {
+            c2 = c2->next;
+            cur = cur ->next;
+        }  //cur 在要换的点的前面 ，C2在最后一个点的位置
+        
+        dummyHead->next = cur->next;
+        cur->next = c2->next;
+        c2->next = head;
+        
+        return dummyHead ->next;
+    }
+};
