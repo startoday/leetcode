@@ -1,0 +1,52 @@
+#有一个linked list， 每个node 都含有一个随机的指针， 可能指向任意一个node 或者 NULL
+#要求return 一个deep copy of the list
+
+#要求O（1） 如果不是O（1） 哈希表存一下应该就行 先建立map再用map搜索随机指针赋值
+
+#是O（1）的话用1.在该点后面拷贝一个新的节点 2. 赋值randptr ：cur->next->rand = cur ->ran ->next 3. 最后再遍历一次断开拷贝的节点和原节点们 
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head) return head;
+        Node * cur = head;
+        while(cur) {
+            Node* temp = new Node (cur->val, NULL, NULL);//必须得把NULL的值给赋上，不然
+            // {"$id":"1","next":null,"random":null,"val":-1}
+            //过不去
+            temp->next = cur ->next;
+            cur-> next = temp;
+            cur = temp->next;
+        }
+        Node * cur2 = head;
+        while (cur2) {
+            if(cur2->random) cur2->next->random = cur2->random->next;
+            cur2 = cur2 ->next ->next;
+        }
+        
+        Node * dummyHead = new Node (-1);
+        dummyHead ->next = head->next;
+        //Node *dummyHead = head->next; // the other start
+        //这种写法是在modify 原本的 list，不可以
+        // Next pointer of node with val 1 from the original list was modified.
+        /*
+        head = head ->next;
+        while(head->next) {
+            head->next= head->next->next;
+            head = head ->next; 
+        }
+        */
+        cur = head;  
+        while (cur && cur->next) {   
+            Node * follower = cur->next;
+            cur->next = follower->next;
+            if(cur ->next) follower->next = cur ->next ->next;
+            cur = cur ->next;
+        }
+
+        return dummyHead->next;
+    }
+};
+
+
+#类似题应该有 133. Clone Graph 
