@@ -1,0 +1,66 @@
+#给一个排好序的linked list， （ 上升顺序） 转化成一个height balanced的 BST
+
+Given the sorted linked list: [-10,-3,0,5,9],
+
+One possible answer is: [0,-3,9,-10,null,5], which represents the following height balanced BST:
+
+      0
+     / \
+   -3   9
+   /   /
+ -10  5
+ 
+ 
+ #感觉divide and conquer 吧，每次的middle都是tree node， 左子树的出自左侧，右子树的出自右侧
+ 
+ 
+ class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if(!head) return NULL;
+        if (!head->next) return new TreeNode(head->val);
+        
+        
+        ListNode * pre = findPre(head);
+        ListNode * mid = findMid(head);
+        TreeNode * root = new TreeNode (mid ->val);
+        root ->right = sortedListToBST(mid ->next);
+ 
+        if(pre) {
+            pre->next = NULL;
+            root ->left = sortedListToBST(head);
+        }
+        else root->left = NULL; 
+        
+        return root;
+    }
+    
+    ListNode * findPre (ListNode * head) {
+        if(!head || !head->next || !head->next->next) return NULL;
+        ListNode * pre = head;
+        ListNode * fast = head->next;
+        ListNode * slow = head;
+        
+        while (fast && fast ->next) {
+            fast = fast ->next ->next;
+            pre = slow;
+            slow = slow ->next;
+        }
+        return pre; //return 中点前面的那个点
+    }
+    
+    
+    
+    ListNode * findMid (ListNode * head) {
+        if(!head || ! head->next) return head;
+        
+        ListNode * fast = head->next;
+        ListNode * slow = head;
+        
+        while (fast && fast ->next) {
+            fast = fast ->next ->next;
+            slow = slow ->next;
+        }
+        return slow; //return 偏左的点 (中点的前一个点)
+    }
+};
