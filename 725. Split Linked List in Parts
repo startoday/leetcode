@@ -1,0 +1,48 @@
+#给一个链子头， 给分成几段K， 要求每段差不大于1，node数量永远是前多于后，node之间的先后顺序不可以改变
+Input: 
+root = [1, 2, 3], k = 5
+Output: [[1],[2],[3],[],[]]
+Input: 
+root = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], k = 3
+Output: [[1, 2, 3, 4], [5, 6, 7], [8, 9, 10]]
+
+#想法 如果知道链子的长度的话（n） n/k 就是每段的base node的数量，余数有多少个前面多少段就node数量+1，需要一个pre来断开
+
+
+class Solution {
+public:
+    vector<ListNode*> splitListToParts(ListNode* root, int k) {
+        
+        vector<ListNode *> res (k);
+        if(!root) return res;
+        int length = 0;
+        ListNode * cur = root;
+        while(cur) {
+            cur = cur ->next;
+            length ++;
+        }
+        cout <<length;
+        int base = length / k;
+        int more = length % k;
+        int count = 0;
+        cur = root;
+        int j = 0;
+        ListNode * pre;
+        while(cur) {
+            res[j] = cur;
+            for(int i = 0; i< base; ++i) {
+                pre = cur;
+                cur = cur ->next;
+                
+            }
+            if(count < more) {
+                pre = cur;
+                cur = cur->next;
+                count ++;
+            }
+            pre-> next = NULL;
+            ++j;
+        } 
+        return res;
+    }
+};
