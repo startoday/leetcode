@@ -89,3 +89,27 @@ public:
         return root;
     }
 };
+
+
+#既然每次都需要断掉中点，可以传一段链表，专心生成树
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if(!head) return NULL;
+        return helper(head, NULL);
+    }
+    
+    TreeNode * helper(ListNode * head, ListNode * end) {
+        if(head == end) return NULL; //不等的时候head 就有next
+        ListNode * slow = head;
+        ListNode * fast = head ->next;
+        while (fast != end && fast->next != end){ //注意别习惯性写成！= NULL了
+            slow = slow->next;
+            fast = fast->next->next;
+        } 
+        TreeNode *root = new TreeNode(slow->val);
+        root->left = helper(head, slow);
+        root->right = helper(slow->next, end);
+        return root;   
+    }
+};
