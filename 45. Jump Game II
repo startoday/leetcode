@@ -1,0 +1,36 @@
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Your goal is to reach the last index in the minimum number of jumps.
+
+Example:
+
+Input: [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2.
+    Jump 1 step from index 0 to 1, then 3 steps to the last index.
+
+#来自55题jump game。 题目保证一定有解
+#思路还是尽量reach最远，不行了就得步数+1
+#感觉我这个写的也不是 DP啊233333
+
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int size = nums.size();
+        int res = 0;
+        if(size == 1) return res; //啥鬼，还有这种无耻的test case呢？
+        int k = nums[0];
+        int farest = 0;
+        for(int i = 0; i < size-1; ++i) {   
+            k = max(k , i + nums[i]); //k is the farest to get so far
+            if(i == farest) {
+                res ++;
+                if(k >= size -1) return res; 
+                farest = k;
+            } 
+        }
+        return size;
+    }
+};
