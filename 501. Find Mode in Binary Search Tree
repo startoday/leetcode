@@ -1,0 +1,53 @@
+#给一颗二叉树，return 众数们 （这个二叉树允许左右都有重复元素）
+Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.
+
+Assume a BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than or equal to the node's key.
+The right subtree of a node contains only nodes with keys greater than or equal to the node's key.
+Both the left and right subtrees must also be binary search trees.
+ 
+
+For example:
+Given BST [1,null,2,2],
+
+   1
+    \
+     2
+    /
+   2
+
+#没想到什么好方法啊。。可以用hashmap 存点和对应的次数， 记录一下最大出现次数，再遍历hash map 找最大值加入res
+class Solution {
+public:
+    vector<int> findMode(TreeNode* root) {
+        vector<int> res;
+        if(!root) return res;
+        
+        unordered_map <int, int> check;
+        int apMax = 1;
+        preOrderAdd(root, check, apMax);
+        for(auto ele : check) {
+            if(ele.second == apMax) {
+                res.push_back(ele.first);
+            }
+        }      
+        return res;
+    }
+    
+    void preOrderAdd(TreeNode* root, unordered_map  <int, int> &check, int & apMax) {
+        if(!root) return;
+        if(check.count(root->val)>0 ){
+            check[root->val] ++;
+            apMax = max (apMax, check[root->val]);
+        } else {
+            check[root->val] = 1;
+        }
+        preOrderAdd(root->left, check, apMax);
+        preOrderAdd(root->right, check, apMax);
+    }
+};
+
+
+
+#不过这道题还要求不能用额外space来着。。
