@@ -1,0 +1,53 @@
+#给一个array， 里面的数就是货物的价格
+#你要先买货再卖货，可以进行多次交易，问累计到的最大收益是多少
+#在你买第二次之前必须先把之前的货卖掉
+
+
+Example 1:
+
+Input: [7,1,5,3,6,4]
+Output: 7
+Explanation: Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 5-1 = 4.
+             Then buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 6-3 = 3.
+Example 2:
+
+Input: [1,2,3,4,5]
+Output: 4
+Explanation: Buy on day 1 (price = 1) and sell on day 5 (price = 5), profit = 5-1 = 4.
+             Note that you cannot buy on day 1, buy on day 2 and sell them later, as you are
+             engaging multiple transactions at the same time. You must sell before buying again.
+Example 3:
+
+Input: [7,6,4,3,1]
+Output: 0
+Explanation: In this case, no transaction is done, i.e. max profit = 0.
+
+#单调递减序列肯定是没钱挣啦， return 最高利润
+#可以发现当有递增的时候才有利润可赚，递减时只好静候佳音，递增的头尾之差就是一次交易的获利
+#所以可以轻松想到快慢指针 （所以为啥这个是DP的题jump game 引导过来啊？？？）
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int res = 0;
+        if(prices.empty()) return res;
+        int size = prices.size();
+        int j = 1, i = 0;
+        while (j < size) {
+            if(prices[j] <= prices[i]) {
+                i++;
+                j++;
+            } else {
+                // 递增时j往后移， break的时候 j+1 不再增加，j为顶峰
+                while ( (j+1) < size  && prices[j+1] >= prices[j]) {
+                    j++;
+                }
+                res += prices[j]-prices[i];
+                i = j;
+                j = j+1;
+                if((j+1) == size) return res; 
+            }
+        }
+        return res;
+    }
+};
+
