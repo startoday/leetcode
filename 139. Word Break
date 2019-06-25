@@ -1,0 +1,45 @@
+#给一个非空string 和 非空 vector， 拥有list of non-empty words
+Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, 
+determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+# The same word in the dictionary may be reused multiple times in the segmentation.
+# You may assume the dictionary does not contain duplicate words.
+Example 1:
+
+Input: s = "leetcode", wordDict = ["leet", "code"]
+Output: true
+Explanation: Return true because "leetcode" can be segmented as "leet code".
+Example 2:
+
+Input: s = "applepenapple", wordDict = ["apple", "pen"]
+Output: true
+Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+             Note that you are allowed to reuse a dictionary word.
+Example 3:
+
+Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+Output: false
+
+
+#能split的首先一开始就得可以split，可以sort一下 list 方便搜索
+#过不了某些太长的case！
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        set<string> sortedDic (wordDict.begin(), wordDict.end());
+        return helper(s, sortedDic);
+    }
+    
+    bool helper(string s, set<string> & sortedDic) {
+        if(sortedDic.count(s)) return true;
+        int size = s.size();
+        string store = "";
+        for(int i = 0; i < size; ++i) {
+            store += s[i];
+            if(sortedDic.count(store)) {
+                if(helper(s.substr (i+1), sortedDic)) return true;
+                continue;    
+            }
+        }
+        return false;
+    }  
+};
