@@ -28,10 +28,10 @@ public:
         int size = s.size();
         vector<bool> res (size);
         for(int i = 0; i < size; ++i) {
-            res[i] = dic.find(s.substr(0,i+1))!= dic.end();
+            res[i] = dic.count(s.substr(0,i+1)); //用count还是快一点的！
             for(int j = 0; j < i ; ++j) {
                 if(res[i]) break;
-                res[i] = res[j] && (dic.find(s.substr(j+1, i-j))!= dic.end());
+                res[i] = res[j] && dic.count(s.substr(j+1, i-j));
             }
         }   
         return res.back();
