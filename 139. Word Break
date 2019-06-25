@@ -19,9 +19,31 @@ Example 3:
 Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
 Output: false
 
+#一个stirng 越长越难拆解用array来储存到每个char为止是T or F， 该字([0,j])能不能拆取决于每个[0,i]是T的时候[i+1，j]这块是不是，是的话就是了
+#用hash set 存一波的话seach也是很快的---实际
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> dic (wordDict.begin(), wordDict.end());
+        int size = s.size();
+        vector<bool> res (size);
+        for(int i = 0; i < size; ++i) {
+            res[i] = dic.find(s.substr(0,i+1))!= dic.end();
+            for(int j = 0; j < i ; ++j) {
+                if(res[i]) break;
+                res[i] = res[j] && (dic.find(s.substr(j+1, i-j))!= dic.end());
+            }
+        }   
+        return res.back();
+    }
+};
 
-#能split的首先一开始就得可以split，可以sort一下 list 方便搜索
-#过不了某些太长的case！
+
+
+
+
+
+#过不了某些太长case的recursive，substring那里还是可能越界
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
