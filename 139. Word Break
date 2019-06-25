@@ -38,9 +38,8 @@ public:
     }
 };
 
-
-
-
+#time O(n^2)
+#space O(n+m)
 
 
 #过不了某些太长case的recursive，substring那里还是可能越界
