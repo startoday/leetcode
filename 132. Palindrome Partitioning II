@@ -1,0 +1,48 @@
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return the minimum cuts needed for a palindrome partitioning of s.
+
+Example:
+
+Input: "aab"
+Output: 1
+Explanation: The palindrome partitioning ["aa","b"] could be produced using 1 cut.
+
+#动态规划哈
+class Solution {
+public:
+    //给一个string return 最低的cut数量（有几个min pali -1）
+    int minCut(string s) {
+        int size = s.size();
+        if(size == 0) return 0;
+        vector<int> res (size);
+        
+        vector< vector < bool>> store (size, vector<bool> (size));
+        for(int i = 0; i < size; ++i) {
+            store[i][i] = true;
+        }
+        for(int i = 0; i < size-1; ++i) {
+            store[i][i+1] = (s[i] == s[i+1]);
+        }
+        for(int j = 2; j < size; ++j){ //fill by colum
+            for(int i = 0 ; i < j-1; ++i) {
+                store[i][j] = store[i+1][j-1] && (s[i] == s[j]);
+            }
+        }
+           
+        for(int i = 0; i < size; ++i) {
+            res[i] = i+1;
+            for(int j = 0; j <= i; ++j) {
+                if(isPali(s, j, i, store)) {
+                    if(j!=0) res[i] = min (res[i], res[j-1]+1);
+                    else res[i] = min (res[i], 1);
+                }
+            }
+        }
+        return res[size-1]-1;
+    }
+      
+    bool isPali(string s, int start, int end, vector< vector < bool>> &store) {
+        return store[start][end]; 
+    }
+};
