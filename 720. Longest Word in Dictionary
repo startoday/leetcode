@@ -1,0 +1,35 @@
+Given a list of strings words representing an English Dictionary, find the longest word in words that can be built one character at a time by other words in words. If there is more than one possible answer, return the longest word with the smallest lexicographical order.
+
+If there is no answer, return the empty string.
+Example 1:
+Input: 
+words = ["w","wo","wor","worl", "world"]
+Output: "world"
+Explanation: 
+The word "world" can be built one character at a time by "w", "wo", "wor", and "worl".
+#要求要一个一个字母的加载
+#这道题居然是个easy题，我佛了
+#我的第一想法把words按照单词长度拆成不同的vector，排序，再DFS，或者每次加26的字母找是不是存在。。反正觉得都挺麻烦的啊。。巨慢
+
+#睿智的解法。。
+class Solution {
+public:
+    string longestWord(vector<string>& words) {
+        //compare the first char first, eg kst" < "sh"
+        //所以对于sort多加小心。不是length短的在前
+        unordered_set<string> search;
+        sort(words.begin(),words.end());
+        string res = "";
+        for(string word : words) {
+            int size = word.size();
+            if(size == 1 ||search.count(word.substr(0, size-1))) {
+                search.insert(word);
+                //注意判断条件大于等于，光大于时会被后面lexcio更小的overwrite了
+                res =  res.size() >= size ? res : word;
+            }  
+        }
+        return res;
+    }
+};
+
+ref： https://leetcode.com/problems/longest-word-in-dictionary/discuss/109114/javac-clean-code
