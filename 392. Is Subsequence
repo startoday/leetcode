@@ -15,7 +15,7 @@ s = "axc", t = "ahbgdc"
 Return false.
 
 #这道题是medium 而longest word 是easy？？
-#暴力解也beat 90%
+#暴力解也beat 92%
 class Solution {
 public:
     bool isSubsequence(string s, string t) {
@@ -34,3 +34,5 @@ public:
         return false;
     }
 };
+
+#follow up是有多个S，一个T怎么做？ 把T的每个字母对应位置记录一下再找
