@@ -1,0 +1,24 @@
+#硬币系统未知，给你一个数值，可以拆分的话return需要的货币最小值，不可以的话return -1
+
+
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        //对于判断是否可以分开，用INT_MAX控制
+        int size = coins.size();
+        vector<long> res (amount+1, INT_MAX);
+        if(amount == 0) return 0;
+        res[0] = 0;
+        for(int i = 1; i <= amount; ++i) {  
+            for(int k = 0; k < size; ++k) {
+                if( i < coins[k]) continue;
+                res[i] = min(res[i], res[i-coins[k]]+1);
+            }
+        }    
+    
+        if(res.back() >= INT_MAX) return -1;
+        return res.back();
+    }
+};
+
+# time O（NK） space O（N）
