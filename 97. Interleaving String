@@ -1,0 +1,58 @@
+Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+
+Example 1:
+
+Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac"
+Output: true
+Example 2:
+
+Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
+Output: false
+
+#交替拎出 s1,s2能否组成s3
+#f(i,j) 是s1的前i个字符和 s2的前j个字符，能否组成s3的前 i+j的字符，比较 a[i]，b[j]和 c[i+j]得有一个相等嗷
+ class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        int size1 = s1.size(); // col
+        int size2 = s2.size(); // row
+        int size3 = s3.size();
+        if(size1+ size2 != size3) return false;
+        vector<vector <bool>> res (size2 +1, vector<bool> (size1+1));
+        
+        for(int i = 1; i <= size1; ++i){
+            res[0][i] = (s1.substr(0,i).compare(s3.substr(0,i)) ==0);
+        }
+        
+        for(int i = 0; i <= size2; ++i){
+            res[i][0] = (s2.substr(0,i) == s3.substr(0,i));
+        }
+        
+        for(int i = 1; i <= size2; ++i) {
+            for(int j = 1; j <= size1; ++j) {      
+                if(s1[j-1] == s3[i+j-1] && s2[i-1] == s3[i+j-1] ) res[i][j] = res[i][j-1] || res[i-1][j];
+                else if(s1[j-1] == s3[i+j-1]) res[i][j] = res[i][j-1];
+                else if(s2[i-1] == s3[i+j-1]) res[i][j] = res[i-1][j];
+                else res[i][j] = false;
+            }
+        }
+        return res[size2][size1];
+    }
+};
+ 
+ 
+ /* 这种写法是不对的 s1 = aa, s2 =ab, s3 = abaa 会return false， 其实true的时候不一定走的是哪一边
+       int i = 0;
+      for(int j = 0; j < size1; ++j) {
+          if(i+j >= size3) return false;
+          if(s1[j] == s3[i+j]) continue;
+          else {
+              if(i >= size2) return false;
+              if(s2[i] == s3[i+j]) {
+                  ++i;
+                  continue;
+              } else return false;
+          } 
+      } 
+      
+  */
