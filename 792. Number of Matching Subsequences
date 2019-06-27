@@ -1,0 +1,39 @@
+#392的follow up， 用392 的 暴力解直接写爆时间，第二个写法还是比较慢。我自己的写法check leetcode去吧
+#在这里学习另一个解法
+Given string S and a dictionary of words words, find the number of words[i] that is a subsequence of S.
+
+Example :
+Input: 
+S = "abcde"
+words = ["a", "bb", "acd", "ace"]
+Output: 3
+Explanation: There are three words in words that are a subsequence of S: "a", "acd", "ace".
+#ref:https://leetcode.com/problems/number-of-matching-subsequences/discuss/117634/Efficient-and-simple-go-through-words-in-parallel-with-explanation
+
+
+class Solution {
+public:
+    int numMatchingSubseq(string S, vector<string>& words) {
+        //store 里面是words里面每个word的首字母信息和即时长度信息
+        //128 因不区分大小写，不是size128的vector 而是128为size的vector array
+        vector<pair<int, int>> store[128];
+        int res = 0, num = words.size();
+        for (int i = 0; i < num ; i++) {
+            store[words[i][0]].emplace_back(i, 1); //还记得这个和push_back的比较不，会快一点
+        }
+        for (char c : S) {
+            //遇到了一个字母， vect该是 一个 vector<pair<int, int>>
+            auto vect = store[c];
+            //该字母为首的store可以清除了
+            store[c].clear();
+            // loop每一个pair，check size
+            for (auto it : vect) {
+                //size相等表示都check完了，可以结果+1
+                if (it.second == words[it.first].size()) ++res; 
+                //first是 words的 index， second是check 完的length
+                else store[words[it.first][it.second++]].push_back(it);
+            }
+        }
+        return res;
+    }
+};
