@@ -36,3 +36,24 @@ public:
 };
 
 #follow up是有多个S，一个T怎么做？ 把T的每个字母对应位置记录一下再找
+    bool isSubsequence(unordered_map<char, vector<int>> &pos, string &t) {
+        int size = t.size(); 
+        int spot = -1;
+        for(int i = 0; i < size; ++i) {
+            if(!pos.count(t[i])) return false;
+            else {
+                int num = pos[t[i]].size();
+                if(pos[t[i]].back() <= spot) return false;
+                else {
+                    for(int j = 0; j < num; ++j) {
+                        if(pos[t[i]][j] > spot) {
+                            spot = pos[t[i]][j];
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
