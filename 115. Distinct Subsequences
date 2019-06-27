@@ -1,0 +1,55 @@
+Given a string S and a string T, count the number of distinct subsequences of S which equals T.
+
+A subsequence of a string is a new string which is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (ie, "ACE" is a subsequence of "ABCDE" while "AEC" is not).
+
+Example 1:
+
+Input: S = "rabbbit", T = "rabbit"
+Output: 3
+Explanation:
+
+As shown below, there are 3 ways you can generate "rabbit" from S.
+(The caret symbol ^ means the chosen letters)
+
+rabbbit
+^^^^ ^^
+rabbbit
+^^ ^^^^
+rabbbit
+^^^ ^^^
+
+#看备注吧。。坑很多，特别是 res[0][0]这个点到底取啥的争端 写的时候先问明白
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        //从S里找T
+        //这道题的设计是当T是空的的时候 return 1
+        //两个都是空的也return 1 ---debug时候的重点！！
+        int sizeS = s.size(); //col
+        int sizeT = t.size();
+        if(sizeT > sizeS) return 0;
+        //定义f(i,j) 是s的前i位于 t的前j位有多少数
+        
+        //string 还有overflow的事情。。。debug时候注意啊要用long
+        vector<vector<long>> res(sizeT+1, vector<long> (sizeS+1));
+        for(int i = 0; i <= sizeS; ++i) {
+            res[0][i] = 1;
+        }
+        for(int i = 1; i <= sizeT; ++i) {
+            res[i][0] = 0;
+        }
+        //当当前字符相等时可以选择取或者不取, 取的话j也减1， 不取的话相当于 i-1 j不变
+        //所以是res[i][j-1] + res[i-1][j-1]; 所以应该先fill 列，行数在内部循环
+        for(int j = 1; j <= sizeS; ++j) {
+            for(int i = 1; i <= sizeT; ++i) { //i是行数，j是列数
+                if(s[j-1] == t[i-1]) {
+                    res[i][j] = res[i][j-1] + res[i-1][j-1];
+                } else {
+                    res[i][j] = res[i][j-1];
+                }
+            }
+        }      
+        return res[sizeT][sizeS];
+       
+    }
+};
