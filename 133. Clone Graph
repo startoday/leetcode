@@ -1,0 +1,29 @@
+Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. 
+Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
+
+#note
+The number of nodes will be between 1 and 100.
+The undirected graph is a simple graph, which means no repeated edges and no self-loops in the graph.
+Since the graph is undirected, if node p has node q as neighbor, then node q must have node p as neighbor too.
+You must return the copy of the given node as a reference to the cloned graph.
+#无重复边，没有自循环，
+#无向图
+#要求return的是copy of 原始点！
+
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        unordered_map<Node*, Node*> store;
+        return helper(node, store);
+    }
+    Node* helper(Node* node, unordered_map<Node*, Node*>& store) {
+        if (!node) return NULL;
+        if (store.count(node)) return store[node];
+        Node * clone = new Node(node->val);
+        store[node] = clone;
+        for (Node * nei : node->neighbors) {
+            clone->neighbors.push_back(helper(nei, store));
+        }
+        return clone;
+    }
+};
