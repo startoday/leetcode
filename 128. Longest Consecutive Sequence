@@ -31,3 +31,35 @@ public:
 };
 
 #time O（nlgn）
+
+
+#想要总time是n的 可以用一个hashset，遍历的过程中删掉已经计数过的（上下都要计算）根据差值update res
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if(nums.empty()) return 0;
+        unordered_set<int> store (nums.begin(), nums.end());
+        int size = nums.size();
+        int pre, next;
+        int res = 1; //注意初始化应该是1！
+        for(int i = 0; i < size - 1; ++i) {  
+            int val = nums[i];
+            if(!store.count(val)) continue;
+            else {
+                store.erase(val);
+                pre = val - 1;
+                next = val + 1;
+                while(store.count(pre)) {
+                    store.erase(pre);
+                    pre--;
+                } //退出的时候是一个不在的下边界 ，pre+1 exist
+                while(store.count(next)) {
+                    store.erase(next);
+                    next++;
+                } //退出的时候是一个不在的上边界 , next -1 exist
+                res = max(res, next - 1 - pre); 
+            }
+        }
+        return res;
+    }
+};
