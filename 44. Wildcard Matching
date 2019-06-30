@@ -1,0 +1,47 @@
+Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*'.
+
+'?' Matches any single character.
+'*' Matches any sequence of characters (including the empty sequence).
+The matching should cover the entire input string (not partial).
+
+Note:
+
+s could be empty and contains only lowercase letters a-z.
+p could be empty and contains only lowercase letters a-z, and characters like ? or *.
+
+#dp 题 - word1[i] == word2[j]: res[i-1][j-1], 不等的时候判断word2[j]的case， 
+#三个 边界test case 
+""
+"*"  ---true
+""
+"?"  ---false
+""
+""   ---true
+#不说啥了，这道题还花了这么久，实力不济啊真是！！！！
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int sizeS = s.size();
+        int sizeP = p.size();
+        vector<vector<bool>> res(sizeP+1, vector<bool>(sizeS+1));
+        res[0][0] = true;
+        for(int i = 1; i <= sizeS; ++i) {
+            res[0][i] = false;
+        }
+        for(int i = 1; i <= sizeP; ++i) {
+            if(p[i-1] == '*') res[i][0] = res[i-1][0]; //这是一直错的原因。。上一位也要check啊！！！
+            else res[i][0] = false;
+        }
+
+        //s的第j位vs p的第i位
+        for(int i = 1; i <= sizeP; ++i) { 
+            for(int j = 1; j <= sizeS; ++j) {
+                //j-1（*代表1个） 或者j不动，比较的是上一位是不是对的。。。（*代表0个）
+                if(p[i-1] == '*') res[i][j]= res[i-1][j]||res[i][j-1];   
+                else if(p[i-1] =='?'|| s[j-1] == p[i-1]) res[i][j] = res[i-1][j-1];
+                else res[i][j] = false;
+            }
+        }
+            return res[sizeP][sizeS] ;
+    }
+};
