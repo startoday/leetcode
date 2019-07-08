@@ -1,0 +1,39 @@
+Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, 
+add spaces in s to construct a sentence where each word is a valid dictionary word. 
+Return all such possible sentences.
+
+Note:
+The same word in the dictionary may be reused multiple times in the segmentation.
+You may assume the dictionary does not contain duplicate words.
+Input:
+s = "catsanddog"
+wordDict = ["cat", "cats", "and", "sand", "dog"]
+Output:
+[
+  "cats and dog",
+  "cat sand dog"
+]
+
+class Solution {
+public:
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_map<string, vector<string>> store;
+        return helper(s, wordDict, store);
+    }
+    vector<string> helper(string s, vector<string>& wordDict,unordered_map<string, vector<string>> & store) {
+        if(s.empty()) return {""}; #return vector<string> 的简便写法
+        if(store.count(s)) return store[s];
+        vector<string> res;
+        for(string word : wordDict) {
+            int i = word.size();
+            if(s.substr(0, i) == word) {
+                vector<string> temp = helper(s.substr(i, s.size()-i), wordDict, store);
+                for(string aWord : temp) {
+                    res.push_back(word + (aWord.empty()? "" : " ") + aWord);
+                }
+            } else continue;
+        }
+        store.insert({s, res}); #注意insert要带花括号
+        return store[s];
+    }
+};
