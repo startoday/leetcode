@@ -54,3 +54,24 @@ public:
         return res;
     }
 };
+
+#em。。。这道题建立三维数组没必要诶，str只和自己相关，来一个简短点的写法
+class Solution {
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        int sizeN = strs.size();
+        if(sizeN == 0) return 0;
+        vector<vector<int>> dp (m+1, (vector<int> (n+1, 0)));
+        for(string str:strs) {
+            int zero = 0;
+            int one = 0;
+            for(char c:str) (c == '1')? one++ : zero++;
+            for(int j = m; j >= zero; --j) { 
+                for(int k = n; k >= one; --k) {
+                    dp[j][k] = max (dp[j][k], 1 + dp[j - zero][k - one]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
