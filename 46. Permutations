@@ -20,3 +20,34 @@ Output:
 #这个点右侧 最靠近她的大于她的数是转化点2
 #两个转化点swap （把次大位转到了正确的位置）接下来就是 从该位置起 下面的最小，所以reverse后面的数字们
 
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> res;
+        if(nums.empty()) return res;
+        vector<int> temp = nums;
+        res.push_back(nums);
+        next_p(nums);
+        while(nums != temp) {
+            res.push_back(nums);
+            next_p(nums);
+        }
+        return res;
+    } 
+    
+    void next_p(vector<int>& nums){
+        int siz = nums.size();
+        int inP = siz - 2;
+        for(inP; inP >= 0; --inP) {
+            if(nums[inP] < nums[inP+1]) break;
+        }
+        if(inP != -1) {
+            int anotherP = siz -1;
+            for(anotherP; anotherP > inP; --anotherP) {
+                if(nums[anotherP] > nums[inP]) break;
+            }
+            swap(nums[anotherP], nums[inP]);
+        }
+        reverse(nums.begin() + inP +1, nums.end());
+    }
+};
