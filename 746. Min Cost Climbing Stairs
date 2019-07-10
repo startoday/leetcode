@@ -1,0 +1,38 @@
+#本来以为遇到一道超简单的题。。。相顾无言惟有泪千行
+#很多要注意的小细节啊
+#干脆把俩都写了。。。
+On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed).
+
+Once you pay the cost, you can either climb one or two steps. You need to find minimum cost to reach the top of the floor, and you can either start from the step with index 0, or the step with index 1.
+
+Example 1:
+Input: cost = [10, 15, 20]
+Output: 15
+Explanation: Cheapest is start on cost[1], pay that cost and go to the top.
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int size = cost.size();
+        vector<int> dp (size, 0);
+        dp[0] = cost[0];
+        dp[1] = cost[1];  #这种dp【1】 不是min（ 0，1） --一定跳到该点
+        
+        for(int i = 2;i < size ; ++i) {
+            dp[i] = cost[i] + min(dp[i- 1], dp[i - 2]);
+        }
+        return min(dp[size -2], dp.back());
+    }
+};
+
+#另一个看跳到，不算跳出的
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int size = cost.size();
+        vector<int> dp (size+1, 0);
+        for(int i = 2;i <= size ; ++i) {
+            dp[i] = min(dp[i- 1] + cost[i-1], dp[i - 2]+ cost[i-2]);
+        }
+        return dp.back();
+    }
+};
