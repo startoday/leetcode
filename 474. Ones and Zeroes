@@ -24,7 +24,7 @@ public:
         vector<vector<vector<int>>> dp (sizeN +1, vector<vector<int>>(m+1, (vector<int> (n+1, 0))));
         
         for(int i = 1; i <= sizeN; ++i) {
-            for(int j = 0; j <= m; ++j) {
+            for(int j = 0; j <= m; ++j) { //注意要从0 开始！防止有一个是0的时候直接不跑了，initial 只是i的事
                 for(int k = 0; k <= n; ++k) {
                     int c1 = countOne(strs[i-1]);
                     int c0 = countZero(strs[i-1]);
