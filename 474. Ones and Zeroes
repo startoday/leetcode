@@ -13,3 +13,44 @@ Example 2:
 Input: Array = {"10", "0", "1"}, m = 1, n = 1
 Output: 2
 Explanation: You could form "10", but then you'd have nothing left. Better form "0" and "1".
+
+#和背包问题类似吧，string的长度是size（可选参数n），各自会侵占几个1 或者 0 
+#过是可以一次过但是速度也太慢了2333
+class Solution {
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        int sizeN = strs.size();
+        if(sizeN == 0) return 0;
+        vector<vector<vector<int>>> dp (sizeN +1, vector<vector<int>>(m+1, (vector<int> (n+1, 0))));
+        
+        for(int i = 1; i <= sizeN; ++i) {
+            for(int j = 0; j <= m; ++j) {
+                for(int k = 0; k <= n; ++k) {
+                    int c1 = countOne(strs[i-1]);
+                    int c0 = countZero(strs[i-1]);
+                    dp[i][j][k] =dp[i-1][j][k];
+                    if(j >=  c0 && k >= c1) {
+                        dp[i][j][k] = max (dp[i][j][k], 1 + dp[i-1][j - c0][k - c1]);
+                    }
+                }
+            }
+        }
+        
+        return dp[sizeN][m][n];
+    }
+    
+    int countOne(string s){
+        int res = 0;
+        for(char k : s){
+            if(k == '1') res ++;
+        }
+        return res;
+    }
+    int countZero(string s){
+        int res = 0;
+        for(char k : s){
+            if(k == '0') res ++;
+        }
+        return res;
+    }
+};
