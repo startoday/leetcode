@@ -51,3 +51,26 @@ public:
         reverse(nums.begin() + inP +1, nums.end());
     }
 };
+
+
+#DFS的常规写法
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& num) {
+        vector<vector<int>> res;
+        permDFS(num, 0, res);
+        return res;
+    }
+    void permDFS(vector<int>& num, int start, vector<vector<int>>& res) {
+        int size = num.size();
+        if(start == size) {
+            res.push_back(num);
+            return;
+        }
+        for(int i = start; i < size; ++i) {
+            swap(num[start],num[i]);
+            permDFS(num, start + 1, res);
+            swap(num[start],num[i]);
+        }
+    }
+};
