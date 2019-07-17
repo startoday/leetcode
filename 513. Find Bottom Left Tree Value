@@ -32,3 +32,21 @@ public:
         return max(getHeight(root->left),getHeight(root->right))+1;
     }
 };
+
+
+#从右往左层序遍历那么就直接最后一个是左边的最左了！
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        if(!root) return -1;
+        queue<TreeNode*> store{{root}}; //can initialize in this way
+        TreeNode * temp;
+        while(!store.empty()){
+            temp = store.front();
+            store.pop();
+            if(temp->right) store.push(temp->right);
+            if(temp->left) store.push(temp->left);            
+        }
+        return temp->val;
+    }
+};
