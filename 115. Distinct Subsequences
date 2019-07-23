@@ -53,3 +53,32 @@ public:
        
     }
 };
+
+
+#第二次写 稍微简短了一点for loop里的判断
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        int sizeS = s.size(); 
+        int sizeT = t.size();
+        if(sizeT > sizeS) return 0;
+
+        vector<vector<long>> dp(sizeT+1, vector<long> (sizeS+1));
+        for(int i = 0; i <= sizeS; ++i) {
+            dp[0][i] = 1;
+        }
+        for(int j = 1; j <= sizeT; ++j) {
+            dp[j][0] = 0;
+        }
+        
+        for(int j = 1; j <= sizeT; ++j) {
+            for(int i = 1; i <= sizeS; ++i) { 
+                dp[j][i] = dp[j][i-1];
+                if(t[j-1] == s[i-1]) {
+                    dp[j][i] += dp[j-1][i-1];
+                } 
+            }
+        }      
+        return dp[sizeT][sizeS];  
+    }
+};
