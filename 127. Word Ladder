@@ -22,3 +22,43 @@ Explanation: As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" 
 return its length 5.
 
 #每个单词都有相同的长度，所以可以直接bfs变一位的 如果该单词在list里并且等于end则return 到root的distance， 否则继续向下，distance +1
+#tricky 的一点是不需要 visit list，而是遇到就删除，不然word List 太大的时候超时
+
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        int res = 0;
+        unordered_set<string> checkList (wordList.begin(), wordList.end());
+        //unordered_set<string> visited;
+        queue <string> nodes;
+        nodes.push(beginWord);
+        int size = beginWord.size();
+        while(!nodes.empty()) {
+            for(int k = nodes.size(); k > 0; --k) {
+                string temp = nodes.front();
+                nodes.pop();
+            
+                if(temp == endWord) return res+1;
+                //visited.insert(temp);
+
+                for(int i = 0; i < size; ++i) {
+                    string candidate = temp; //别直接改temp，会增大比较的范围，导致提前退出
+                    for(char j = 'a'; j <= 'z'; ++j) {
+                        candidate[i] = j;
+                        /*
+                        if((visited.count(candidate) == 0) && checkList.count(candidate)) {
+                            nodes.push(candidate);
+                        }
+                        */
+                        if(checkList.count(candidate)) {
+                            nodes.push(candidate);
+                            checkList.erase(candidate);
+                        }
+                    }
+                }
+            }
+            ++res;
+        }
+        return 0;
+    }
+};
