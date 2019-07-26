@@ -17,3 +17,84 @@ Explanation: No number of moves will make the board solved.
 
 #类似华容道，可以上下左右运动，想让它从右下角走出来，寻找最短路径
 #可以用bfs，每次移动一步时的状态作为 一个node， 与在右下角相等时退出，每次改变层数
+#既然是2*3的偷点懒，直接用string来表示状态了，swap来获得neighbors
+
+
+class Solution {
+public:
+    int slidingPuzzle(vector<vector<int>>& board) {
+        int rSize = board.size();
+        int cSize = board[0].size();
+        string start = "";
+        //string start (6, 6);
+        //int count = 0;
+        for(int i = 0; i < rSize; ++i) {
+            for(int j = 0; j < cSize; ++j) {
+                start += to_string(board[i][j]);
+                //start[count] = (char) board[i][j]
+            }
+        } 
+        
+        int size = rSize * cSize;
+        unordered_set<string> visited;
+        queue<string> boards;
+        boards.push(start);
+        int steps = 0;
+
+        while(!boards.empty()) {
+            for(int k = boards.size(); k > 0; --k) {
+                string temp = boards.front();
+                boards.pop();
+                if(temp[size - 1] == '0') return steps + 1;
+                visited.insert(temp);
+                getNeiB(visited, boards, temp, rSize, cSize);
+            }            
+            ++steps;
+        }
+        
+        return -1;
+    }
+    void getNeiB(unordered_set<string> & visited, queue<string> & boards, string orin, int & rSize, int & cSize) { 
+        int size = rSize * cSize;
+        for(int i = 0; i < size; ++i) {
+            if(orin[i] == '0') {
+                string temp = orin;  
+                
+                if( (i + cSize) < size) { //downwards
+                    swap(temp[i], temp[i + cSize]);
+                    changeTables(visited,  boards, temp);
+                    //swap(temp[i], temp[i + cSize]);
+                    temp = orin;
+                } 
+                if( (i - cSize) >= 0) {  //upwards
+                    swap(temp[i], temp[i - cSize]);
+                    changeTables(visited,  boards, temp);
+                    //swap(temp[i], temp[i - cSize]);
+                    temp = orin;
+                } 
+                
+                if( (i % (cSize +1)) != 0) {  //leftwards
+                    swap(temp[i], temp[i - 1]);
+                    changeTables(visited,  boards, temp);
+                    //swap(temp[i], temp[i - 1]);
+                    temp = orin;
+                }
+                
+                if( (i + 1) < (i/cSize +cSize)) {  //rightwards
+                    swap(temp[i], temp[i + 1]);
+                    changeTables(visited,  boards, temp);
+                    //swap(temp[i], temp[i + 1]);
+                    temp = orin;
+                } 
+
+            }
+        }
+    }
+    void changeTables(unordered_set<string> & visited, queue<string> & boards, string temp) {
+        if(visited.count(temp) == 0) {
+            boards.push(temp);
+            visited.insert(temp);
+        }
+    }
+    
+};
