@@ -6,3 +6,47 @@ The n-queens puzzle is the problem of placing n queens on an n×n chessboard suc
 #应该是个permutation题 return 是一个vector<vector<string>> 
 #判断对角线： 左斜对角线 --x-y == colNum 右斜对角线 x + y == colNum
 
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> res;
+        if(n <= 0) return res;
+        vector<int> Qpos(n, -1);
+        helper(n, 0, res, Qpos);
+        return res;
+    }
+    
+    void helper(int & n, int rowNum, vector<vector<string>> & res, vector<int> & Qpos ) {
+        //base case for exit
+        if(rowNum == n) {
+            // to initialize a string use n*char string(n, '.')
+            vector<string> oneRes (n, string(n, '.')); 
+            for(int i = 0; i < n; ++i){
+                oneRes[i][Qpos[i]] = 'Q';    //pay attention should be a char
+            }
+            res.push_back(oneRes);
+            return;
+        }
+        //other wise, check if there is any pos work
+        
+        for(int i = 0; i < n; ++i){
+               if(validMove(Qpos, rowNum, i, n)) {
+                   Qpos[rowNum] = i;
+                   helper(n, rowNum + 1, res, Qpos);
+                   Qpos[rowNum] = -1; //recover recursive
+               } 
+            }
+    }
+    
+    bool validMove(vector<int> & QPos, int rowNum, int colNum, int &n) {
+    //previous Q : [i][QPos[i]], new spot[rowNum][colNum]
+        for(int i = 0; i < rowNum; ++i) {
+            if(QPos[i] == -1) continue;
+            if(colNum == QPos[i]) return false;
+            //if((rowNum + colNum) == (i+QPos[i])) return false;
+            //if(abs(rowNum - colNum) == abs(i-QPos[i])) return false;
+            if(abs(rowNum - i) == abs(colNum - QPos[i])) return false;
+        }
+        return true;
+    }
+};
