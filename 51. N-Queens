@@ -43,9 +43,9 @@ public:
         for(int i = 0; i < rowNum; ++i) {
             if(QPos[i] == -1) continue;
             if(colNum == QPos[i]) return false;
-            //if((rowNum + colNum) == (i+QPos[i])) return false;
-            //if(abs(rowNum - colNum) == abs(i-QPos[i])) return false;
-            if(abs(rowNum - i) == abs(colNum - QPos[i])) return false;
+            if((rowNum + colNum) == (i+QPos[i])) return false;
+            if((rowNum - colNum) == (i-QPos[i])) return false;
+            //if(abs(rowNum - i) == abs(colNum - QPos[i])) return false; //another way for check diagnal
         }
         return true;
     }
