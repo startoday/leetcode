@@ -1,0 +1,80 @@
+Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. 
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. 
+You may assume all four edges of the grid are all surrounded by water.
+
+Example 1:
+
+Input:
+11110
+11010
+11000
+00000
+
+Output: 1
+
+#是一道count components 的题， 可以bfs
+#感觉写的很笨。。虽然beat 99%。。
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int row = grid.size();
+        if(row == 0) return 0;
+        int col = grid[0].size();
+        if(col == 0) return 0;
+        queue<pair<int, int>> store;
+        vector<vector<bool>> visit(row, vector<bool> (col, false));
+        int res = 0;
+        for(int i = 0; i < row; ++i) {
+            for(int j = 0; j < col; ++j) {
+                if(!visit[i][j] && grid[i][j] == '1') {
+                    helper(grid, visit, store, i, j, row, col); 
+                    ++res;
+                }
+            }
+        }
+        return res;  
+    }
+    
+    void helper(vector<vector<char>>& grid, vector<vector<bool>> & visit,  queue<pair<int, int>> & store, int i, int j, const int & row, const int & col) {
+        
+        store.push(make_pair(i, j));
+        visit[i][j] = true;
+        
+        while(!store.empty()) {
+            pair temp = store.front();
+            store.pop();
+            addNeiBs(grid, visit, store, temp.first, temp.second, row, col);
+            
+        }
+        
+    }
+    
+    void addNeiBs(vector<vector<char>>& grid, vector<vector<bool>> & visit, queue<pair<int, int>> & store, int i, int j, const int & row, const int & col) {
+        
+        if(i > 0 && (!visit[i-1][j])) { // up neb
+            visit[i-1][j] = true;
+            if(grid[i - 1][j] == '1') {
+                store.push(make_pair(i - 1, j));
+            }
+        }
+        if((i + 1) < row && (!visit[i+1][j])) { // down neb
+            visit[i+1][j] = true;
+            if(grid[i + 1][j] == '1') {
+                store.push(make_pair(i + 1, j));
+            }
+        }
+        if(j > 0 && !visit[i][j-1]) { // left neb
+            visit[i][j-1] = true;
+            if(grid[i][j-1] == '1') {
+                store.push(make_pair(i, j - 1));
+            }
+        }
+        if((j + 1) < col && !visit[i][j+1]) { // right neb
+            visit[i][j+1] = true;
+            if(grid[i][j+1] == '1') {
+                store.push(make_pair(i, j + 1));
+            }
+        }
+        
+    } 
+};
