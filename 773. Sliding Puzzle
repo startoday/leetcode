@@ -54,24 +54,24 @@ public:
             if(orin[i] == '0') {
                 string temp = orin;  
                 
-                if( (i + cSize) < size) { //downwards
+                if((i + cSize) < size) { //downwards
                     swap(temp[i], temp[i + cSize]);
                     changeTables(visited,  boards, temp);
                     temp = orin;
                 } 
-                if( (i - cSize) >= 0) {  //upwards
+                if((i - cSize) >= 0) {  //upwards
                     swap(temp[i], temp[i - cSize]);
                     changeTables(visited,  boards, temp);
                     temp = orin;
                 } 
                 
-                if( i % cSize  != 0) {  //leftwards
+                if(i % cSize  != 0) {  //leftwards
                     swap(temp[i], temp[i - 1]);
                     changeTables(visited,  boards, temp);
                     temp = orin;
                 }
                 
-                if( (i + 1) < ((i/cSize + 1) *cSize)) {  //rightwards
+                if((i + 1) < ((i/cSize + 1) *cSize)) {  //rightwards
                     swap(temp[i], temp[i + 1]);
                     changeTables(visited,  boards, temp);
                     temp = orin;
