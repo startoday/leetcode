@@ -65,7 +65,7 @@ public:
                     temp = orin;
                 } 
                 
-                if( (i % (cSize +1)) != 0) {  //leftwards
+                if( i % cSize  != 0) {  //leftwards
                     swap(temp[i], temp[i - 1]);
                     changeTables(visited,  boards, temp);
                     temp = orin;
