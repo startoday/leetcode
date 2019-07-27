@@ -62,3 +62,41 @@ public:
         return dp[i][j];
     }
 };
+
+#time & space O（n方）
+
+#增加一个用坐标减少代码量的写法 
+class Solution {
+public:
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+
+        int row = matrix.size();
+        if(row == 0) return 0;
+        int col = matrix[0].size();
+        if(col == 0) return 0;
+        int res = 1;
+        vector<vector<int>> dp(row, vector<int> (col, -1));
+        vector<vector<int>> direction {{0, -1}, {-1, 0}, {0, 1}, {1, 0}}; //l,u,r,d
+        for(int i = 0; i < row; ++i) {
+            for(int j = 0; j < col; ++j) {
+                dp[i][j] = helper(matrix, dp, i, j, res, row, col, direction);
+            }
+        }
+        return res;
+    }
+    
+    int helper(vector<vector<int>>& A, vector<vector<int>>& dp, int i,int j, int & res, int & row, int & col, vector<vector<int>> & direction) {
+        if(dp[i][j] != -1) return dp[i][j];
+        dp[i][j] = 1;
+        
+        for(auto step :direction) {
+            int newPosRow = i + step[0];
+            int newPosCol = j + step[1];
+            if(newPosRow < 0 || newPosRow > row - 1 ||  newPosCol < 0 ||  newPosCol > col - 1 || A[newPosRow][newPosCol] >= A[i][j]) continue;
+            dp[i][j] = max(dp[i][j], 1 + helper(A, dp, newPosRow, newPosCol, res, row, col, direction));
+            res = max(dp[i][j], res);
+        }
+
+        return dp[i][j];
+    }
+};
