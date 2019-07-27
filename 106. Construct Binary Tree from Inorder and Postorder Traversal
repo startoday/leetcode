@@ -1,0 +1,39 @@
+Given inorder and postorder traversal of a tree, construct the binary tree.
+
+Note:
+You may assume that duplicates do not exist in the tree.
+
+For example, given
+
+inorder = [9,3,15,20,7]
+postorder = [9,15,7,20,3]
+Return the following binary tree:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+   
+   
+#和105类似，前序变成后序，区别是根在最前(the left one in pre) or 最后(the right one in post) 写的时候稍微注意边界+1 -1， 没毛病～
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int size = inorder.size();
+        if(size == 0) return {};
+        return helper(inorder, 0, size - 1, postorder, 0, size - 1);
+    }
+    
+    TreeNode* helper(vector<int>& inorder, int inL, int inR, vector<int>& postorder, int pL, int pR) {
+        if(inL > inR || pL > pR) return {};
+        int k = inL;
+        for(k; k <= inR; ++k) {
+            if(inorder[k] == postorder[pR]) break;
+        }
+        TreeNode * root = new TreeNode(postorder[pR]);
+        root->left = helper(inorder, inL, k - 1, postorder, pL, pL + k - inL - 1);
+        root->right = helper(inorder, k + 1, inR, postorder, pL + k - inL, pR-1);
+        return root;
+    }
+};
