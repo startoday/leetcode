@@ -1,0 +1,47 @@
+Given preorder and inorder traversal of a tree, construct the binary tree.
+
+Note:
+You may assume that duplicates do not exist in the tree.
+
+For example, given
+
+preorder = [3,9,20,15,7]
+inorder = [9,3,15,20,7]
+Return the following binary tree:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+   
+ 
+#哎。。。真是，就想用iterative的方法做，分析了一下该怎么走写出来的code，结果[3124][1234]这个case我手写都gg了？？？？？
+#Tree 真是，老老实实写recursive 吧以后ok？
+#记录一下当时的想法 根左右， 左根右，在inorder里遇到相同的就网上走回溯根，往右插入 ---但是如果根左是空这种，判断就失效了。。
+
+#recursive 的话，对于中序遍历当然以顶点切分左右，
+
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int size = preorder.size();
+        if(size == 0) return {};
+        return helper(preorder, 0, size - 1, inorder, 0, size - 1); 
+    }
+    
+    TreeNode* helper(vector<int>& preorder, int  preL, int preR, vector<int>& inorder, int inoL, int inoR) {
+        if( preL > preR || inoL > inoR) return {};
+        //find pos of  preL in inorder list 
+        int k = inoL;
+        for(k ; k< inoR; ++k) {
+            if(inorder[k] == preorder[preL]) break;
+        }
+        
+        TreeNode * aNode = new TreeNode (preorder[preL]);
+        //split in half
+        aNode->left = helper(preorder, preL+1, preL + k - inoL, inorder, inoL, k - 1);
+        aNode->right =helper(preorder, preL + k - inoL + 1, preR, inorder, k + 1, inoR);
+        return aNode;
+    }
+};
