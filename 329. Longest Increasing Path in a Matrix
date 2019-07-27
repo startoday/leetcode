@@ -14,3 +14,51 @@ Output: 4
 Explanation: The longest increasing path is [1, 2, 6, 9].
 
 #还是dp题， 如果 可以走就取 往各个方向走的最大值，因为是增加的序列，我们应该从最小的位置开始，就可以填满整个2d array了
+#如果bottom up 先sort的话可能不太好写（或者增加时间复杂度）--bottom up 应该可以想成是graph 用 TS来做 时间复杂度是一样的
+#或者直接top down(不需要size + 1 额外设定边界）
+
+
+class Solution {
+public:
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int row = matrix.size();
+        if(row == 0) return 0;
+        int col = matrix[0].size();
+        if(col == 0) return 0;
+        int res = 1;
+        vector<vector<int>> dp(row, vector<int> (col, -1));
+        for(int i = 0; i < row; ++i) {
+            for(int j = 0; j < col; ++j) {
+                dp[i][j] = helper(matrix, dp, i, j, res, row, col);
+            }
+        }
+        return res;
+    }
+    
+    int helper(vector<vector<int>>& A, vector<vector<int>>& dp, int i,int j, int & res, int & row, int & col) {
+        if(dp[i][j] != -1) return dp[i][j];
+        dp[i][j] = 1;
+        
+        if(i >= 1 && A[i - 1][j] < A[i][j]) {
+            dp[i][j] = max(dp[i][j], 1 + helper(A, dp, i - 1, j, res, row, col));
+            res = max(dp[i][j], res);
+        }
+        
+        if(i < row - 1 && A[i + 1][j] < A[i][j]) {
+            dp[i][j] = max(dp[i][j], 1 + helper(A, dp, i + 1, j, res, row, col));
+            res = max(dp[i][j], res);
+        }
+        
+        if(j >= 1 && A[i][j - 1] < A[i][j]) {
+            dp[i][j] = max(dp[i][j], 1 + helper(A, dp, i, j - 1, res, row, col));
+            res = max(dp[i][j], res);
+        }
+        
+        if(j < col - 1 && A[i][j + 1] < A[i][j]) {
+            dp[i][j] = max(dp[i][j], 1 + helper(A, dp, i, j + 1, res, row, col));
+            res = max(dp[i][j], res);
+        }
+        
+        return dp[i][j];
+    }
+};
