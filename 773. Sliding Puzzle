@@ -18,6 +18,12 @@ Explanation: No number of moves will make the board solved.
 #类似华容道，可以上下左右运动，想让它从右下角走出来，寻找最短路径
 #可以用bfs，每次移动一步时的状态作为 一个node， 与在右下角相等时退出，每次改变层数
 #既然是2*3的偷点懒，直接用string来表示状态了，swap来获得neighbors
+
+#优化方法： 用vector<vector<int>> direction = {{} {} {} {} } 这种，只需要一个for loop 代替那四个for， 也不需要changeTable 额外写一个function了！
+#下面这个代码， 不DRY！要SUPERDRY 好么！
+#PS： 面试的时候 不用 cSize rSize 啥的 c 和r 也是ok的 省时间
+#size（） 是 O （1）  shout out to 晖神  ，这个传的参数也会减少很多
+
 class Solution {
 public:
     int slidingPuzzle(vector<vector<int>>& board) {
@@ -36,7 +42,9 @@ public:
         int steps = 0;
 
         while(!boards.empty()) {
-            for(int k = boards.size(); k > 0; --k) {
+            //再次感谢晖神！
+            for(int k = boards.size(); k > 0; --k) {  //最好正着写比较老实！size（）-O（1），醉+迷，也是因第一次写bfs的类似写法误导加深了，以为size不是constant
+            
                 string temp = boards.front();
                 boards.pop();
                 if(temp == "123450") return steps;
@@ -71,7 +79,7 @@ public:
                     temp = orin;
                 }
                 
-                if((i + 1) < ((i/cSize + 1) *cSize)) {  //rightwards
+                if((i + 1) < ((i/cSize + 1) *cSize)) {  //rightwards   (i + 1) %cSize != 0 即可  
                     swap(temp[i], temp[i + 1]);
                     changeTables(visited,  boards, temp);
                     temp = orin;
