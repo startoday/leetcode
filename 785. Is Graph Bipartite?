@@ -21,4 +21,27 @@ We cannot find a way to divide the set of nodes into two independent subsets.
 #The graph is undirected: if any element j is in graph[i], then i will be in graph[j].
 
 #这个题给的表示方法是index（row #） 是node， （col 里面的所有都是该row的list of adj）
-#dfs_all 吧，交替上色，有conflict return false
+#dfs_all 吧，交替上色，有conflict return false 这种交替的就选择（-1）相乘吧！
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        vector<int> visited(graph.size(), 0);
+        for (int i = 0; i < graph.size(); ++i) {
+            if (visited[i] == 0 && !dfs(graph, 1, i, visited)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    bool dfs(vector<vector<int>>& graph, int rightColor, int u, vector<int>& visited) {
+        if(visited[u] != 0) return visited[u] == rightColor;
+        visited[u] = rightColor;
+
+        for (int v : graph[u]) {
+                if(!dfs(graph, rightColor *(-1), v, visited)) {
+                    return false;
+                }
+        }
+        return true;
+    }
+};
