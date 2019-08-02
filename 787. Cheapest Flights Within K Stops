@@ -2,7 +2,7 @@ There are n cities connected by m flights. Each fight starts from city u and arr
 
 Now given all the cities and flights, together with starting city src and the destination dst, your task is to find the cheapest price from src to dst with up to k stops. 
 If there is no such route, output -1.
-
+#用BELLMAN FORD 方法
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
