@@ -19,6 +19,24 @@ public:
        if(dp[K+1][dst] >= INT_MAX) return -1;
        return dp[K+1][dst];
     }
+};
 
-    
+#其实用一维array就可以解决了！
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        //K stops means k+1 flights
+        vector<long> dp (n, INT_MAX);
+        //use another dp to store the previous status;
+        dp[src] = 0;
+        for(int i = 1; i <= K + 1; ++i) {
+            vector<long> old = dp;
+            for (auto x : flights) {
+                old[x[1]] = min(old[x[1]], dp[x[0]] + x[2]);
+            }
+            dp = old;
+       }
+       if(dp[dst] >= INT_MAX) return -1;
+       return dp[dst];
+    }   
 };
