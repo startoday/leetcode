@@ -2,3 +2,23 @@ There are n cities connected by m flights. Each fight starts from city u and arr
 
 Now given all the cities and flights, together with starting city src and the destination dst, your task is to find the cheapest price from src to dst with up to k stops. 
 If there is no such route, output -1.
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        //K stops means k+1 flights
+        vector<vector<long>> dp(K + 2, vector<long>(n, INT_MAX));
+        //dp[i][j] represents i times of flight to j place;
+        dp[0][src] = 0;
+        for(int i = 1; i <= K + 1; ++i) {
+            dp[i][src] = 0;
+            for(auto flight : flights) {
+                dp[i][flight[1]] = min (dp[i][flight[1]], dp[i-1][flight[0]] + flight[2] );
+            } 
+        }
+       if(dp[K+1][dst] >= INT_MAX) return -1;
+       return dp[K+1][dst];
+    }
+
+    
+};
