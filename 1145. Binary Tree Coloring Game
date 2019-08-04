@@ -1,0 +1,40 @@
+Two players play a turn based game on a binary tree.  
+We are given the root of this binary tree, and the number of nodes n in the tree.  
+n is odd, and each node has a distinct value from 1 to n.
+
+Initially, the first player names a value x with 1 <= x <= n, and the second player names a value y with 1 <= y <= n and y != x.  
+The first player colors the node with value x red, and the second player colors the node with value y blue.
+
+Then, the players take turns starting with the first player.  
+In each turn, that player chooses a node of their color (red if player 1, blue if player 2) 
+and colors an uncolored neighbor of the chosen node (either the left child, right child, or parent of the chosen node.)
+
+If (and only if) a player cannot choose such a node in this way, they must pass their turn.  
+If both players pass their turn, the game ends, and the winner is the player that colored more nodes.
+
+You are the second player.  If it is possible to choose such a y to ensure you win the game, return true.  
+If it is not possible, return false.
+
+#ok,这道题，是只能选择有相同颜色的点继续往上加。。（make sense）。。 下次看到觉得迷的题意能不能多读两遍。。。
+
+#想法是这样了，有戏， 但是 没有写出来，卡在要先如何找到x的点了。。。。
+class Solution {
+public:
+    bool btreeGameWinningMove(TreeNode* root, int n, int x) {
+        //as long as not equal. we can pick the larger side, any side can beat (n-1)/2
+        //if x has both side child and parent, y can take two of them (the most one + the least one)，check equality 
+        //if x has no child return true
+        //if x has no parent(root) compare both sides' number, if not equal return true
+        //if x has one side of child and parent if( sub tree number != (n-1)/2) return true
+        
+    }
+    int countChild(TreeNode *root) {
+        if(!root) return 0;
+        left = countChild(root->left);
+        right = countChild(root->right);
+        return left + right + 1;          
+    }
+};
+
+#看了一下大神的解法。。。原来找到x的点/child 这么简单， 脑子还是得灵活，直接比较node->val 啊。。。本质还是最近都没写树想不到+本来写的也不够 
+
