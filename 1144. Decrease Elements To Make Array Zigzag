@@ -1,0 +1,59 @@
+#注意读题！
+Given an array nums of integers, a move consists of choosing any element and decreasing it by 1.
+
+An array A is a zigzag array if either:
+
+Every even-indexed element is greater than adjacent elements, ie. A[0] > A[1] < A[2] > A[3] < A[4] > ...
+OR, every odd-indexed element is greater than adjacent elements, ie. A[0] < A[1] > A[2] < A[3] > A[4] < ...
+Return the minimum number of moves to transform the given array nums into a zigzag array.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: 2
+Explanation: We can decrease 2 to 0 or 3 to 1.
+
+
+#无脑写
+class Solution {
+public:
+    int movesToMakeZigzag(vector<int>& nums) {
+        if(nums.size() <= 2) return 0;
+        int odd = 0;// decrease even
+        int even = 0;  //decrease odd
+        vector<int> oddA {nums};
+        vector<int> evenA {nums};
+        
+        for(int j = 1; j < nums.size(); ++j) { //check left
+            if(j %2 == 1) {
+                if(oddA[j] >= oddA[j - 1]) {
+                    odd += oddA[j] - oddA[j - 1] + 1;
+                    oddA[j] = oddA[j - 1] - 1;
+                }
+            } else {
+                if(evenA[j] >= evenA[j - 1]) {
+                    even += evenA[j] - evenA[j - 1] + 1;
+                    evenA[j] = evenA[j - 1] - 1;
+                }
+            }
+        }
+        
+        for(int i = 0; i < nums.size() - 1 ; ++i) { //check right
+            if(i %2 == 0) {
+                if(evenA[i] >= evenA[i + 1]) {
+                    even += evenA[i] - evenA[i + 1] +1 ;
+                    evenA[i] = evenA[i + 1] - 1;
+                } 
+            } else {
+                if(oddA[i] >= oddA[i + 1]) {
+                    odd += oddA[i] - oddA[i + 1] + 1;
+                    oddA[i] = oddA[i + 1] - 1;
+                }
+            }
+        }
+        
+        return min (odd, even);
+    }
+};
