@@ -15,6 +15,22 @@ Input: nums = [1,2,3]
 Output: 2
 Explanation: We can decrease 2 to 0 or 3 to 1.
 
+#三取中代码简短版
+class Solution {
+public:
+    int movesToMakeZigzag(vector<int>& A) {
+        int odd = 0;// decrease even
+        int even = 0;  //decrease odd
+        for(int i = 0; i < A.size(); ++i) {
+            int left = i >= 1 ?  A[i - 1] : 1001; //有效利用题中信息 最大值才1000 就可以很短的取出来取中的！
+            int right = i < A.size() - 1 ?  A[i + 1] : 1001;    
+            if(i % 2 == 0) odd += max(0, A[i] - min(left, right) + 1);
+            else even += max(0, A[i] - min(left, right) + 1);
+        }
+        return min(even, odd);
+    }
+};
+
 
 #无脑写
 class Solution {
