@@ -1,0 +1,53 @@
+On an alphabet board, we start at position (0, 0), corresponding to character board[0][0].
+
+Here, board = ["abcde", "fghij", "klmno", "pqrst", "uvwxy", "z"], as shown in the diagram below.
+We may make the following moves:
+
+'U' moves our position up one row, if the position exists on the board;
+'D' moves our position down one row, if the position exists on the board;
+'L' moves our position left one column, if the position exists on the board;
+'R' moves our position right one column, if the position exists on the board;
+'!' adds the character board[r][c] at our current position (r, c) to the answer.
+(Here, the only positions that exist on the board are positions with letters on them.)
+
+#注意读题，注意z那块移动可能出界，所以先左和上就行了
+class Solution {
+public:
+    string alphabetBoardPath(string target) {
+        vector<int> rowN {0,0,0,0,0, 1,1,1,1,1, 2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5};
+        vector<int> colN  {0,1,2,3,4,0,1,2,3,4,0,1,2,3,4,0,1,2,3,4,0,1,2,3,4,0};
+        vector<int> curPos {0,0};
+        vector<int> tarPos (2);
+        int lM = 0;
+        int rM = 0;
+        string res ="";
+        for(char ch : target) {
+            tarPos[0] = rowN[ch-'a'];
+            tarPos[1] = colN[ch-'a'];
+
+            rM = curPos[0] - tarPos[0];
+            lM = curPos[1] - tarPos[1];
+
+            while(lM > 0) {
+                res += "L";
+                lM--;
+            }     
+            while(rM > 0) {
+                res += "U";
+                rM--;
+            } 
+            while(rM < 0) {
+                res += "D";
+                rM++;
+            }
+            while(lM < 0) {
+                res += "R";
+                lM++;
+            }
+
+            res += "!";
+            curPos = tarPos;
+        }
+        return res;
+    }
+};
