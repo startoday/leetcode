@@ -1,0 +1,53 @@
+Given a rooted binary tree, return the lowest common ancestor of its deepest leaves.
+
+Recall that:
+
+The node of a binary tree is a leaf if and only if it has no children
+The depth of the root of the tree is 0, and if the depth of a node is d, the depth of each of its children is d+1.
+The lowest common ancestor of a set S of nodes is the node A with the largest depth such that every node in S is in the subtree with root A.
+ 
+
+Example 1:
+
+Input: root = [1,2,3]
+Output: [1,2,3]
+Explanation: 
+The deepest leaves are the nodes with values 2 and 3.
+The lowest common ancestor of these leaves is the node with value 1.
+The answer returned is a TreeNode object (not an array) with serialization "[1,2,3]".
+Example 2:
+
+Input: root = [1,2,3,4]
+Output: [4]
+Example 3:
+
+Input: root = [1,2,3,4,5]
+Output: [2,4,5]
+
+The given tree will have between 1 and 1000 nodes.
+Each node of the tree will have a distinct value between 1 and 1000.
+#没太懂题意系列，为啥1234就return4？不是说好了要是subtree么
+
+#树就是递归！递归！
+#要更深的， 如左高右低 则返回左subtree的root，反之亦然，如果左右一样深，那返回当前
+class Solution {
+public:
+
+    TreeNode* lcaDeepestLeaves(TreeNode* root) {
+        return helper(root).first; 
+        //别老忘了 pair是 . operator   
+    }
+    pair<TreeNode *, int> helper(TreeNode *node) {
+        if(!node) return {NULL, 0}; //跟depth相对
+        auto left = helper(node->left);
+        auto right = helper(node->right);
+        //同爸爸，则数字越大说明累的越高，越深
+        //注意！！！return 值不能写成 node->left，不然会变成相对位置重新计算
+        //[1,2,3,4] ->2，4
+        // [1,2,3,4,5] ->2，4，5
+        //只有用left.second 锁定当前胜局！
+        if(left.second >right.second) return {left.first, left.second + 1};  
+        if(left.second <right.second) return {right.first, right.second + 1};
+        else return{node, left.second + 1};
+    }
+};
