@@ -1,0 +1,40 @@
+We are given hours, a list of the number of hours worked per day for a given employee.
+
+A day is considered to be a tiring day if and only if the number of hours worked is (strictly) greater than 8.
+
+A well-performing interval is an interval of days for which the number of tiring days is strictly larger than the number of non-tiring days.
+
+Return the length of the longest well-performing interval.
+
+ 
+
+Example 1:
+
+Input: hours = [9,9,6,0,6,6,9]
+Output: 3
+Explanation: The longest well-performing interval is [9,9,6].
+
+#不理解题意系列。。。为什么这个返回的是996？ 6不是小于8 吗---
+#真的意思是 996 是福报，99两个累，6是一个休息，所以ok
+#这道题只关心大于8 否，所以可以简化为纯1，0--但是纯1，0 不好计算，可以转化为（1，-1） 令差大于0的最长即可
+0.....j ...i 
+如果i 大于0 肯定前面都是， 如果i<0 我们找到最远（第一个）一个等于hours[i] -1 的j即可
+所以用一个hashmap记录 和的index
+class Solution {
+public:
+    int longestWPI(vector<int>& hours) {    
+        unordered_map<int, int> st;
+        int res = 0;
+        int sum = 0;
+        for(int i = 0; i < hours.size(); ++i ){
+            sum += hours[i] > 8 ? 1 : -1;
+            if(sum > 0) res = i + 1; //注意从0 数，别忘了+1
+            else{
+                if(st.count(sum-1) != 0) res = max(res, i - st[sum-1]);
+                if(st.count(sum) == 0) st[sum] = i;
+            }
+        }
+       return res; 
+    }
+};
+
