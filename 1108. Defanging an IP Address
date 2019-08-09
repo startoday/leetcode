@@ -1,0 +1,38 @@
+Given a valid (IPv4) IP address, return a defanged version of that IP address.
+
+A defanged IP address replaces every period "." with "[.]".
+
+ 
+
+Example 1:
+
+Input: address = "1.1.1.1"
+Output: "1[.]1[.]1[.]1"
+
+#谜题，c++貌似不像python可以方便的replace？
+#想的肯定是inplace 的变换， 不inplace就好写了
+class Solution {
+public:
+    string defangIPaddr(string address) {
+        for(int i = 0; i < address.size();){
+            if(address[i] == '.' ) {
+                address.insert(i,"[");
+                address.insert(i+2,"]");
+                i=i+2;
+            }
+            ++i;     
+        }
+        return address;
+    }
+};
+
+#另一个
+class Solution {
+public:
+    string defangIPaddr(string address) {
+        for (int i = address.size() - 2; i >= 0; i--)
+            if (address[i + 1] == '.')
+                address = address.substr(0, i + 1) + "[.]" + address.substr(i + 2);
+        return address;
+    }
+};
