@@ -1,0 +1,30 @@
+There are n flights, and they are labeled from 1 to n.
+
+We have a list of flight bookings.  The i-th booking bookings[i] = [i, j, k] means that we booked k seats from flights labeled i to j inclusive.
+
+Return an array answer of length n, representing the number of seats booked on each flight in order of their label.
+
+Example 1:
+
+Input: bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5
+Output: [10,55,45,25,25]
+#累加题，从i开始加，到j之后不再加，用累加的方法就可以把j后面的 加抵消掉
+class Solution {
+public:
+    vector<int> corpFlightBookings(vector<vector<int>>& bookings, int n) {
+        vector<int>res (n + 1, 0); //加一个防止越界
+        for(auto & k : bookings) {
+            int st = k[0]-1;
+            int ed = k[1];
+            res[st] += k[2];
+            res[ed] -= k[2];
+        }
+        for(int i = 1; i < n; ++i) {
+            res[i] += res[i-1];
+        }
+        return {res.begin(), res.end()-1}; //注意return 对东西
+    }
+};
+
+#time O(size of booking + n)
+#space O(n) for res
