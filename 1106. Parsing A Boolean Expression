@@ -1,0 +1,46 @@
+Return the result of evaluating a given boolean expression, represented as a string.
+
+An expression can either be:
+
+"t", evaluating to True;
+"f", evaluating to False;
+"!(expr)", evaluating to the logical NOT of the inner expression expr;
+"&(expr1,expr2,...)", evaluating to the logical AND of 2 or more inner expressions expr1, expr2, ...;
+"|(expr1,expr2,...)", evaluating to the logical OR of 2 or more inner expressions expr1, expr2, ...
+
+Constraints:
+
+1 <= expression.length <= 20000
+expression[i] consists of characters in {'(', ')', '&', '|', '!', 't', 'f', ','}.
+expression is a valid expression representing a boolean, as given in the description.
+
+#竞赛的题都没有什么特殊case 需要操心，大胆的写就得了
+#一道好想的stack题， 不过花了点时间debug
+class Solution {
+public:
+    bool parseBoolExpr(string expression) {
+        stack<char> pac;
+        for(char ch :expression) {
+            if(ch == ',') continue;
+            else if(ch == ')') helper(pac);
+            else pac.push(ch);
+        }
+        return pac.top() == 't'? true :false ;
+    }
+    void helper(stack<char> & pac) {
+        bool hasf = false;
+        bool hast = false;
+        while(pac.top()!='(') {
+            char e = pac.top();
+            pac.pop();  
+            if(e == 't') hast= true;
+            if(e == 'f') hasf= true;
+        }
+        pac.pop();
+        char exp = pac.top();
+        pac.pop();
+        if(exp == '!') pac.push (hasf? 't' : 'f');  //注意这里，是char的stack 所以push 字母就行
+        if(exp == '&') pac.push (!hasf? 't' : 'f');
+        if(exp == '|') pac.push (hast? 't' : 'f');
+    }
+};
