@@ -1,0 +1,31 @@
+Given a string date representing a Gregorian calendar date formatted as YYYY-MM-DD, return the day number of the year.
+
+ 
+
+Example 1:
+
+Input: date = "2019-01-09"
+Output: 9
+Explanation: Given date is the 9th day of the year in 2019.
+Example 2:
+
+Input: date = "2019-02-10"
+Output: 41
+
+#follow up 如果给一个日期，返回星期几应该怎么做？(算天数，找第一天是周几？）
+
+class Solution {
+public:
+    int dayOfYear(string date) {
+        int ye, m, d, lp = 0;
+        sscanf((char *) date.c_str(), "%d-%d-%d", &ye, &m, &d);
+        if(ye % 4 == 0 ) lp = 1;
+        if(ye %100 == 0 && ye % 400!=0) lp = 0; //注意闰年的定义！世纪年 必须要整除400 才是闰年
+        if(m == 1) return d;
+        else if(m == 2) return d + 31;
+        else d += 30 * (m-1)  + lp -2;
+        unordered_map <int, int > e {{3,1},{4,2}, {5,2}, {6,3},{7,3},{8,4}, {9,5},{10,5},{11,6},{12,6}};
+        d += e[m];
+        return d;
+    }
+};
