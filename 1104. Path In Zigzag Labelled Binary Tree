@@ -14,6 +14,27 @@ Input: label = 14
 Output: [1,3,4,14]
 
 #左右走的树，画图出来还是根据 parent和child的对应关系， 从leaf 数，上一层颠倒即可
+#最后再reverse快点
+class Solution {
+public:
+    vector<int> pathInZigZagTree(int label) {
+        vector<int> res;
+        res.push_back(label);
+        int p = label/2;
+        while(p > 0) {
+            res.push_back(p);
+            p = p/2;
+        }      
+        int s = res.size() - 1;
+        for(int i = 1; i < s; i = i + 2) {
+            res[i] = pow(2, s - i) + pow (2, s -i +1) -1 -res[i];
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
+
+#original version
 class Solution {
 public:
     vector<int> pathInZigZagTree(int label) {
