@@ -11,6 +11,32 @@ Return an array (of length num_people and sum candies) that represents the final
 
 
 #brute force 居然就能过 --数学做法就是和solution 一样，算层数， 我临场没写出来（看到0.25， 0.5的对c++ 不确定咋样）
+#数学法， 思路都一样，但是算人头再分层减少了 int 啥的计算不同
+class Solution {
+public:
+    vector<int> distributeCandies(int candies, int num_people) {
+
+    int n = num_people;
+    // how many people received complete gifts
+    int p = (int)(sqrt(2 * candies + 0.25) - 0.5);
+        
+    int remaining = (int)(candies - (p + 1) * p * 0.5);
+    
+    int rows = p / n, cols = p % n;
+
+    vector<int> res(n,0);
+    for(int i = 0; i < n; ++i) {
+      // complete rows
+      res[i] = (i + 1) * rows + (int)(rows * (rows - 1) * 0.5) * n;
+      // cols in the last row
+      if (i < cols) res[i] += i + 1 + rows * n;
+    }
+    // remaining candies        
+    res[cols] += remaining;
+    return res;
+        
+    }
+};
 
 #我的写法
 class Solution {
