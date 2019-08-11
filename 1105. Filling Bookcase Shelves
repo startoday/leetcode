@@ -1,0 +1,36 @@
+We have a sequence of books: the i-th book has thickness books[i][0] and height books[i][1].
+
+We want to place these books in order onto bookcase shelves that have total width shelf_width.
+
+We choose some of the books to place on this shelf (such that the sum of their thickness is <= shelf_width), then build another level of shelf of the bookcase so that the total height of the bookcase has increased by the maximum height of the books we just put down.  We repeat this process until there are no more books to place.
+
+Note again that at each step of the above process, the order of the books we place is the same order as the given sequence of books.  For example, if we have an ordered list of 5 books, we might place the first and second book onto the first shelf, the third book on the second shelf, and the fourth and fifth book on the last shelf.
+
+Return the minimum possible height that the total bookshelf can be after placing shelves in this manner.
+
+#可惜了，这套可能是唯一目前能在时限内做出来四道题的。。maybe如果没中间上楼吃饭的话2333
+#还是dp 吧，每本书可以选择在不在这一层 但是每一层能放多少是由 当层累计的宽度决定的，倒数需要
+
+class Solution {
+public:
+    
+    int minHeightShelves(vector<vector<int>>& books, int shelf_width) {
+        int n = books.size();
+        vector<int> dp (n+1);
+        dp[0] = 0;
+        for(int i = 1; i <= n ; ++i) {
+            int w = books[i-1][0];
+            int h = books[i-1][1];
+            dp[i] = dp[i-1] + h;
+            int j = i-2;
+            while(j >= 0) { //特意不想j-1 就别忘了这是大于等于23333 就这玩意还要debug 几分钟。佛了
+                w += books[j][0]; 
+                if(w > shelf_width) break;
+                h = max(h,books[j][1]);
+                dp[i] = min(dp[i], dp[j] + h);
+                j--;
+            }
+        }
+        return dp[n];
+    }
+};
