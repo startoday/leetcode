@@ -1,0 +1,59 @@
+We sampled integers between 0 and 255, and stored the results in an array count:  count[k] is the number of integers we sampled equal to k.
+
+Return the minimum, maximum, mean, median, and mode of the sample respectively, as an array of floating point numbers.  The mode is guaranteed to be unique.
+
+(Recall that the median of a sample is:
+
+The middle element, if the elements of the sample were sorted and the number of elements is odd;
+The average of the middle two elements, if the elements of the sample were sorted and the number of elements is even.)
+ 
+
+Example 1:
+
+Input: count = [0,1,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+Output: [1.00000,3.00000,2.37500,2.50000,3.00000]
+
+#又理解错题意。。
+class Solution {
+public:
+    vector<double> sampleStats(vector<int>& count) {
+        vector<double>res;
+        int n = count.size();
+        double mi = 256;
+        double ma = -1;
+        int mod = 0;
+        double pm = -1;
+        double pl = -1;
+        double total = 0;
+        int size = 0;
+        for(int i = 0 ; i < n; ++i) {
+            double k = i;
+            if(count[i] != 0) {
+                mi = min(mi, k);
+                ma = max(ma, k);
+                total += count[i]*k;
+                size += count[i];
+            }
+            mod = max(mod, count[i]);
+            
+        }
+        res.push_back(mi);
+        res.push_back(ma);
+        res.push_back((1.0000000*total) /(1.0000000*size));
+        for(int i = 0 ; i < n; ++i ) {
+            if(count[i] == mod) {      
+                res.push_back(i);
+            }
+            
+        }
+        for(int i = 1 ; i < n; ++i ) {
+            count[i] += count[i-1];
+            if(count[i] == (size /2) + 1  ||  count[i-1] < (size /2) + 1 && count[i] > (size /2) + 1) pm = i;
+            if(count[i] == size / 2  ||  count[i-1] < size /2  && count[i] > size /2) pl = i; 
+        }
+        if(n%2 == 1) res.insert(res.begin() +3, pm);
+        else res.insert(res.begin() + 3, (pm+pl)/2.0);
+
+        return res;
+    }
+};
