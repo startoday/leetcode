@@ -1,0 +1,26 @@
+Given a positive 32-bit integer n, you need to find the smallest 32-bit integer which has exactly the same digits existing in the integer n and is greater in value than n. If no such positive 32-bit integer exists, you need to return -1.
+
+Example 1:
+
+Input: 12
+Output: 21
+ 
+
+Example 2:
+
+Input: 21
+Output: -1
+
+#多读几遍题理解题意
+#数字是固定的（array是一定的） 找next greater
+#直接想到的是用 next_permutation 
+class Solution {
+public:
+    int nextGreaterElement(int n) {
+        long res = 0; string dig = to_string(n);
+        next_permutation(dig.begin(),dig.end());
+        res = stol(dig);
+        if(res <= n || res >= INT_MAX) return -1;
+        return res;
+    }
+};
