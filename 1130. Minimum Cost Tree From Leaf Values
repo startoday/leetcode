@@ -1,0 +1,64 @@
+Given an array arr of positive integers, consider all binary trees such that:
+
+Each node has either 0 or 2 children;
+The values of arr correspond to the values of each leaf in an in-order traversal of the tree.  (Recall that a node is a leaf if and only if it has 0 children.)
+The value of each non-leaf node is equal to the product of the largest leaf value in its left and right subtree respectively.
+Among all possible binary trees considered, return the smallest possible sum of the values of each non-leaf node.  It is guaranteed this sum fits into a 32-bit integer.
+
+ 
+
+Example 1:
+
+Input: arr = [6,2,4]
+Output: 32
+Explanation:
+There are two possible trees.  The first has non-leaf node sum 36, and the second has non-leaf node sum 32.
+
+    24            24
+   /  \          /  \
+  12   4        6    8
+ /  \               / \
+6    2             2   4
+
+#仔细读题，是最小和 of subtree里面大的数的乘积
+#其实是依次消去最小值，最小值的左右选一个较小的数相乘这样可以使和在每一步最小
+#还是可以用单调栈去解 O（n）像夹三明治一样，栈顶的左边是左边的，右边是右侧最大 当右边有next greater的时候开始消除操作，最后栈上
+剩余的会是一个单调递减的array， 此时从右边一路乘和从左边一路乘上来一样的
+#写的时候注意首尾！ 因为要check 左侧并且pop 应该给stack 一个起始值
+class Solution {
+public:
+    int mctFromLeafValues(vector<int>& arr) {
+        int res = 0;
+        vector<int> st = {INT_MAX};
+        for(int x : arr) {
+            while(st.back()<= x) { // 有INT_MAX了不需要check 空否，而且小于等于就可以操作了
+                int temp = st.back();
+                st.pop_back();
+                res += temp * min(st.back(), x);
+            }
+            st.push_back(x);
+        }
+        for(int i = st.size() -1; i >1; --i) {
+            res += st[i] *st[i-1];
+        }
+        return res;
+    }
+};
+
+#O（n2）的解法，每次寻找两侧最小值（需要每次找最小值，是O（n）的操作
+class Solution {
+public:
+    int mctFromLeafValues(vector<int>& arr) {
+        int res = 0;
+        while(arr.size()>2){
+            auto x = min_element(arr.begin(), arr.end());       
+            int temp = x == arr.begin()? INT_MAX : *x * (*(x-1));        
+            int temp2 = x > arr.end() - 2? INT_MAX : *x * (*(x+1));
+            res += min(temp, temp2);
+            arr.erase(x);
+        }
+        res += arr[0] * arr[1];
+        return res;
+    }
+};
+
