@@ -41,3 +41,23 @@ public:
         return res;
     }
 };
+#大神的代码 思路 相同 不过可以简化code
+class Solution {
+public:
+    vector<int> nextLargerNodes(ListNode* head) {
+        vector<int> st,  res;
+        if(!head) return res;
+        while(head) {
+            while(!st.empty() && res[st.back()] <head->val) {
+                res[st.back()] = head->val;
+                st.pop_back();
+            }
+            st.push_back(res.size());
+            res.push_back(head->val); 
+            head = head->next;
+        }
+        for (int i: st) res[i] = 0;
+        return res;
+    }
+    
+};
