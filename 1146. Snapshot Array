@@ -21,4 +21,52 @@ snapshotArr.get(0,0);  // Get the value of array[0] with snap_id = 0, return 5
 
 #暴力解空间无法过
 #只记录每次改变了哪个值
-#根据snap id可以查找
+#根据snap id 查找 用upperbound找最近解
+class SnapshotArray {
+public:
+    //<index, <snap id, val> 
+    unordered_map<int, map<int, int>> a;
+    int cur_snap = 0;
+    SnapshotArray(int length) {
+        for(int i = 0;i < length; ++i){
+            a[i]= map<int,int>() = map<int,int>{{0, 0}};
+        }
+    }
+    void set(int index, int val) {
+        a[index][cur_snap] = val;
+    }
+    
+    int snap() {
+        return cur_snap++;
+    }
+    
+    int get(int index, int snap_id) {
+         auto it = a[index].upper_bound(snap_id);
+         return it == begin(a[index]) ? 0 : prev(it)->second;
+    }
+};
+
+
+#用vector 反正都用upperbound。。。而且给了index 用hash map的意义也不大
+class SnapshotArray {
+public:
+    int s = 0;
+    vector<map<int, int>> v;
+
+    SnapshotArray(int length) {
+        v.resize(length);  //可以直接这样搞
+    }
+
+    void set(int index, int val) {
+        v[index][s] = val;
+    }
+    
+    int snap() {
+        return s++;
+    }
+    
+    int get(int index, int snap_id) {
+        auto itr = v[index].upper_bound(snap_id);
+        return (itr != v[index].begin()) ? (--itr)->second : 0;
+    }
+};
