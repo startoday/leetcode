@@ -34,3 +34,34 @@ text consists only of lowercase English characters.
 
 #给一个string，拆成以单词为基准的回文字符串，使其split的份数最多，最低就是1所以
 #dp /贪心也可，从最右拆，左边遇到第一个跟右边一样的砍下去，看中间段，只需要判断n/2个字母就行了
+class Solution {
+public:
+    int longestDecomposition(string text) {
+        int n = text.size();
+        int res = 0, start = 0, i = 0, j = n-1;
+        while( i < n/2) {
+            if(text[i] == text[j]) {
+                int len = i + 1 -start;
+                if(text.substr(start, len) == text.substr(j - len +1, len)) {
+                    res += 2;
+                    start = i + 1;
+                    j = j - len;  
+                }
+            }
+            i++;
+        }
+        if(start != j + 1) res += start <= j? 1:-1;
+        return res;
+    }
+};
+
+
+#一样的想法但是用recursive解 很短 --感觉要好好练一下recursive啊！！
+int longestDecomposition(string S, int res = 0) {
+        int n = S.length();
+        for (int l = 1; l <= n / 2; ++l)
+            if (S[0] == S[n - l] && S[l - 1] == S[n - 1])
+                if (S.substr(0, l) == S.substr(n - l))
+                    return longestDecomposition(S.substr(l, n - l - l), res + 2);
+        return n ? res + 1 : res;
+}
