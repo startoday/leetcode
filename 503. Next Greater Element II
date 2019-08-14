@@ -1,0 +1,50 @@
+Given a circular array (the next element of the last element is the first element of the array), print the Next Greater Number for every element. The Next Greater Number of a number x is the first greater number to its traversing-order next in the array, which means you could search circularly to find its next greater number. If it doesn't exist, output -1 for this number.
+
+Example 1:
+Input: [1,2,1]
+Output: [2,-1,2]
+Explanation: The first 1's next greater number is 2; 
+The number 2 can't find next greater number; 
+The second 1's next greater number needs to search circularly, which is also 2.
+Note: The length of given array won't exceed 10000.
+
+#循环数组找下一个最大值
+#对于循环数组只需要 [i % n]即可
+#stack的做法， 注意循环的话走两圈即可
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        int n = nums.size();
+        //维护一个单调递减栈,可以想象从一个数开始，如果它后面的一直比他小就加入栈里候着，遇到一个比栈顶大的就是它右边第一个比他大的，存index nice
+        vector<int>st, res (n, -1); //can just declare two vec with ,
+        for(int i = 0; i < n *2; ++i) {
+            while(!st.empty() && nums[st.back()] < nums[i%n]) {
+                res[st.back()] = nums[i%n];
+                st.pop_back();
+            }
+            st.push_back(i%n); //stores the index       
+        }
+        return res;
+    }
+};
+
+
+
+#上来暴力解
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        int n = nums.size();
+        vector<int>res (n, -1);
+        for(int i = 0; i < n; ++i) {
+            for(int j = i+1; j < i + n; ++j) {
+                if(nums[j % n] > nums[i]){
+                    res[i] = nums[j %n];
+                    break;
+                } 
+            }
+        }
+        return res;
+    }
+};
+
