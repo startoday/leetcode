@@ -15,3 +15,22 @@ Example 2:
 Input: text = "merchant"
 Output: 1
 Explanation: We can split the string on "(merchant)".
+
+Example 3:
+
+Input: text = "antaprezatepzapreanta"
+Output: 11
+Explanation: We can split the string on "(a)(nt)(a)(pre)(za)(tpe)(za)(pre)(a)(nt)(a)".
+Example 4:
+
+Input: text = "aaa"
+Output: 3
+Explanation: We can split the string on "(a)(a)(a)".
+
+Constraints:
+
+text consists only of lowercase English characters.
+1 <= text.length <= 1000
+
+#给一个string，拆成以单词为基准的回文字符串，使其split的份数最多，最低就是1所以
+#dp /贪心也可，从最右拆
