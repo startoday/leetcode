@@ -33,4 +33,4 @@ text consists only of lowercase English characters.
 1 <= text.length <= 1000
 
 #给一个string，拆成以单词为基准的回文字符串，使其split的份数最多，最低就是1所以
-#dp /贪心也可，从最右拆
+#dp /贪心也可，从最右拆，左边遇到第一个跟右边一样的砍下去，看中间段，只需要判断n/2个字母就行了
