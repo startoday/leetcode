@@ -5,7 +5,7 @@ The objective of the game is to end with the most stones.  The total number of s
 Alex and Lee take turns, with Alex starting first.  Each turn, a player takes the entire pile of stones from either the beginning or the end of the row.  This continues until there are no more piles left, at which point the person with the most stones wins.
 
 Assuming Alex and Lee play optimally, return True if and only if Alex wins the game.
-
+#一个array of 石子，两人交替选择首或者尾的石子，偶数堆，奇数总石子，没有平局，问A可不可以赢得比赛
 class Solution {
 public:
     bool stoneGame(vector<int>& piles) {
