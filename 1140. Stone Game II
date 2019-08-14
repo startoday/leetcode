@@ -1,0 +1,50 @@
+Alex and Lee continue their games with piles of stones.  There are a number of piles arranged in a row, and each pile has a positive integer number of stones piles[i].  The objective of the game is to end with the most stones. 
+
+Alex and Lee take turns, with Alex starting first.  Initially, M = 1.
+
+On each player's turn, that player can take all the stones in the first X remaining piles, where 1 <= X <= 2M.  Then, we set M = max(M, X).
+
+The game continues until all the stones have been taken.
+
+Assuming Alex and Lee play optimally, return the maximum number of stones Alex can get.
+
+ 
+
+Example 1:
+
+Input: piles = [2,7,9,4,4]
+Output: 10
+Explanation:  If Alex takes one pile at the beginning, Lee takes two piles, then Alex takes 2 piles again. Alex can get 2 + 4 + 4 = 10 piles in total. If Alex takes two piles at the beginning, then Lee can take all three piles left. 
+In this case, Alex get 2 + 7 = 9 piles in total. So we return 10 since it's larger. 
+
+#一堆石头，数量各异，当先手取 X 堆的时候后手可以取至 2X 堆，问如何能让先手尽可能的大
+#后手也不是傻子，每次选择时候应该使后手能够取的石子数量最少
+#dp题
+
+class Solution {
+public:
+    int stoneGameII(vector<int>& piles) {
+        int s = piles.size();
+        vector<int> left (piles.begin(), piles.end()); // track how many left at i postion
+        for(int i = s - 2 ; i >= 0 ; --i) {
+            left[i] += left[i+1];
+        }
+        //dp[i][j]represents max can take at i position with j as M (i<= 2j)
+        vector<vector<int>> dp (s, vector<int> (s, -1));
+
+        helper(piles, dp, left, 0, 1);
+
+        return dp[0][1];
+    }
+    int helper(vector<int>& piles, vector<vector<int>>& dp, vector<int>& left, int i, int j) {
+        if(i >= piles.size()) return 0; //reach the end
+        if(dp[i][j] != -1) return dp[i][j];
+        if(piles.size()<= 2*j) return left[i]; // a can take all the rest;
+        //minimize the competitor 
+        int bTake = INT_MAX;
+        for(int k = 1; k <= 2*j; ++k) {
+            bTake = min(bTake, helper(piles, dp, left, i+k, max(k,j)));
+        }
+        return dp[i][j] = left[i]-bTake;
+    }
+};
