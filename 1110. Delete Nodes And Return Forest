@@ -6,3 +6,28 @@ Return the roots of the trees in the remaining forest.  You may return the resul
 
 Input: root = [1,2,3,4,5,6,7], to_delete = [3,5]
 Output: [[1,2,null,4],[6],[7]]
+
+class Solution {
+public:
+    
+        void helper(TreeNode* & root, unordered_set<int> & poi, vector<TreeNode *> & res ) {
+        if(root){
+            helper(root->left, poi, res);
+            helper(root->right, poi, res);
+            if(poi.count(root->val) == 1) {
+                if(root->left) res.push_back(root->left);
+                if(root->right) res.push_back(root->right);
+                root = NULL;
+                delete root;
+            }
+        }
+    }
+    vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        unordered_set<int> poi (to_delete.begin(), to_delete.end());
+        vector<TreeNode *> res;
+        helper(root, poi, res);
+        if (root) res.push_back(root);
+        return res;
+    }
+};
+
