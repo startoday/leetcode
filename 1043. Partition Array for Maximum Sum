@@ -16,5 +16,24 @@ Note:
 1 <= K <= A.length <= 500
 0 <= A[i] <= 10^6
 
-#哎，见识到dp的难度了。。。身为一道medium题，debug了一个多小时，还是自己一开始的思路就不对！
+#同志，这种题，要求len的事，dp一定要往len上考虑啊！
+#有说了都是非负数 
+
+class Solution {
+public:
+    int maxSumAfterPartitioning(vector<int>& A, int K) {
+        int n = A.size();
+        vector<int> dp (n+1, 0);
+        for(int i = 1; i <= n; ++i) {
+            int curMax = A[i - 1];
+            for(int j = 1; j <= K ; ++j) {
+                if(i - j >= 0) {
+                    curMax = max(curMax, A[i - j]);
+                    dp[i] = max(dp[i], dp[i-j] + j * curMax);
+                } 
+            }
+        }
+        return dp[n];
+    }
+};
 
