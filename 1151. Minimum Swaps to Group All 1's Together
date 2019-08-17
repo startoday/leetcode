@@ -1,0 +1,42 @@
+Given a binary array data, return the minimum number of swaps required to group all 1’s present in the array together in any place in the array.
+
+ 
+
+Example 1:
+
+Input: [1,0,1,0,1]
+Output: 1
+Explanation: 
+There are 3 ways to group all 1's together:
+[1,1,1,0,0] using 1 swap.
+[0,1,1,1,0] using 2 swaps.
+[0,0,1,1,1] using 1 swap.
+The minimum is 1.
+
+#我的写法 O（n)和O（1）
+# 想让代码变短的话可以用额外空间储存滑动窗口
+class Solution {
+public:
+    int minSwaps(vector<int>& data) {
+        int count = data[0];
+        for(int i = 1; i < data.size(); ++i) {
+            if (data[i] == 1) count++;
+            data[i] = data[i-1]+data[i];
+        }
+        if(count == 0) return 0;
+        int res = count - data[count - 1] ;
+        for(int k = count; k < data.size(); ++k) {
+            res = min(res, count - data[k] + data[k - count]);
+        }
+        return res;
+    }
+};
+#额外空间，代码简短
+ int minSwaps(vector<int>& data) {
+        int m = count(data.begin(), data.end(), 1), cnt = count(data.begin(), data.begin()+m, 1), res = m - cnt;
+        for(int i = m; i < data.size(); i++){
+            cnt += data[i] - data[i-m];
+            res = min(res, m - cnt);
+        }
+        return res;
+    }
