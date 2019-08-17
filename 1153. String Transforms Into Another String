@@ -1,0 +1,71 @@
+Given two strings str1 and str2 of the same length, determine whether you can transform str1 into str2 by doing zero or more conversions.
+
+In one conversion you can convert all occurrences of one character in str1 to any other lowercase English character.
+
+Return true if and only if you can transform str1 into str2.
+
+ 
+
+Example 1:
+
+Input: str1 = "aabcc", str2 = "ccdee"
+Output: true
+Explanation: Convert 'c' to 'e' then 'b' to 'd' then 'a' to 'c'. Note that the order of conversions matter.
+Example 2:
+
+Input: str1 = "leetcode", str2 = "codeleet"
+Output: false
+Explanation: There is no way to transform str1 to str2.
+
+
+#想要转化的时候一定有一个字母需要是没有用过的 可以简化代码
+
+
+#原写的
+class Solution {
+public:
+    bool canConvert(string str1, string str2) {
+        //s2 DO NOT CHANGE, S2 CONTAINS GROUP BY ALL LARGER THAN S1
+        if(str2 == str1) return true;
+        int n = str2.size();
+        int count = 0;
+        unordered_map<char, char> swtc;
+        unordered_map<char, int> s2ct;
+        bool wrong = true;
+        for(char x :str2) {
+            if(s2ct.count(x) == 0){
+                s2ct[x] = 1;
+            } else {
+                s2ct[x] ++;
+                if(s2ct[x] > 1) wrong = false;
+            }
+            
+        }
+        for(int i = 0; i < n -1 ;) {
+            if(str2[i] == str2[i + 1]) { //相等继续下滑
+                if(str1[i] != str1[i + 1]) {
+                    if(swtc.count(str1[i]) != 0 && swtc[str1[i]] != str2[i] )  return false;
+                    else if(swtc.count(str1[i+1]) != 0 && swtc[str1[i+1]] != str2[i]) return false;
+                    else {
+                        swtc.insert({str1[i],str2[i]});
+                        swtc.insert({str1[i+1],str2[i]});
+                    }
+                }
+                swtc.insert({str1[i],str2[i]});
+                if(swtc.count(str1[i]) != 0 && swtc[str1[i]] != str2[i] )  return false;
+                ++i;
+            } else { //不等的分界
+                if(str1[i] == str1[i + 1]) return false;
+                else {
+                    if(swtc.count(str1[i]) != 0 && swtc[str1[i]] != str2[i])  return false;
+                    swtc.insert({str1[i],str2[i]});
+                    ++i;
+                }
+            }
+            
+        }
+        if(swtc.count(str1[n-1]) != 0 && swtc[str1[n-1]] != str2[n-1])  return false;
+        if(n == 26 && swtc.size() == 25 && wrong ) return false;
+        return true;
+    }
+};
