@@ -25,7 +25,35 @@ The sixth event occurs at timestamp = 20190301 and after 0 and 3 become friends 
 #请继续好好读题系列，需要先排序by time stamp
 #example 已经给了提示了用union & set做
 #注意如何用lamda写sort， 注意光用ct就可以判断是否ok了
+#简化代码
+class Solution {
+public:
+    int earliestAcq(vector<vector<int>>& logs, int N) {
+        //union and set THANKS to example
+        vector<int> ds (N, -1); //if is < 0 then it self is the father
+        sort(begin(logs), end(logs));
+        for(auto & k : logs) {
+            if(un(k[1], k[2], ds) == N) return k[0];
+        }
+        return -1;
+    }
+    
+    int un(int u, int v,  vector<int> & ds) {
+        u = find(u, ds);
+        v = find(v, ds);
+        if(u != v) {
+            ds[v] += ds[u]; //-1的增加，所以是总共多少个
+            ds[u] = v;
+        }
+        return -ds[v];
+    }
+    int find(int u, vector<int> & ds) {
+        return ds[u] < 0? u : ds[u] = find(ds[u], ds);
+    }
+    
+};
 
+#自己写的
 class Solution {
 public:
     int earliestAcq(vector<vector<int>>& logs, int N) {
