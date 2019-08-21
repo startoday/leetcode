@@ -34,3 +34,20 @@ public:
         return dp[0][size-1];
     }
 };
+
+
+# print out res example
+string left ="";
+string right ="";
+int m = 0; int k = size - 1;
+while(m < k) {
+    if(s[m] == s[k]) {
+        left += s[m++];
+        right += s[k--];
+    } else if(dp[m + 1][k] <= dp[m][k - 1]) {
+        k--;
+    }else m++;
+}
+reverse(right.begin(),right.end());
+if(left.size() + right.size() != dp[0][size-1]) left += s[m];
+string res = left + right;
