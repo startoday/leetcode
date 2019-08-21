@@ -1,0 +1,65 @@
+Given an array nums sorted in non-decreasing order, and a number target, return True if and only if target is a majority element.
+
+A majority element is an element that appears more than N/2 times in an array of length N.
+
+ 
+
+Example 1:
+
+Input: nums = [2,4,5,5,5,5,5,6,6], target = 5
+Output: true
+Explanation: 
+The value 5 appears 5 times and the length of the array is 9.
+Thus, 5 is a majority element because 5 > 9/2 is true.
+
+#暴力解也能过，O（N2）
+
+#O（logN） 用upperbound 和lowerbound
+class Solution {
+public:
+    bool isMajorityElement(vector<int>& nums, int target) {
+        return upper_bound(begin(nums), end (nums),target) - lower_bound(begin(nums), end (nums),target) > (nums.size()/2);
+    }
+};
+
+
+#强行写找上下界
+class Solution {
+public:
+    bool isMajorityElement(vector<int>& nums, int target) {
+        int mid = helper(nums, target, 0, nums.size() - 1);
+        int left = helper (nums, target, 0, mid);
+        int right = helper2(nums, target, mid, nums.size() - 1);
+
+        cout << right<<endl;
+        cout << left<<endl;
+        if(left == right && nums[left] != target) return false;
+        return  (right -left + 1)  > (nums.size()/2);
+    }
+    int helper(vector<int>& nums, int target, int start, int end) {
+        int x = start;
+        int y = end;
+        if(start >= end) return start; 
+        while(start + 1 < end) {
+            int mid = (end - start) / 2 + start;
+            if(nums[mid] <= target) start = mid;
+            else end = mid;
+        }
+        if(nums[start] != target && nums[end] != target) return -1;
+        if(nums[start] == target) return helper(nums, target, x, start);
+        else return end;
+    }
+    int helper2(vector<int>& nums, int target, int start, int end) {
+        int x = start;
+        int y = end;            
+        if(start >= end) return start;  
+        while(start + 1 < end) {
+            int mid = (end - start) / 2 + start;
+            if(nums[mid] < target) start = mid;
+            else end = mid;
+        }
+        if(nums[start] != target && nums[end] != target) return -1;   
+        if(nums[end] == target) return helper2(nums, target, end, y);
+        else return start;       
+    }
+};
