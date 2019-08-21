@@ -1,0 +1,10 @@
+Given a matrix of integers A with R rows and C columns, 
+find the maximum score of a path starting at [0,0] and ending at [R-1,C-1].
+
+The score of a path is the minimum value in that path.  
+
+A path moves some number of times from one visited cell to any neighbouring unvisited cell in one of the 4 cardinal directions (north, east, west, south).
+#不太能加图。。总之，要从左上角走到右下角，使一路上的和最大，上下左右四个方向都可以走
+
+
+
