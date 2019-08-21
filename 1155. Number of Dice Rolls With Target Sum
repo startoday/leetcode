@@ -11,5 +11,30 @@ Output: 1
 Explanation: 
 You throw one die with 6 faces.  There is only one way to get a sum of 3.
 
-#dp题 -- 很遗憾，以为算所有的不是dp题？ 其实可以用dp
+#dp题 -- 很遗憾，以为算所有的不是dp题？ 其实可以用dp 
+#O(d*f*target)
+#subP : f(i, t) = number of ways for i th dice to get t
+#f(i,t) = sum(f(i -1, t-j ) ; i<=j <= min(f,t)
+#bc : 0, 0 = 1
 
+class Solution {
+public:
+    int numRollsToTarget(int d, int f, int target) {
+        if(d * f < target) return 0;
+        if(d * f == target) return 1;
+        if(d == 1) return 1;
+        int mod = 1e9 + 7;
+        vector<vector<int>> dp (d + 1, vector<int> (target + 1, 0));
+        dp[0][0] = 1;
+        for (int i = 1; i <= d; ++i) {
+            for(int j = 1; j <= target; ++j) {
+                for(int k = 1; k <= min(f, j); ++k) {
+                        dp[i][j] += dp[i - 1][j - k];
+                        dp[i][j] %= mod;                 
+                }
+            }
+        }
+        return dp[d][target];
+        
+    }
+};
