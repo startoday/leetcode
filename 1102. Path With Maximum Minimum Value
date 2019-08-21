@@ -5,6 +5,36 @@ The score of a path is the minimum value in that path.
 
 A path moves some number of times from one visited cell to any neighbouring unvisited cell in one of the 4 cardinal directions (north, east, west, south).
 #不太能加图。。总之，要从左上角走到右下角，使一路上的和最大，上下左右四个方向都可以走
+#。。。。。。这道题是问你最大和的那一条路里面的最小值是多少。。。
+#认真读题。。每次找最大的没走过的路，记录路上的最小值即可
+
+#一个紧凑的写法
+class Solution {
+public:
+    int maximumMinimumPath(vector<vector<int>>& A) {
+        static constexpr int DIRS[][2] {{0,1},{1,0},{0,-1},{-1,0}};
+        priority_queue<tuple<int,int,int>> pq;
+        pq.emplace(A[0][0], 0, 0);
+        int n = A.size(), m = A[0].size(), maxscore = A[0][0];
+        A[0][0] = -1; // visited
+        while(!pq.empty()) {
+            auto [a, i, j] = pq.top();
+            pq.pop();
+            maxscore = min(maxscore, a);
+            if(i == n - 1 && j == m - 1)
+                return maxscore;
+            for(const auto& d : DIRS)
+                if(int newi = d[0] + i, newj = d[1] + j;
+                   newi >= 0 && newi < n && newj >= 0 && newj < m && A[newi][newj]>=0){
+                    pq.emplace(A[newi][newj], newi, newj);
+                    A[newi][newj] = -1;
+                }
+        }
+        return -1; // shouldn't get here
+    }
+};
+
+# can be solved in 3 ways (1. DFS + Binary Search; 2. PQ; 3. Union ) with  same complexity of O(n * m * log(n)).
 
 
-
+# ref: https://leetcode.com/problems/path-with-maximum-minimum-value/discuss/327616/3-Solution-Priority-Queue-DFS-%2B-Binary-Search-Union-Find
