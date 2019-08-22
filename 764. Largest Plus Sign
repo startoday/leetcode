@@ -1,0 +1,104 @@
+n a 2D grid from (0, 0) to (N-1, N-1), every cell contains a 1, except those cells in the given list mines which are 0. What is the largest axis-aligned plus sign of 1s contained in the grid? Return the order of the plus sign. If there is none, return 0.
+
+An "axis-aligned plus sign of 1s of order k" has some center grid[x][y] = 1 along with 4 arms of length k-1 going up, down, left, and right, and made of 1s. This is demonstrated in the diagrams below. Note that there could be 0s or 1s beyond the arms of the plus sign, only the relevant area of the plus sign is checked for 1s.
+
+Examples of Axis-Aligned Plus Signs of Order k:
+
+Order 1:
+000
+010
+000
+
+Order 2:
+00000
+00100
+01110
+00100
+00000
+
+Order 3:
+0000000
+0001000
+0001000
+0111110
+0001000
+0001000
+0000000
+Example 1:
+
+Input: N = 5, mines = [[4, 2]]
+Output: 2
+Explanation:
+11111
+11111
+11111
+11111
+11011
+In the above grid, the largest plus sign can only be order 2.  One of them is marked in bold.
+
+#找寻最大的加号！
+#dp:min of four directions length of the center and the spread arm is actually the order!
+class Solution {
+public:
+    int orderOfLargestPlusSign(int N, vector<vector<int>>& mines) {
+        unordered_set<int> zs;
+        vector<vector<int>> dp (N, vector<int> (N));
+        for(auto x : mines) {
+            zs.insert(x[0] * N + x[1]); //remeber the place of zeros 
+            //一个展开的2D。不需要一个real 2D
+        }
+        int res = 0;
+        for(int i = 0; i < N; ++i) {
+            int ctl = 0;
+            for(int j = 0; j < N; ++j) {
+                ctl = zs.count(i* N + j)? 0 : ctl+1; //注意这不能是 ++ 前面已经有等号了！
+                dp[i][j] = ctl;
+            }
+            int ctr = 0;
+            for(int j = N - 1; j >= 0; --j) {
+                ctr = zs.count(i* N + j)? 0 : ctr+1;
+                dp[i][j] = min(ctr, dp[i][j]);
+            }
+        }
+        
+        for(int i = 0; i < N; ++i) {
+            int ctl = 0;
+            for(int j = 0; j < N; ++j) {
+                ctl = zs.count(j* N + i)? 0 : ctl+1;
+                dp[j][i] = min(dp[j][i], ctl);
+            }
+            int ctr = 0;
+            for(int j = N - 1; j >= 0; --j) {
+                ctr = zs.count(j* N + i)? 0 : ctr+1;
+                dp[j][i] = min(ctr, dp[j][i]);
+                res = max(res,dp[j][i] );
+            }
+        }
+        return res;
+    }
+};
+
+
+
+#brute force
+class Solution {
+    public int orderOfLargestPlusSign(int N, int[][] mines) {
+        Set<Integer> banned = new HashSet();
+        for (int[] mine: mines)
+            banned.add(mine[0] * N + mine[1]);
+            
+        int ans = 0;
+        for (int r = 0; r < N; ++r) for (int c = 0; c < N; ++c) {
+            int k = 0;
+            while (k <= r && r < N-k && k <= c && c < N-k &&
+                    !banned.contains((r-k)*N + c) &&
+                    !banned.contains((r+k)*N + c) &&
+                    !banned.contains(r*N + c-k) &&
+                    !banned.contains(r*N + c+k))
+                k++;
+            
+            ans = Math.max(ans, k);
+        }
+        return ans;
+    }
+}
