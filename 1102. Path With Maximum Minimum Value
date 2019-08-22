@@ -61,4 +61,50 @@ public:
         return -1; // shouldn't get here
     }
 };
+
+3. union set: 是最终令起始点和最终点在同一个set里即可return 当前长度，sort by edge
+class Solution {
+	// union find stuctures
+    vector<int> uf;
+    int find(int id) {
+        while (id != uf[id]) id = uf[id] = uf[uf[id]];
+        return id;
+    }
+    void uni(int i, int j) {
+        i = find(i), j = find(j);
+        uf[j] = i;
+    }
+public:
+    int maximumMinimumPath(vector<vector<int>>& A) {
+        int n = A.size(), m = A[0].size();
+        vector<vector<int>> ids;
+        vector<vector<int>> dirs{{0,1},{0,-1},{1,0},{-1,0}};
+        uf = vector<int>(n*m, 0);
+        vector<int> visited(n*m, 0);
+        auto cmp = [&A](const vector<int>& id1, const vector<int>& id2) {
+            return A[id1[0]][id1[1]] > A[id2[0]][id2[1]];
+        };
+		
+        // initialize uf and sort the cells according to their values 
+        for (int i = 0; i < n; ++i) 
+            for (int j = 0; j < m; ++j) 
+                uf[i*m+j] = i*m+j,
+                ids.push_back({i, j});
+        sort(ids.begin(), ids.end(), cmp);
+        
+		// visit the cells in desc order
+        for (auto& id : ids) {
+            int i = id[0], j = id[1], k = i*m+j;
+            visited[k] = 1;
+            for (auto& d : dirs) {
+                int ii = i+d[0], jj = j+d[1], kk = ii*m+jj;
+                if (ii>=0 && ii<n && jj>=0 && jj<m && visited[kk])
+                    uni(k, kk);
+            }
+            if (find(0) == find (n*m-1)) return A[i][j];
+        }
+        return 0;
+    }
+};
+
 # ref: https://leetcode.com/problems/path-with-maximum-minimum-value/discuss/327616/3-Solution-Priority-Queue-DFS-%2B-Binary-Search-Union-Find
