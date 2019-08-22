@@ -11,6 +11,46 @@ Input:
 00000
 
 Output: 1
+#dfs的优化写法，用坐标
+class Solution {
+public:
+    //check the number of connected components, which has 1
+    //use direction to check
+    int numIslands(vector<vector<char>>& grid) {
+        int row = grid.size();
+        if(row == 0) return 0;
+        int col = grid[0].size();
+        if(col == 0) return 0; 
+        vector<vector<bool>> visit(row, vector<bool> (col, false));
+        int res = 0;
+        for(int i = 0; i < row; ++i) {
+            for(int j = 0; j < col; ++j) {
+                if(!visit[i][j] && grid[i][j] == '1') {
+                    helper(grid, visit, i, j, row, col); 
+                    ++res;
+                }
+            }
+        }
+        return res;  
+    }
+    
+    void helper(vector<vector<char>>& grid, vector<vector<bool>> & visit, int i, int j, const int & row, const int & col) {
+        visit[i][j] = true;
+        for(auto d : dir) {
+            int ni = i + d[0];
+            int nj = j + d[1];
+            if(ni< row && ni >= 0 && nj < col && nj >= 0 && !visit[ni][nj] && grid[ni][nj] == '1') { //注意加上1 才能判断能走
+                helper(grid, visit, ni, nj, row, col);
+            }
+        }
+
+    }
+    private:
+    vector<vector<int>> dir {{-1,0}, {1,0},{0,1}, {0,-1}}; //注意direct 方向别资写错了
+};
+
+
+
 
 #是一道count components 的题， 可以bfs
 #感觉写的很笨。。虽然beat 99%。。
