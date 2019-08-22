@@ -1,0 +1,77 @@
+Given a 2D grid of 0s and 1s, return the number of elements in the largest square subgrid that has all 1s on its border, or 0 if such a subgrid doesn't exist in the grid.
+
+ 
+
+Example 1:
+
+Input: grid = [[1,1,1],[1,0,1],[1,1,1]]
+Output: 9
+Example 2:
+
+Input: grid = [[1,1,0,0]]
+Output: 1
+ 
+
+Constraints:
+
+1 <= grid.length <= 100
+1 <= grid[0].length <= 100
+grid[i][j] is 0 or 1
+
+#与前作不同的是只需要border是 且传的是int arr
+#优化！check bounderay 1的时候 可以直接比较 剩余len的而不是全部的array～
+for (int i  = r - 1; i >= res; --i) {
+            for(int j = c - 1; j >= res ; --j) {
+                int len = min(hor[i][j], ver[i][j]);
+                while(len > res) {
+                    if(len <= min(hor[i - len + 1][j], ver[i][ j - len + 1])) {
+                        res = len;
+                    }
+                    len --;
+                }
+            }
+        }    
+        
+        
+        
+
+class Solution {
+public:
+    int largest1BorderedSquare(vector<vector<int>>& grid) {
+        int r = grid.size();
+        int c = grid[0].size();
+        
+        auto hor = grid; //can just assign by this way
+        auto ver  = grid;
+        /* check the address and see that by " = " is a deep copy
+        printf("Address of a: %p\n", &hor);
+        printf("Address of b: %p\n", &ver);
+        */
+        for (int i  = 0; i < r; ++i) {
+            for(int j = 1; j < c ; ++j) {
+                hor[i][j] *= (hor[i][j - 1] + 1);
+            }
+        }
+        
+        for (int j  = 0; j < c; ++j) {
+            for(int i = 1; i < r; ++i) {
+                ver[i][j] *= (ver[i - 1][j] + 1);
+            }
+        }
+         
+        int res = 0;
+        //have to start from right bottom corner
+        for (int i  = r - 1; i >= 0; --i) {
+            for(int j = c - 1; j >= 0 ; --j) {
+                int len = min(hor[i][j], ver[i][j]);
+                while(len > res) {
+                    if(len <= min(hor[i - len + 1][j], ver[i][ j - len + 1])) {
+                        res = len;
+                    }
+                    len --;
+                }
+            }
+        }    
+        return res * res;  
+    }
+};
