@@ -1,0 +1,46 @@
+In a array A of size 2N, there are N+1 unique elements, and exactly one of these elements is repeated N times.
+
+Return the element repeated N times.
+
+ 
+
+Example 1:
+
+Input: [1,2,3,3]
+Output: 3
+#选择的这个元素肯定是大于一半的---注意审题了！！其他元素都是uniq的！！ 
+#题本身不难，来看一看不同的做法们
+#1.set再见一面 O(N) time O(N) space
+ int repeatedNTimes2(vector<int>& A) {
+        unordered_set<int> seen;
+        for (int a: A) {
+            if (seen.count(a))
+                return a;
+            seen.insert(a);
+        }
+    }
+    
+#2.因为占了一半，所以不能间隔的太远！（不是很好临场捋清楚）    
+    Check if A[i] == A[i - 1] or A[i] == A[i - 2]
+If so, we return A[i]
+If not, it must be [x, x, y, z] or [x, y, z, x].
+We return A[0] for the cases that we miss.
+O(N) time O(1) space
+
+int repeatedNTimes(vector<int>& A) {
+    for (int i = 2; i < A.size(); ++i)
+        if (A[i] == A[i - 1] || A[i] == A[i - 2])
+            return A[i];
+    return A[0];
+}
+#3.大家最爱的random pick来实现O（1）
+int repeatedNTimes(vector<int>& A) {
+    int i = 0, j = 0, n = A.size();
+    while (i == j || A[i] != A[j]){
+        i = rand() % n, j = rand() % n;
+        }
+    return A[i];
+}
+
+    
+    
