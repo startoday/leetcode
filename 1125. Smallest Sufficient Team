@@ -23,3 +23,38 @@ Elements of req_skills and people[i] are (respectively) distinct.
 req_skills[i][j], people[i][j][k] are lowercase English letters.
 Every skill in people[i] is a skill in req_skills.
 It is guaranteed a sufficient team exists.
+
+#总共只有16个技能，（2的16次方 = 65536） 可以用状态压缩来储存状态 - 可以用bit位压缩-贼有才。。经计算够大
+# f(i,j) : min res for i th people to form j skills
+# f(i,j) = min(f(i - 1, oldJ) + 1, f(i, J));
+
+class Solution {
+public:
+    vector<int> smallestSufficientTeam(vector<string>& req_skills, vector<vector<string>>& people) {
+        int n = req_skills.size();
+        // i th skill's result
+		unordered_map<int,vector<int>> res;  
+        res.reserve(1 << n);    // using reserved space to avoid rehash
+        res[0]={};
+        unordered_map<string,int> skMp;
+        //use index to represent the required skills
+        for(int i = 0; i< req_skills.size(); i++) {
+            skMp[req_skills[i]] = i;
+        }
+        for(int i = 0;i < people.size(); i++) {
+            int curSk = 0;
+            for(auto x : people[i]) {
+                curSk |= 1 << skMp[x]; //mask the skill
+            }
+            for(auto k : res) {
+                int cbSk = k.first | curSk;
+                if(res.find(cbSk) == res.end()//not in 
+                || res[cbSk].size() > 1 + res[ k.first].size()) { //smaller people needed
+                     res[cbSk] = k.second; //ori
+                     res[cbSk].push_back(i);  //add new
+                }   
+            }
+        }
+        return res[(1 << n) - 1];
+    }
+};
