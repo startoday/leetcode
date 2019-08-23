@@ -18,12 +18,12 @@ public:
         char sign = '+';  //得先有一个sign 来处理 计算器里只是一个数，没符号的情况！
         long res = 0, temp = 0; //需要是long for "2147483647"
         for(int i = 0; i < s.size(); i++) {
+        //不能直接用isspace continue 跳空格！ 万一最后一个是空格的话就不会被处理了！！！ 就用if处理general情况，space 无视即可
             char x = s[i];
-            if(isspace(x)) continue;
             if(isdigit(x)) {
                 temp = 10 *temp + x - '0';
             } 
-            if(!isdigit(x) && !isspace(x) || i == s.size()-1) { /不能 直接auto x，那样判断等于时只是看数值相等！！ 还是得用 i！！！！！！
+            if(!isdigit(x) && !isspace(x) || i == s.size()-1) { //不能 直接auto x，那样判断等于时只是看数值相等！！ 还是得用 i！！！！！！
                 if (sign == '-')
                     each_step.push(-temp);
                 else if (sign == '+')
