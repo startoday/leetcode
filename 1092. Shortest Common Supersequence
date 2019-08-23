@@ -1,0 +1,81 @@
+Given two strings str1 and str2, return the shortest string that has both str1 and str2 as subsequences.  If multiple answers exist, you may return any of them.
+
+(A string S is a subsequence of string T if deleting some number of characters from T (possibly 0, and the characters are chosen anywhere from T) results in the string S.)
+
+ 
+
+Example 1:
+
+Input: str1 = "abac", str2 = "cab"
+Output: "cabac"
+Explanation: 
+str1 = "abac" is a subsequence of "cabac" because we can delete the first "c".
+str2 = "cab" is a subsequence of "cabac" because we can delete the last "ac".
+The answer provided is the shortest such string that satisfies these properties.
+ 
+
+Note:
+
+1 <= str1.length, str2.length <= 1000
+str1 and str2 consist of lowercase English letters.
+
+#两个字符串，return 1个 最短的string 的subsequence 可以包含二者
+#可以先求 最长公共子序列（LCS）--最省的方式，然后再继续构建！time and space both O(mn)
+class Solution {
+public:
+    string shortestCommonSupersequence(string str1, string str2) {
+        int r = str1.size();
+        int c = str2.size();
+        vector<vector<int>> dp (r + 1, vector<int> (c + 1, 0));
+        for(int i = 1; i <= r; ++i) {
+            for(int j = 1; j <= c; ++j)
+                 if(str1[i - 1] == str2[j - 1]) {
+                     dp[i][j] = 1 + dp[i - 1][j - 1];
+                 } else dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
+        }
+        
+        string res = "";
+        
+        while (r || c) {
+            if (r == 0) res += str2[--c]; //走到头了，对面剩下的全加上就行
+            else if (c == 0) res += str1[--r];
+            else if (dp[r - 1][c] == dp[r][c]) res += str1[--r]; //没有的, 没用的，需要被加上
+            else if (dp[r][c - 1] == dp[r][c]) res += str2[--c];
+            else {
+              res += str1[--r];
+              --c;                  //common的
+            }
+        }
+        
+        reverse(res.begin(), res.end());  
+        return res; 
+    }
+};
+#ref： https://zxi.mytechroad.com/blog/dynamic-programming/leetcode-1092-shortest-common-supersequence/
+
+
+#另一种，光construct LCS的，再循环两个str 找不是的
+string shortestCommonSupersequence(string& A, string& B) {
+        int i = 0, j = 0;
+        string res = "";
+        for (char c : lcs(A, B)) {
+            while (A[i] != c)
+                res += A[i++];
+            while (B[j] != c)
+                res += B[j++];
+            res += c, i++, j++;
+        }
+        return res + A.substr(i) + B.substr(j); //注意 最后没走完的都要加上！！！
+    }
+
+    string lcs(string& A, string& B) {
+        int n = A.size(), m = B.size();
+        vector<vector<string>> dp(n + 1, vector<string>(m + 1, ""));
+        for (int i = 0; i < n; ++i)
+            for (int j = 0; j < m; ++j)
+                if (A[i] == B[j])
+                    dp[i + 1][j + 1] = dp[i][j] + A[i];
+                else
+                    dp[i + 1][j + 1] = dp[i + 1][j].size() > dp[i][j + 1].size() ?  dp[i + 1][j] : dp[i][j + 1];
+        return dp[n][m];
+    }
