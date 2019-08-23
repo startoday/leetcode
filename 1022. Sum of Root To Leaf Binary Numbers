@@ -1,0 +1,36 @@
+Given a binary tree, each node has value 0 or 1.  Each root-to-leaf path represents a binary number starting with the most significant bit.  For example, if the path is 0 -> 1 -> 1 -> 0 -> 1, then this could represent 01101 in binary, which is 13.
+
+For all leaves in the tree, consider the numbers represented by the path from the root to that leaf.
+
+Return the sum of these numbers.
+
+ 
+
+Example 1:
+Input: [1,0,1,0,1,0,1]
+Output: 22
+Explanation: (100) + (101) + (110) + (111) = 4 + 5 + 6 + 7 = 22
+
+#记录当前路径和 就是 old *2 + newval
+class Solution {
+public:
+    int sumRootToLeaf(TreeNode* root) {
+        int res = 0, old = 0;
+        helper(root, old, res);
+        return res;
+    }
+    void helper(TreeNode* root, int old, int & res) {
+        if(!root) return;
+        old = old * 2 + root->val;
+        /*
+        old = (old << 1) + root->val; //想用右移一定要有括号，左右移的优先级比较低
+        */
+        if(!root->left && !root->right){
+            res += old;
+        } 
+        helper(root->left, old, res);
+        helper(root->right, old, res);
+    }
+};
+
+#time O（N）
