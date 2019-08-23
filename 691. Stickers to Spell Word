@@ -1,0 +1,18 @@
+We are given N different types of stickers. Each sticker has a lowercase English word on it.
+
+You would like to spell out the given target string by cutting individual letters from your collection of stickers and rearranging them.
+
+You can use each sticker more than once if you want, and you have infinite quantities of each sticker.
+
+What is the minimum number of stickers that you need to spell out the target? If the task is impossible, return -1.
+
+Example 1:
+Input:
+["with", "example", "science"], "thehat"
+Output:
+3
+
+#所以一根with 可以提供一个 t 一个 h，一根example 可以提供一个 e 一个 a， 共两根with 一根example 可以实现
+
+#coin change 问题，每一个item 的参数是 char & char times 不限量供应， 还是可以跟1025一样的写法， 每个人带来的新鲜血液 vs old；
+dp[i] 就是 每个字母有几个的所有组合了，还是很大 可以一样用1025的bit mask的方法
