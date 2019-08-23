@@ -1,0 +1,78 @@
+Implement a basic calculator to evaluate a simple expression string.
+
+The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should truncate toward zero.
+
+Example 1:
+
+Input: "3+2*2"
+Output: 7
+Example 2:
+
+Input: " 3/2 "
+Output: 1
+#做一个只有加减乘除没有括号的计算器
+class Solution {
+public:
+    int calculate(string s) {
+        stack<int> each_step;
+        char sign = '+';  //得先有一个sign 来处理 计算器里只是一个数，没符号的情况！
+        long res = 0, temp = 0; //需要是long for "2147483647"
+        for(int i = 0; i < s.size(); i++) {
+            char x = s[i];
+            if(isspace(x)) continue;
+            if(isdigit(x)) {
+                temp = 10 *temp + x - '0';
+            } 
+            if(!isdigit(x) && !isspace(x) || i == s.size()-1) { /不能 直接auto x，那样判断等于时只是看数值相等！！ 还是得用 i！！！！！！
+                if (sign == '-')
+                    each_step.push(-temp);
+                else if (sign == '+')
+                    each_step.push(temp);
+                else {
+                    int num;
+                    int old = each_step.top();
+                    each_step.pop();
+                    if (sign == '*' ) num = old*temp;
+                    else num = old/temp;
+                    each_step.push(num);
+                } 
+                sign = x;
+                temp = 0;
+            }
+        } 
+        while (!each_step.empty()) {
+            res += each_step.top();
+            each_step.pop();
+        }
+        return res; 
+    }
+};
+
+
+#大佬的做法，有效利用stream 跳空格和区分数字符号
+class Solution {
+public:
+    int calculate(string s) {
+        istringstream in('+' + s + '+');
+        long long total = 0, term = 0, n;
+        char op;
+        while (in >> op) {
+            cout<<op<<endl;
+            if (op == '+' or op == '-') {
+                total += term;
+                in >> term;
+                cout<<"total is "<<total<<endl;
+                term *= op == '+' ? 1 : -1;
+                //  44 - op  == op == '+' ? 1 : -1
+            } else {
+                in >> n;
+                if (op == '*')
+                    term *= n;
+                else
+                    term /= n;
+            }
+        }
+        return total;
+    }
+};
+
