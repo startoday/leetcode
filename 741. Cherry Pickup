@@ -1,0 +1,25 @@
+In a N x N grid representing a field of cherries, each cell is one of three possible integers.
+(0,1)可走， 1 是有个樱桃； -1 是墙
+Your task is to collect maximum number of cherries possible by following the rules below:
+
+Starting at the position (0, 0) and reaching (N-1, N-1) by moving right or down through valid path cells (cells with value 0 or 1);
+After reaching (N-1, N-1), returning to (0, 0) by moving left or up through valid path cells;
+When passing through a path cell containing a cherry, you pick it up and the cell becomes an empty cell (0);
+If there is no valid path between (0, 0) and (N-1, N-1), then no cherries can be collected.
+ 
+Example 1:
+
+Input: grid =
+[[0, 1, -1],
+ [1, 0, -1],
+ [1, 1,  1]]
+Output: 5
+
+#grid is an N by N 2D array, with 1 <= N <= 50.
+#Each grid[i][j] is an integer in the set {-1, 0, 1}.
+#It is guaranteed that grid[0][0] and grid[N-1][N-1] are not -1.
+
+#简单的两遍dp是不对的有反例哈
+#可以想成两个独立的人同时同频率在走，（x1,y1,x2,y2） 自由度为三，每个人有两个方向，四个值里面取max
+#这样转化之后不用改变原有的grid了
+
