@@ -16,3 +16,29 @@ Output:
 
 #coin change 问题，每一个item 的参数是 char & char times 不限量供应， 还是可以跟1025一样的写法， 每个人带来的新鲜血液 vs old；
 dp[i] 就是 每个字母有几个的所有组合了，还是很大 可以一样用1025的bit mask的方法
+#题里还说了target最长15位，正是提示
+
+class Solution {
+public:
+    int minStickers(vector<string>& stickers, string target) {
+        int n = target.size(), m = 1 << n;
+        vector<int> dp(m, INT_MAX);
+        dp[0] = 0;
+        for (int i = 0; i < m; ++i) {
+            if (dp[i] == INT_MAX) continue;
+            for (string &sticker : stickers) {
+                int cur = i;
+                for (char c : sticker) {
+                    for (int k = 0; k < n; ++k) {
+                        if (target[k] == c && !((cur >> k) & 1)) {
+                            cur |= 1 << k;
+                            break;
+                        }
+                    }
+                }
+                dp[cur] = min(dp[cur], dp[i] + 1);
+            }
+        }
+        return dp[m - 1] == INT_MAX ? -1 : dp[m - 1];
+    }
+};
