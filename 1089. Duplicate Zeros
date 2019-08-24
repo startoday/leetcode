@@ -1,0 +1,50 @@
+Given a fixed length array arr of integers, duplicate each occurrence of zero, shifting the remaining elements to the right.
+
+Note that elements beyond the length of the original array are not written.
+
+Do the above modifications to the input array in place, do not return anything from your function.
+
+ 
+
+Example 1:
+
+Input: [1,0,2,3,0,4,5,0]
+Output: null
+Explanation: After calling your function, the input array is modified to: [1,0,0,2,3,0,0,4]
+notes：
+1 <= arr.length <= 10000
+0 <= arr[i] <= 9
+#如果有零，让零多一个， 保持原有array 长度不变，要求inplace，return void（其实多用个array再复制应该也没人管你）
+#当场就只想到了暴力解
+
+class Solution {
+public:
+    void duplicateZeros(vector<int>& arr) {
+        for(int i = 0; i < arr.size();++i) {
+            if(arr[i] == 0) {
+                arr.pop_back();
+                arr.insert(arr.begin() + i, 0);
+                ++i;
+            }
+        }
+    }
+};
+
+#其他做法： two pointer/ count the shift len
+void duplicateZeros(vector<int>& A) {
+        int n = A.size(), j = n + count(A.begin(), A.end(), 0);
+        for (int i = n - 1; i >= 0; --i) {
+            if (--j < n)
+                A[j] = A[i];
+            if (A[i] == 0 && --j < n)
+                A[j] = 0;
+        }
+    }
+
+void duplicateZeros(vector<int>& a, int i = 0, int sh = 0) {
+  for (i = 0; sh + i < a.size(); ++i) sh += a[i] == 0; //是可以移动多少个 0 还在arr里， 不可以count所有的，这才是可以移动的位数
+  for (i = i - 1; sh > 0; --i) {
+    if (i + sh < a.size()) a[i + sh] = a[i];
+    if (a[i] == 0) a[i + --sh] = a[i];
+  }
+}
