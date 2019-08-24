@@ -1,0 +1,59 @@
+Given a binary search tree with non-negative values, find the minimum absolute difference between values of any two nodes.
+
+Example:
+
+Input:
+
+   1
+    \
+     3
+    /
+   2
+
+Output:
+1
+
+Explanation:
+The minimum absolute difference is 1, which is the difference between 2 and 1 (or between 2 and 3).
+Note: There are at least two nodes in this BST.
+
+#一开始想错了。。其实是root和pred以及suc比，只好暴力解inorder BST生成array再搞
+#time &space O(n)
+
+class Solution {
+public:
+    int getMinimumDifference(TreeNode* root) {
+        //想错了！！ 应该是左最大vs 右最小
+        vector<int>  t;
+        helper(root, t);
+        int res = t[1] - t[0];
+        for(int i = 2; i < t.size(); ++i) {
+            res = min(res, t[i] - t[i - 1]);
+        }
+        return res;
+    }
+    void helper(TreeNode* root, vector<int> & t) {
+        if(!root) return ;
+        helper(root->left, t);
+        t.push_back(root->val);
+        helper(root->right, t);
+    }
+};
+
+#改进：其实只用的是inorder vector里面的前一个元素，我们可以record前一个元素以及res， 这样space是 O（1），在stack上的space是O（height）
+#比上一个方法居然慢。。
+class Solution {
+public:
+    int getMinimumDifference(TreeNode* root) {
+        int res = INT_MAX, prev = -1;
+        helper(root, res, prev);
+        return res;
+    }
+    void helper(TreeNode* root, int & res, int & prev) {
+        if(!root) return ;
+        helper(root->left, res, prev);
+        if(prev >= 0) res = min(res, root->val - prev);   
+        prev = root->val;
+        helper(root->right, res, prev);
+    }
+};
