@@ -1,0 +1,102 @@
+Given a Binary Search Tree (BST), convert it to a Greater Tree such that every key of the original BST is changed to the original key plus sum of all keys greater than the original key in BST.
+
+Example:
+
+Input: The root of a Binary Search Tree like this:
+              5
+            /   \
+           2     13
+
+Output: The root of a Greater Tree like this:
+             18
+            /   \
+          20     13
+
+#Tree的练习系列
+#题里要求每个node 都变成比他大的的和
+#可以从右到左走（右根左） 记录当前和
+#题里如果没给root！= null的话写iterartion的要注意
+
+class Solution {
+public:
+    TreeNode* convertBST(TreeNode* root) {
+        int sum = 0;
+        helper(root, sum);
+        return root;
+    }
+    void helper(TreeNode * & root, int & sum) {
+        if(!root) return;
+        helper(root->right, sum);
+        root->val += sum;
+        sum = root ->val;
+        helper(root->left, sum);
+    }
+};
+#time O(n)
+#space O(n)
+
+#用stack的写法
+class Solution {
+public:
+    TreeNode* convertBST(TreeNode* root) {
+        int sum = 0;
+        TreeNode * dum = root;
+        stack<TreeNode * > st;
+        while(!st.empty() || dum) {
+            while(dum) {
+                st.push(dum);
+                dum = dum->right;                
+            }
+            TreeNode * temp = st.top();
+            st.pop();
+            sum += temp->val;
+            temp->val = sum;
+            
+            dum = temp->left;
+        }        
+        return root;
+    }
+};
+
+#time O(n)
+#space O(n)
+
+
+#morris time O（1） space O（1）
+class Solution {
+public:
+    TreeNode* convertBST(TreeNode* root) {
+        int sum = 0;
+        TreeNode * dum = root;
+        while(root) {
+            
+            if(!root->right) { //如果没有右子树了 就可以开始处理了
+                sum += root ->val;
+                root ->val = sum;
+                root= root ->left;
+            } else {
+                TreeNode * suc = helper(root);
+                
+                if(!suc->left) {  //left 是空，说明我们还没连上 we have not visit that branch
+                    suc->left = root;
+                    root = root->right;
+                } else { //suc的左子树不是空的。说明连回来了， 已经可以处理这个node 了，先把suc左拆掉
+                    suc->left = NULL;  
+                    sum += root ->val;
+                    root ->val = sum;
+                    root= root ->left;
+                }
+            }
+
+        }        
+        return dum;
+    }
+    //get the node with the smallest value greater than root! go right and then go left!
+    TreeNode* helper(TreeNode* root) {
+        TreeNode * s = root->right;
+        while(s && s->left && s->left!= root) {  //走回来了
+            s = s->left;
+        }
+        return s;
+    }
+};
