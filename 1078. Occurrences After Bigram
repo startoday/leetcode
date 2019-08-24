@@ -1,0 +1,29 @@
+Given words first and second, consider occurrences in some text of the form "first second third", where second comes immediately after first, and third comes immediately after second.
+
+For each such occurrence, add "third" to the answer, and return the answer.
+
+Example 1:
+
+Input: text = "alice is a good girl she is a good student", first = "a", second = "good"
+Output: ["girl","student"]
+
+#练习了stringstream，--可以只存string，以空格断开
+#其实不需要vector， 俩string 就行
+class Solution {
+public:
+    vector<string> findOcurrences(string text, string first, string second) {
+        istringstream is(text);
+        vector<string> temp (3, ""); 
+        vector<string> res; 
+        string s;  
+        while(is>>s)  {  
+            temp[2] = s;
+            string x = temp[0];
+            string y = temp[1];
+            if(x == first && y == second && temp[2] != "") res.push_back(temp[2]);
+            temp[0] = y;
+            temp[1] = temp[2];
+        }  
+        return res;   
+    }
+};
