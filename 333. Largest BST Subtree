@@ -1,0 +1,56 @@
+Given a binary tree, find the largest subtree which is a Binary Search Tree (BST), where largest means subtree with largest number of nodes in it.
+
+Note:
+A subtree must include all of its descendants.
+
+Example:
+
+Input: [10,5,15,1,8,null,7]
+
+   10 
+   / \ 
+  5  15 
+ / \   \ 
+1   8   7
+
+Output: 3
+Explanation: The Largest BST Subtree in this case is the highlighted one.
+             The return value is the subtree's size, which is 3.
+             
+#好吧！这道题的BST是严格要求没有duplicate的那种
+#练习了struct的写法
+#注意每棵树return 最大最小值，然后选哪个是根据 这个处于左还是右子树定的
+
+class Solution {
+private: 
+    int res = 0;
+    struct Info {
+        bool bst;
+        int  totalN;
+        int mx;
+        int mi;
+        Info(bool x, int y, int m,int n) : bst(x), totalN(y), mx(m), mi(n) {}
+    };
+public:
+    int largestBSTSubtree(TreeNode* root) {
+        helper(root);
+        return res;
+    }
+   Info helper(TreeNode* root) {
+        if(!root) return Info(true, 0, NULL, NULL);
+        auto l = helper(root->left);
+        auto r = helper(root->right);
+        if(l.bst && r.bst) {
+            int newTotal = 1 + l.totalN + r.totalN;
+            int temp = root->val;
+            int oldres = res;
+            res = max(res, newTotal);
+            if(!l.mx && !r.mi) return Info(true, newTotal, temp, temp);
+            else if(!l.mx && temp < r.mi) return Info(true, newTotal, r.mx, temp);
+            else if (!r.mi && temp  > l.mx) return Info(true, newTotal,temp, l.mi);             
+            else if(l.mx && r.mi && temp > l.mx && temp <r.mi)  return Info(true, newTotal, r.mx, l.mi);
+            res = oldres;
+        }
+        return Info(false, 0, 0, 0);
+    }
+};
