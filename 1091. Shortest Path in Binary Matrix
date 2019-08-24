@@ -1,0 +1,55 @@
+In an N by N square grid, each cell is either empty (0) or blocked (1).
+
+A clear path from top-left to bottom-right has length k if and only if it is composed of cells C_1, C_2, ..., C_k such that:
+
+Adjacent cells C_i and C_{i+1} are connected 8-directionally (ie., they are different and share an edge or corner)
+C_1 is at location (0, 0) (ie. has value grid[0][0])
+C_k is at location (N-1, N-1) (ie. has value grid[N-1][N-1])
+If C_i is located at (r, c), then grid[r][c] is empty (ie. grid[r][c] == 0).
+Return the length of the shortest such clear path from top-left to bottom-right.  If such a path does not exist, return -1
+
+Note:
+1 <= grid.length == grid[0].length <= 100
+grid[r][c] is 0 or 1
+
+#最短路径，可以走八个方向的基操题， 既然是 0和1， 可以不需要visit list 直接改数（0 改成1） 就行！
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        //bfs 
+        vector<vector<int>> dir {{-1, -1}, {-1, 0},{-1, 1},{0, -1},{0, 1},{1, -1}, {1, 0},{1, 1}};
+        int level = 1;
+        int c = grid.size();
+        int r = grid[0].size();
+        vector<vector<bool>> visit(c, vector<bool> (r, false));
+        queue<int> q;
+        if(!grid[0][0]) q.push(0);
+        visit[0][0] = true;
+        while(!q.empty()) {
+            for( int k = q.size(); k > 0; --k) {
+                int x = q.front();
+                if(x == (c*r - 1)) return level;
+                q.pop();
+                for(auto d : dir) {
+                    int ni = x/r + d[0];
+                    int nj = x%r + d[1];
+                    if(ni >= 0 && ni < r && nj >= 0 && nj < c && !visit[ni][nj] && !grid[ni][nj]) {
+                        visit[ni][nj] = true;
+                        q.push(ni * r + nj);
+                    }
+                }
+            }
+            level++;
+        }
+        return -1;
+    }
+};
+
+#可以把dir 换成 for loop,在添加的时候就check
+  if (c.first >= 0 && c.second >= 0 && c.first < g.size() && c.second < g.size() && !g[c.first][c.second]) {
+    g[c.first][c.second] = 1;
+    if (c.first == g.size() - 1 && c.second == g.size() - 1) return steps;
+    for (auto i = -1; i < 2; ++i)
+      for (auto j = -1; j < 2; ++j)
+        if (i != 0 || j != 0) q1.push({ c.first + i, c.second + j });
+  }
