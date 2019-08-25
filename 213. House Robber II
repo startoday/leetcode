@@ -1,0 +1,30 @@
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. All houses at this place are arranged in a circle. That means the first house is the neighbor of the last one. Meanwhile, adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+
+Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.
+
+Example 1:
+
+Input: [2,3,2]
+Output: 3
+Explanation: You cannot rob house 1 (money = 2) and then rob house 3 (money = 2),
+             because they are adjacent houses.
+#抢劫！ 不能连续抢两家，会触发报警器！ 是个圈楼，怎么办？
+#抢了第一家就只好当最后一家不存在， 不抢第一家抢别家才有戏，可优化paint house的space to （1）
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 1) return nums[0];
+        return max(helper(nums, 0, n - 1), helper(nums, 1, n));
+    }
+    int helper(vector<int>& nums, int st, int en) {
+        int rob = 0, notRob = 0,  pr = 0, pnr = 0;       
+        for (int i = st; i < en; ++i) {
+            pr = rob, pnr = notRob;
+            rob = pnr + nums[i];
+            notRob = max(pr, pnr);
+        }
+        return max(rob, notRob);
+    }
+};
