@@ -1,0 +1,29 @@
+Given the root of a binary tree, consider all root to leaf paths: paths from the root to any leaf.  (A leaf is a node with no children.)
+
+A node is insufficient if every such root to leaf path intersecting this node has sum strictly less than limit.
+
+Delete all insufficient nodes simultaneously, and return the root of the resulting binary tree.
+
+#有一个limit， 如果某path的和小于limit， 就得删除这条path
+#1.如果该根是叶子， check 根的val 和limit
+ 2. 有左子树，传 左子树， 及 limit as limit - root- >val
+ 3. 有右子树，传 右子树， 及limit as limit - root- >val
+ 4. 传回来之后如果最左右子树都gg了说明没有可行的 path，return NULL， 否认return root
+
+class Solution {
+public:
+    TreeNode* sufficientSubset(TreeNode* root, int limit) {
+        if (root->left == root->right) { // right == NULL and left == NULL 的新写法！！
+            return root->val < limit ? NULL : root;
+        }   
+        if (root->left) { 
+            root->left = sufficientSubset(root->left, limit - root->val);
+        }            
+        if (root->right) {
+             root->right = sufficientSubset(root->right, limit - root->val);
+        }           
+        return root->left == root->right ? NULL : root;
+    }
+};
+
+
