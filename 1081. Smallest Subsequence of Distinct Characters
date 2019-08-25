@@ -1,0 +1,33 @@
+Return the lexicographically smallest subsequence of text that contains all the distinct characters of text exactly once.
+Example 1:
+
+Input: "cdadabcc"
+Output: "adbc"
+Notes:
+1 <= text.length <= 1000
+text consists of lowercase English letters.
+
+#和316 一样， 不过简化一波代码 -- hashmap 变为array 记录最后一次出现的位置，check的时候也比较简单； 用string 直接代表 stack，直接return 即可！
+class Solution {
+public:
+    string smallestSubsequence(string text) {
+        vector<int> ct (26);
+        for(int i = 0; i < text.size(); ++i) {
+            ct[text[i] -'a'] = i;
+        }
+        unordered_set<char> has;
+        string st;
+        for(int i = 0; i < text.size(); ++i) {
+            if(!has.count(text[i])) {
+                while(!st.empty() && st.back() > text[i] && ct[st.back() -'a'] > i) { 
+                    has.erase(st.back());
+                    st.pop_back();
+                }
+                st.push_back(text[i]);
+                has.insert(text[i]); 
+            }
+        }
+        
+        return st;
+    }
+};
