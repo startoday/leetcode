@@ -1,0 +1,49 @@
+Given a string which contains only lowercase letters, 
+remove duplicate letters so that every letter appears once and only once. 
+You must make sure your result is the smallest in lexicographical order among all possible results.
+
+Example 1:
+
+Input: "bcabc"
+Output: "abc"
+
+#给一个字符串，要求使每个字母只出现一次，保证return的结果是lexico 最小的
+Strings are compared from the first character to the last one. 
+Which string is greater depends on the comparison between the first unequal corresponding character in the two strings. 
+As a result any string beginning with a will always be less than any string beginning with b, 
+regardless of the ends of both strings.
+#再次强调，lexico order的要求是同位置的字母最小，甭管之后的长度 adhsfkcnkajna < ba
+
+#如果一次字母只出现1次，选！
+#如果一次字母出现多次， 下一个字母比他小， 不选！
+#如果一次字母出现多次， 前面有， 后面有其他的所有字母，选！（而且是早选早好，因为会有更多的选择）
+#用stack 存当前备选字符，如果备选字符满足不选的条件就pop掉，否则就push 上去作为备选！
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        unordered_map<char, int> ct;
+        for(auto x :s) {
+            ct[x] ++;
+        }
+        stack<char> st;
+        unordered_set<char > has;
+        string res;
+        for(int i = 0; i < s.size(); ++i) {
+            if(!has.count(s[i])) { //stack 里已经有了就不需要check了
+                while(!st.empty() && st.top() > s[i] && ct[st.top()] > 0) { // can check and remove top
+                    has.erase(st.top());
+                    st.pop();
+                }
+                st.push(s[i]);
+                has.insert(s[i]); 
+            }
+            ct[s[i]] -- ; //已经有了也别忘了数量减1
+        }
+        while(!st.empty()) {
+            res += st.top();
+            st.pop();
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
