@@ -1,0 +1,72 @@
+Given an integer array, return the k-th smallest distance among all the pairs. The distance of a pair (A, B) is defined as the absolute difference between A and B.
+
+Example 1:
+Input:
+nums = [1,3,1]
+k = 1
+Output: 0 
+Explanation:
+Here are all the pairs:
+(1,3) -> 2
+(1,1) -> 0
+(3,1) -> 2
+Then the 1st smallest distance pair is (1,1), and its distance is 0.
+Note:
+2 <= len(nums) <= 10000.
+0 <= nums[i] < 1000000.
+1 <= k <= len(nums) * (len(nums) - 1) / 2.
+
+#给一个array，有各个pair distance（相同的也算一个，在算kth的时候不会被跳过），问第k小的distance是多少
+# ---什么鬼！很明显上面我又理解错了！！！是按照<组合>来求的dis！
+#看看这Notes的size， 暴力解当然是过不了的！
+class Solution {
+public:
+    int smallestDistancePair(vector<int>& nums, int k) {
+        int n =nums.size();
+        priority_queue<int> pq;
+        
+        for(int i = 0; i < n; ++i) {
+            for(int j = i + 1; j < n; ++j) {
+                int temp = abs(nums[i] - nums[j]);
+                if(pq.size() < k) {
+                    pq.push(temp);
+                } else if(pq.top() > temp) {
+                    pq.pop();
+                    pq.push(temp);
+                }
+            }
+        }
+        return pq.top();
+    }
+};
+
+#Notes 还说了一件事！就是 这个题 肯定是有解的
+#所以！！这种第几个的题可以always 想想 sort 过后有没有帮助！！！
+#sort完之后可以比较轻松的check 多少个dis小于一定值的了，
+#对于最小值和最大值差使用二分法看差值应该是多少
+
+class Solution {
+public:
+    int smallestDistancePair(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        int n =nums.size();
+        int low = 0; int high = nums[n - 1] - nums[0];
+        while(low < high) {
+            int ct = 0;
+            int mid = (high - low) / 2 + low;
+            int l = 0;
+            for(int r = 0; r < n; ++r){  //O(n * lg W)
+                while(nums[r] - nums[l] > mid) l++;
+                ct += r - l; //get the count of dist within mid range;
+            }
+            if(ct >= k) high = mid;
+            else low = mid + 1; // 必须是mid + 1，不然解是最后一个的话会成死循环， +1 也没有改变，mid的位置
+        }
+        
+        return low;
+    }
+};
+#space O(1)
+#time O(nlgn + nlgw)  (w is the (len of) high - low)
+
+
