@@ -1,0 +1,91 @@
+Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
+
+The update(i, val) function modifies nums by updating the element at index i to val.
+
+Example:
+
+Given nums = [1, 3, 5]
+
+sumRange(0, 2) -> 9
+update(1, 2)
+sumRange(0, 2) -> 8
+Note:
+
+The array is only modifiable by the update function.
+You may assume the number of calls to update and sumRange function is distributed evenly.
+#还是一个int array 求给定i，j 之间 的和，这次的array是可以变化的，update 会把对应坐标位置的值改变（0 based）
+
+#类似暴力解，每次update数之后都要改一遍前缀和
+class NumArray {
+public:
+    NumArray(vector<int>& nums) {
+        pre.push_back(0);
+        for(int i = 0; i < nums.size(); ++i) {
+            pre.push_back(nums[i] + pre.back());
+        }
+    }
+    
+    void update(int i, int val) {
+        int oldv = pre[i + 1] - pre[i];
+        for(int j = i + 1; j < pre.size(); ++j) {
+            pre[j] += val - oldv;
+        }
+    }
+    
+    int sumRange(int i, int j) {
+        return pre[j + 1] - pre[i];
+    }
+    vector<int >pre;
+};
+
+#来看其他的做法： 这种只动了一部分影响一部分的很适合用segment tree来做
+node p holds the sum of[i…j] range, its left and right children hold the sum for range [i, (i+j )/2] and [(i+j)/2 + 1, j]
+
+class NumArray {
+public:
+    NumArray(vector<int> nums) {
+        n = nums.size();
+        tree.resize(n * 2);
+        buildTree(nums);
+    }
+
+    void buildTree(vector<int>& nums) {
+        for (int i = n; i < n * 2; ++i) {
+            tree[i] = nums[i - n]; //build leafs
+        }
+        for (int i = n - 1; i > 0; --i) { //use father and child relation
+            tree[i] = tree[i * 2] + tree[i * 2 + 1];
+        }
+    }
+//build tree use O(n)
+    //update:  O(logn).
+    void update(int i, int val) {
+        tree[i += n] = val;
+        while (i > 0) {
+            tree[i / 2] = tree[i] + tree[i ^ 1]; //good way to find another child
+            /*same as （最后一位 1变0， 0 变1
+            int left = pos;
+            int right = pos;
+            if (pos % 2 == 0) {
+                right = pos + 1;
+            } else {
+                left = pos - 1;
+            }
+        */
+            i /= 2;
+        }
+    }
+
+    int sumRange(int i, int j) {
+        int sum = 0;
+        for (i += n, j += n; i <= j; i /= 2, j /= 2) {
+            if ((i & 1) == 1) sum += tree[i++]; // i is the right child of P,左界
+            if ((j & 1) == 0) sum += tree[j--]; //J is the left child (won't be Parent to be added)
+        }
+        return sum;
+    }    
+//calcualte sum : O(logn).
+private:
+    int n;
+    vector<int> tree;
+};
