@@ -1,0 +1,56 @@
+Given a binary tree, collect a tree's nodes as if you were doing this: 
+Collect and remove all leaves, repeat until the tree is empty.
+Example:
+Input: [1,2,3,4,5]
+  
+          1
+         / \
+        2   3
+       / \     
+      4   5    
+
+Output: [[4,5,3],[2],[1]]
+
+#倍感欣慰，终于对tree有些踏实了哈
+#可能是暴力解哈记录层数，返回记录 <height, node->val>
+class Solution {
+public:
+    
+    vector<vector<int>> findLeaves(TreeNode* root) {
+        vector<vector<int>> temp; int height = 0;
+        helper(root, temp, height);
+        vector<vector<int>> res (height);
+        for(auto x : temp) {
+            res[x[0] - 1].push_back(x[1]);
+        }
+        return res;
+    }
+    vector<int> helper(TreeNode * root, vector<vector<int>> & temp, int & height) {
+        if(!root) return {0, 0};
+        auto l = helper(root->left, temp, height);
+        auto r = helper(root->right, temp, height);
+        int nh = max(l[0], r[0]) + 1; int nv = root->val;
+        temp.push_back({nh, nv});
+        height = max (height, nh);
+        return {nh, nv};
+    }
+};
+time & space : O(n) + O(h) on stack
+
+#可以简化代码： 不需要temp array，直接通过res的size 来决定是否需要push_back 一个新的array！注意用到helper 左右了 就不用单写出来了，啊哪怕是在max function 里！
+class Solution {
+public:
+    
+    vector<vector<int>> findLeaves(TreeNode* root) {
+        vector<vector<int>> res{}; 
+        helper(root, res);
+        return res;
+    }
+    int helper(TreeNode * root, vector<vector<int>> & res) {
+        if(!root) return 0;
+        int height = 1 + max(helper(root->left, res), helper(root->right, res));
+        if(res.size() < height) res.push_back({root->val});
+        else res[height - 1].push_back({root->val});
+        return height;
+    }
+};
