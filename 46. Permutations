@@ -53,7 +53,7 @@ public:
 };
 
 
-#DFS的常规写法
+#DFS的常规写法吗， start 其实也是cur len了 swap之后只check 其之后的
 class Solution {
 public:
     vector<vector<int>> permute(vector<int>& num) {
@@ -72,5 +72,53 @@ public:
             permDFS(num, start + 1, res);
             swap(num[start],num[i]);
         }
+    }
+};
+
+#另一种好理解的做法：
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& num) {
+        //要求是distinct 元素， 所以可以用一个hash set 当前vector已经有过的， size达标之后加入res
+        vector<vector<int>> res;
+        unordered_set<int> curHave;
+        vector<int> temp;
+        permDFS(num, res, curHave, temp);
+        return res;
+    }
+    void permDFS(vector<int>& num, vector<vector<int>>& res, unordered_set<int> & curHave, vector<int> & temp) {
+        if(temp.size() == num.size()) {
+            res.push_back(temp);
+            return;
+        }
+        for(int i = 0; i < num.size(); ++i) {
+            if(!curHave.count(num[i])){
+                curHave.insert(num[i]);
+                temp.push_back(num[i]);
+                permDFS(num, res, curHave, temp);
+                curHave.erase(num[i]);
+                temp.pop_back();             
+            }
+        }
+    }
+};
+
+#iterative的做法：以 1，2，3 为例；1，加进来2的时候 可以生成1，2和 2，1 ， 再加进来3的时候 312，132，123 & 321，231，213
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> res{{}}; //start size = 1
+        for (int a : nums) { //所以循环所有数字之后长度也是对的
+            for (int k = res.size(); k > 0; --k) {
+                vector<int> t = res.front(); //像是que一样，对上一曾的每一个都抽出操作
+                res.erase(res.begin());
+                for (int i = 0; i <= t.size(); ++i) { //新来的数字在每个位置都要插入
+                    vector<int> one = t;
+                    one.insert(one.begin() + i, a);
+                    res.push_back(one);
+                }
+            }
+        }
+        return res;
     }
 };
