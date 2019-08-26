@@ -1,0 +1,77 @@
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+Example:
+Input: [1,1,2]
+Output:
+[
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
+]
+
+#这次是有重复元素的，但是permutation的要求还是要全用上所有数字的
+不能加的理由：1.该元素已经用过，2.该元素和上一个元素相同， 并且上一个元素是用过的！
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> res;
+        vector<int> temp;
+        vector<bool> used(nums.size(),false);
+        helper(nums, res, temp, used);
+        return res;
+    }
+    void helper(vector<int>& num, vector<vector<int>>& res, vector<int> & temp, vector<bool> & used) {
+        if(temp.size() == num.size()) {
+            res.push_back(temp);
+            return;
+        }
+        for(int i = 0; i < num.size(); ++i) {
+            if(used[i]) continue;
+            if(i > 0 && num[i-1] == num[i] && used[i-1]) continue;
+            //if(!used[i] && (i == 0 || i > 0 && (num[i-1]!= num[i]) ||(num[i-1] == num[i] && !used[i-1] ))){     
+                used[i] = true;
+                temp.push_back(num[i]);
+                helper(num, res, temp, used);
+                temp.pop_back(); 
+                used[i] = false;
+            //}
+        }
+    }
+};
+
+#老样子可以用next——permutation 相同的不会被重复 输出
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
+        res.push_back(nums);
+        while (next_permutation(nums.begin(), nums.end())) {
+            res.push_back(nums);
+        }
+        return res;
+    }
+};
+
+#另一种简短的写法，不swap回来了 但是需要传拷贝，不然 里面跳着swap 会swap坏菜
+#以 112 为例 第一次加入112， swap 加入121， 再swap（原112的首和尾）得到211（在每一次相同的第一次相遇就被加进res），其他的重复的都被跳过了
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
+        helper(nums, 0,  res);
+        return res;
+    }
+    void helper(vector<int> num, int st, vector<vector<int> > &res) {
+        if (st == num.size()) {
+            res.push_back(num);
+            return;
+        }
+        for (int k = st; k < num.size(); k++) {
+            if (k != st && num[st] == num[k]) continue; // k == st : the first one
+            swap(num[st], num[k]);
+            helper(num, st + 1, res);
+        }
+    }
+};
