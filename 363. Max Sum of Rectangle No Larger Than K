@@ -1,0 +1,45 @@
+Given a non-empty 2D matrix matrix and an integer k, find the max sum of a rectangle in the matrix such that its sum is no larger than k.
+
+Example:
+
+Input: matrix = [[1,0,1],[0,-2,3]], k = 2
+Output: 2 
+Explanation: Because the sum of rectangle [[0, 1], [-2, 3]] is 2,
+             and 2 is the max number no larger than k (k = 2).
+Note:
+
+The rectangle inside the matrix must have an area > 0.
+What if the number of rows is much larger than the number of columns?
+
+#给一个2Darray，求不大于K的最大和
+#求某个区间与k的关系： 前缀和presum array 来计算某个列小于K的最大值
+new - old <=k , so new - k <= old, can use lower_bound , log(n) operation 
+# https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/discuss/83599/Accepted-C%2B%2B-codes-with-explanation-and-references
+
+class Solution {
+public:
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        int r = matrix.size();
+        if(r == 0) return 0;
+        int c = matrix[0].size();
+        if(c == 0) return 0;
+        int res = INT_MIN;
+        for (int i = 0; i < c; ++i) {
+            vector<int> sum (r);
+            for (int j = i; j < c; ++j) {
+                for (int k = 0; k < r; ++k) {
+                    sum[k] += matrix[k][j]; 
+                }
+                int curSum = 0;
+                set<int> temp{0};
+                for (auto x : sum) {
+                    curSum += x;
+                    auto it = temp.lower_bound(curSum - k); //set 有这个function，不需要begin，end那样了
+                    if (it != temp.end()) res = max(res, curSum - *it);
+                    temp.insert(curSum);
+                }       
+            }
+        }
+        return res;      
+    }
+};
