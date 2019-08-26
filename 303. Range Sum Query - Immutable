@@ -1,0 +1,36 @@
+Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
+
+Example:
+Given nums = [-2, 0, 3, -5, 2, -1]
+
+sumRange(0, 2) -> 1
+sumRange(2, 5) -> -1
+sumRange(0, 5) -> -3
+Note:
+You may assume that the array does not change.
+There are many calls to sumRange function.
+
+#前缀和大作战！ 看了一下答案也是在class里新建个array，没毛病！
+class NumArray {
+public:
+    NumArray(vector<int>& nums) {
+        int n = nums.size();
+        if(n <= 0) return;
+        pre.reserve(n+1);
+        pre[0] = 0;
+        for(int i = 0; i < n; ++i) {
+            pre[i + 1] = nums[i]+ pre[i];
+        }
+        /* //可以简化 
+        pre.push_back(0);
+        for (int num : nums)
+            pre.push_back(pre.back() + num);
+           */
+    }
+    
+    int sumRange(int i, int j) {
+        return pre[j + 1] - pre[i]; // 注意这里是 i 了不是 i + 1！
+    }
+private:
+    vector<int> pre;
+};
