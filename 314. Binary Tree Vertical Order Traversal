@@ -1,0 +1,72 @@
+Given a binary tree, return the vertical order traversal of its nodes' values. 
+(ie, from top to bottom, column by column).
+
+If two nodes are in the same row and column, the order should be from left to right.
+
+Examples 1:
+
+Input: [3,9,20,null,null,15,7]
+
+   3
+  /\
+ /  \
+ 9  20
+    /\
+   /  \
+  15   7 
+
+Output:
+
+[
+  [9],
+  [3,15],
+  [20],
+  [7]
+]
+
+#这题？？？ “If two nodes are in the same row and column, the order should be from left to right.” 都same位置了为啥不是同一个啊？
+#还有为啥例子里的 3 和 16 是在同一列？ 嗯？只能理解成9的c是0 呗；3是9的左1位，c是1； 20是3的右1位，c是2；15是20的左1位，c是1；7是3的右1位，c是3
+
+#额。。还要求了从上到下，所以这个[3,9,8,4,0,1,7,null,null,null,2,5] return 了[[4],[9,5],[3,0,1],[2,8],[7]]， where 应该是[[4],[9,5],[3,0,1],[8,2],[7]]
+#这种recursive写法都是从叶子到根的，想用recursive的话需要记录 depth 然后再sort by depth
+class Solution {
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        map<int, vector<int>> temp;
+        vector<vector<int>> res;
+        helper(root, temp, 0);
+        for(auto x  : temp) {
+            res.push_back(x.second);
+        }
+        return res;
+    }
+    void helper(TreeNode* root, map<int, vector<int>> & temp, int col) {
+        if(!root) return;
+        temp[col].push_back(root->val);
+        helper(root ->left, temp, col - 1);   
+        helper(root ->right, temp, col + 1);
+    }
+};
+
+#既然是从上倒下，只好用bfs来解决惹。思路一样
+class Solution {
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        if (!root) return res;
+        map<int, vector<int>> m;
+        queue<pair<int, TreeNode*>> q;
+        q.push({0, root});
+        while (!q.empty()) {
+            auto [col, v] = q.front(); 
+            q.pop();
+            m[col].push_back(v->val);
+            if (v->left) q.push({col - 1,v->left});
+            if (v->right) q.push({col + 1, v->right});
+        }
+        for (auto a : m) {
+            res.push_back(a.second);
+        }
+        return res;
+    }
+};
