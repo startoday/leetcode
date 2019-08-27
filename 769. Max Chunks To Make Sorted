@@ -26,3 +26,16 @@ arr[i] will be a permutation of [0, 1, ..., arr.length - 1].
 [4,3,2,1,0] -1
 [1,2,3,4,0] -1
 [0,1,2,3,4] -5
+#该在某个位置的时候就可以 + 1，如果该位置上的值大于原本该有的值（i） 那么就会take care of this range，一直往前挪动
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        int res = 0;
+        int sp = 0;
+        for(int i = 0; i < arr.size(); ++i) {
+            sp = max(sp, arr[i]);
+            if(sp == i) res++;
+        } 
+        return res;
+    }
+};
