@@ -1,0 +1,44 @@
+We are given the head node root of a binary tree, where additionally every node's value is either a 0 or a 1.
+
+Return the same tree where every subtree (of the given tree) not containing a 1 has been removed.
+
+(Recall that the subtree of a node X is X, plus every node that is a descendant of X.)
+
+Example 1:
+Input: [1,null,0,0,1]
+Output: [1,null,0,null,1]
+
+Note:
+The binary tree will have at most 100 nodes.
+The value of each node will only be 0 or 1.
+
+#如果这条树的路上没有1，就要被剪枝！return 新tree的root；
+#妈呀大哥，看看上面的理解，你又理解错题意了，说的是subtree里面没有0 的话就狗带这小subtree（这还更简单了23333）
+#哈， 永远都想写helper的我。。
+class Solution {
+public:
+    TreeNode* pruneTree(TreeNode* root) {
+        return helper(root);
+    }
+    TreeNode* helper(TreeNode* root) {
+        if(!root) return NULL;
+        if(root->left == root->right & root->val == 0) return NULL;
+        root->left = helper(root->left);
+        root->right = helper(root->right);
+        if(root->left == root->right & root->val == 0) return NULL;
+        return root;
+    }
+};
+
+#把helper一删反而空间还变大了？ 2333上文 还是都beat100%的
+class Solution {
+public:
+    TreeNode* pruneTree(TreeNode* root) {
+       if(!root) return NULL;
+        if(root->left == root->right & root->val == 0) return NULL;
+        root->left = pruneTree(root->left);
+        root->right = pruneTree(root->right);
+        if(root->left == root->right & root->val == 0) return NULL;
+        return root;
+    }
+};
