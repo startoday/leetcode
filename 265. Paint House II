@@ -1,0 +1,70 @@
+There are a row of n houses, each house can be painted with one of the k colors. The cost of painting each house with a certain color is different. You have to paint all the houses such that no two adjacent houses have the same color.
+
+The cost of painting each house with a certain color is represented by a n x k cost matrix. For example, costs[0][0] is the cost of painting house 0 with color 0; costs[1][2] is the cost of painting house 1 with color 2, and so on... Find the minimum cost to paint all houses.
+
+Note:
+All costs are positive integers.
+
+Example:
+
+Input: [[1,5,3],[2,9,4]]
+Output: 5
+Explanation: Paint house 0 into color 0, paint house 1 into color 2. Minimum cost: 1 + 4 = 5; 
+             Or paint house 0 into color 2, paint house 1 into color 0. Minimum cost: 3 + 2 = 5. 
+
+#这道题和easy模式的 paint House I一样的居然就是hard了！
+
+class Solution {
+public:
+    int minCostII(vector<vector<int>>& costs) {
+        int n = costs.size();
+        if(n == 0) return 0;
+        int m = costs[0].size();
+        if(m == 0) return 0;
+        vector<int> old = costs[0];
+        vector<int> color= costs[0];       
+        for(int j = 1; j < n; ++j) {
+            for(int i = 0; i < m; ++i) {
+                color[i] = costs[j][i];
+                int temp = INT_MAX;
+                for(int k = 0; k < m; ++k) {
+                    if(k != i) temp = min(temp, old[k]);
+                }
+                color[i] += temp;
+            }
+            old = color;
+        }
+        return *min_element(color.begin(),color.end());
+    }
+};
+
+#O（nk）的time呢？发现就存两个上一轮的最小值就行了--> ；两个值！每次有新值就跟这俩值比较，如果最小值更新的话，次小值成为原本的最小值
+
+class Solution {
+public:
+    int minCostII(vector<vector<int>>& costs) {
+        int n = costs.size();
+        if(n == 0) return 0;
+        int m = costs[0].size();
+        if(m == 0) return 0;
+        int oldMinFir = 0, oldMinSec = 0, minInd = -1;
+        for(int j = 0; j < n; ++j) {
+            int nMF = INT_MAX, nMS= INT_MAX, nId = -1;
+            for(int i = 0; i < m; ++i) {
+                int temp;
+                if(i != minInd) temp = oldMinFir + costs[j][i];
+                else temp = oldMinSec + costs[j][i];
+                
+                if(temp < nMF){
+                    nMS = nMF;
+                    nMF = temp;
+                    nId = i;
+                } else if(temp < nMS)  nMS = temp; 
+            }
+            oldMinFir = nMF;
+            oldMinSec = nMS;
+            minInd  = nId; 
+        }
+        return oldMinFir;
+    }
+};
