@@ -1,0 +1,62 @@
+Given a string that contains only these two characters: + and -, you and your friend take turns to flip two consecutive "++" into "--". The game ends when a person can no longer make a move and therefore the other person will be the winner.
+
+Write a function to determine if the starting player can guarantee a win.
+
+Example:
+
+Input: s = "++++"
+Output: true 
+Explanation: The starting player can guarantee a win by flipping the middle "++" to become "+--+".
+
+###注意是只能把++变成--而不是可以把原本的--变成++ 23333
+#所以变完之后传给下一个人，如果下一个人可以return false的话 本人就可以return true了！对于所有可变的结果，传给下一个人，任何一个是false的话都成
+#可以用hash map避免重复计算
+
+class Solution {
+public:
+    bool canWin(string s) {
+        unordered_map<string, bool> res;
+        return helper(s, res);
+    }
+    bool helper(string x, unordered_map<string, bool> & res) {
+        if(x.size() < 2) return false;
+        if(res.count(x) != 0) return res[x];
+        bool temp = false;
+        for(int i = 0; i < x.size() - 1; ++i) {
+            if(x[i] == '+' && x[i + 1] == '+') {
+                string m = x.substr(0, i) + "--" + x.substr(i + 2, x.size() - i - 1);
+                temp = temp || (!helper(m, res));
+                if(temp) break;
+            }           
+        }
+        res[x] = temp;
+        return temp;
+    }
+};
+
+#另一种，利用c++ string 可以改变的特性（走出来后记得变回去）， 比substr 快多了！
+class Solution {
+public:
+    bool canWin(string s) {
+        unordered_map<string, bool> res;
+        return helper(s, res);
+    }
+    bool helper(string x, unordered_map<string, bool> & res) {
+        if(x.size() < 2) return false;
+        if(res.count(x) != 0) return res[x];
+        bool temp = false;
+        for(int i = 0; i < x.size() - 1; ++i) {
+            if (x[i] == '+' && x[i + 1] == '+') {
+                x[i] = x[i + 1] = '-';
+                temp = helper(x, res);
+                x[i] = x[i + 1] = '+';
+                if (!temp) {
+                    res[x] = true;
+                    return true;
+                }
+            }
+        }
+        res[x] = false;
+        return false;
+    }
+};
