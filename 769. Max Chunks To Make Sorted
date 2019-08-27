@@ -21,4 +21,8 @@ Note:
 arr will have length in range [1, 10].
 arr[i] will be a permutation of [0, 1, ..., arr.length - 1].
 
-#给一个 0 - n-1随机顺序的array，分块同时sort，要最后成为升序或者降序数列（or just升序序列），问最大可以分成多少块？最小当然是0块了
+#给一个 0 - n-1随机顺序的array，分块同时sort，要最后成为升序或者降序数列（or just升序序列---这个！ 不然第一个就return 5 了），
+问最大可以分成多少块？最小当然是1块了 最大就是size块（不需要排序就可以return size）
+[4,3,2,1,0] -1
+[1,2,3,4,0] -1
+[0,1,2,3,4] -5
