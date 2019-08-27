@@ -15,3 +15,30 @@ Note:
 
 1 <= tiles.length <= 7
 tiles consists of uppercase English letters.
+#Ok，经过这两天学习combination（subset） 和 permutation，这就是一道这种题～对不同size做permutation（backtrack）
+
+class Solution {
+public:
+    int numTilePossibilities(string tiles) {
+        sort(tiles.begin(),tiles.end());
+        int maxS = tiles.size();
+        int res = 0, st = 0;
+        for(int i = 1; i <= maxS; ++i) {
+            helper(tiles, i, st, res);
+        }
+        return res;
+    }
+    void helper(string s, int len, int st, int & res) {
+        if(st == len) {
+            ++res;
+            return;
+        }
+        for(int i = st; i < s.size(); ++i) {
+            if(i != st && s[i] == s[st]) continue;
+            swap(s[i], s[st]);
+            helper(s, len, st + 1, res);
+        }
+    }
+    
+};
+
