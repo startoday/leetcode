@@ -1,0 +1,51 @@
+Given the head of a linked list, we repeatedly delete consecutive sequences of nodes that sum to 0 until there are no such sequences.
+
+After doing so, return the head of the final linked list.  You may return any such answer.
+
+(Note that in the examples below, all sequences are serializations of ListNode objects.)
+
+Example 1:
+
+Input: head = [1,2,-3,3,1]
+Output: [3,1]
+Note: The answer [1,2,1] would also be accepted.
+#array的话肯定会做，想到的笨方法走一遍生成array后算一波后重新建/删
+#看一眼老师们怎么一次成型
+#重点在这句 Process each accumulative value in this datastructure. (unordered_map<int,ListNode*>um) um[ac] = currentNode;
+#有时候停下来多想想合适的ds 很有用哈
+#If they exist um[ac]->next = currentNode->next, then delete intermediate nodes in our map between um[ac] and currentNode
+#前缀和，所以别忘了第一个要是0开始加 
+
+
+class Solution {
+public:
+    ListNode* removeZeroSumSublists(ListNode* head) {
+        ListNode * dum = new ListNode(0);
+        dum ->next = head;
+        unordered_map<int, ListNode *> m;
+        m[0] = dum;
+        int curS = 0;
+        while(head) {
+            curS += head->val;
+            if(m.count(curS) != 0) {
+                ListNode * temp = m[curS];
+                ListNode * pre = temp;
+                
+                int mid = curS; //重点在这!!!!!需要一步步删掉中间的 map里的点，不能光直接erase curS
+                while(temp != head) {
+                    if(temp != pre) m.erase(mid); //别忘了第一个点不能删啊，得加个if！！！！
+                    temp = temp->next;
+                    mid += temp->val;
+                   
+                } 
+                pre->next = head->next;
+            } else {
+                m.insert({curS, head});
+                
+            }
+            head = head->next;
+        }
+        return dum->next;
+    }
+};
+
