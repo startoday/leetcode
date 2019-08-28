@@ -1,0 +1,69 @@
+There are n houses in a village. We want to supply water for all the houses by building wells and laying pipes.
+
+For each house i, we can either build a well inside it directly with cost wells[i], or pipe in water from another well to it. The costs to lay pipes between houses are given by the array pipes, where each pipes[i] = [house1, house2, cost] represents the cost to connect house1 and house2 together using a pipe. Connections are bidirectional.
+
+Find the minimum total cost to supply water to all houses.
+
+Input: n = 3, wells = [1,2,2], pipes = [[1,2,1],[2,3,1]]
+Output: 3
+Explanation: 
+The image shows the costs of connecting houses using pipes.
+The best strategy is to build a well in the first house with cost 1 and connect the other houses to it with cost 2 so the total cost is 3.
+
+Constraints:
+1 <= n <= 10000
+wells.length == n
+0 <= wells[i] <= 10^5
+1 <= pipes.length <= 10000
+1 <= pipes[i][0], pipes[i][1] <= n
+0 <= pipes[i][2] <= 10^5
+pipes[i][0] != pipes[i][1]
+
+#哈哈真是一道字不多 题意清楚的好题哈哈！
+#说，一个村里有很多家，每家可以选择自己打井（花费是 well【i】）也可以与其他家相连（就不用自己打井了） 花费是建水管的费用piles 【h1，h2，cost】
+#注意不是随便两家都可以联通的
+#问能保证每家都有水喝的最小花费！
+
+#所以多余的选项 新打一口井，可以转化为都打向一个不存在的点well[0] 使这个图全联通的开销（一定也需要包括0）！MST
+
+#这道题的边数和点数类似的，所以选 prim（mlgn）的 和kruskal （mlogm）for sorting 都ok的
+# prim 记得这种写法的union必须传的是father！！！
+class Solution {
+private:
+    vector<int> rank;
+    vector<int> pi;
+public:
+    int minCostToSupplyWater(int n, vector<int>& wells, vector<vector<int>>& pipes) {
+        pi.push_back(0);
+        rank.push_back(1);
+        for(int i = 0; i < n; ++i) {
+            pipes.push_back({0, i + 1, wells[i]});
+            pi.push_back(i + 1);
+            rank.push_back(1);
+        }
+        sort(pipes.begin(), pipes.end(), [](auto &a, auto & b){return a[2] < b[2];});
+        int res = 0;
+        for(auto x : pipes) {
+            int pu = find(x[0]);
+            int pv = find(x[1]);
+            if( pu != pv) {
+                res += x[2];
+                uni(pu, pv); // 同志，已经有叫union的了以后得换个名
+            }
+        }
+        return res;
+    }
+    int find(int u) {
+        if(pi[u] == u) return u;
+        pi[u] = find(pi[u]);
+        return pi[u];
+    }
+    void uni(int u, int v) {
+        if(rank[u] < rank[v]) pi[u] = v;
+        else if(rank[u] > rank[v]) pi[v] = u;
+        else {
+            pi[u] = v;
+            rank[v]++;
+        }
+    }
+};
