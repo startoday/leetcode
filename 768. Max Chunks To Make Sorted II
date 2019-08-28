@@ -1,0 +1,84 @@
+This question is the same as "Max Chunks to Make Sorted" except the integers of the given array are not necessarily distinct, 
+the input array could be up to length 2000, and the elements could be up to 10**8.
+
+Given an array arr of integers (not necessarily distinct), we split the array into some number of "chunks" (partitions), 
+and individually sort each chunk.  After concatenating them, the result equals the sorted array.
+
+What is the most number of chunks we could have made?
+
+Example 1:
+Input: arr = [5,4,3,2,1]
+Output: 1
+Explanation:
+Splitting into two or more chunks will not return the required result.
+For example, splitting into [5, 4], [3, 2, 1] will result in [4, 5, 1, 2, 3], which isn't sorted.
+
+Note:
+
+arr will have length in range [1, 2000].
+arr[i] will be an integer in range [0, 10**8].
+
+#此题array里的数字可以是任何数字，可能有重复的， 所以不能simply use index 了
+#但是每一个可以被sort的range 里的和和期待的和应该是一样的
+#O（nlgn） dominated by sort
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> res = arr;
+        sort(res.begin(), res.end());
+        long sum1 = 0, sum2 = 0;
+        int r = 0;
+        for(int i = 0; i < n; ++i) {
+            sum1 += arr[i];
+            sum2 += res[i];
+            if(sum1 == sum2) {
+                r ++;
+                sum1 = 0;
+                sum2 = 0;
+            }
+        }
+        return r;
+    }
+};
+
+#优化解法：
+其实对于每一个块儿来说，如果后面有一个比当前块里任意一个值 小的值就不能拆成块了，因为后面的这个小值会被换到前面去，只好出现在同一个块里，无法被拆！
+#如何使当前块里的任意值都比某个值小？只需要记录最大值哇！当前区域里面的最大值都比后面的小的话就可以拆解， 
+所以需要一个倒着来的array记录每个位置后面可能出现的最小值们！ (正着数的时候不需要array， 随时走，随时记录和拆就可以）
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> backMin = arr;
+        for(int i = n - 2; i >= 0; --i) {
+            backMin[i] = min(backMin[i],backMin[i + 1]);
+        }
+        int curMax = INT_MIN, res = 1; // 别忘了初始化是1！
+        for(int i = 0; i < n - 1; ++i) {
+            curMax = max(curMax, arr[i]); 
+            if(curMax <= backMin[i + 1]) res++;
+        }
+        return res;
+    }
+};
+
+#所以也可以用一个单调递增栈来存当前最大值，如果遇到小的值就一直pop，size就是可以拆成的块
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        int n = arr.size();
+        stack<int> curM;
+        for(int i = 0; i < n; ++i) {
+            if(curM.empty() || arr[i] >= curM.top()) curM.push(arr[i]);
+            else {
+                int temp = curM.top();
+                while(!curM.empty() && curM.top() > arr[i]) { //为了下一步加入新的最小值， 而且size最小也是1
+                    curM.pop();
+                }
+                curM.push(temp);
+            }   
+        }
+        return curM.size();
+    }
+};
