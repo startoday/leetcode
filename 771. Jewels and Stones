@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int numJewelsInStones(string J, string S) {
+        unordered_set<char> j (J.begin(),J.end());
+        int count = 0;
+        for(auto x : S) {
+            if(j.count(x)) count ++;
+        }
+        return count;
+    }
+};
+
+#加这道题的原因 ： time O(n + m） m : J.size()-- O(n), n: S.size();
+space  O(m) -->essentially  O(1) constant chars
+
+#lambda的写法
+class Solution {
+public:
+    int numJewelsInStones( string J, string S ){
+        unordered_set< char > U { J.begin(), J.end() };
+        return count_if( S.begin(), S.end(), [&]( auto c ){ return U.find( c ) != U.end(); });
+    }
+};
+#另一种想法，把S 里不是 J的char 都替换成“”， 再return S.size()
+#但hash set是跑不掉了。。。
