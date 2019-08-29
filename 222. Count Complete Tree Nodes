@@ -1,0 +1,58 @@
+Given a complete binary tree, count the number of nodes.
+
+Note:
+
+Definition of a complete binary tree from Wikipedia:
+In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+
+Example:
+
+Input: 
+    1
+   / \
+  2   3
+ / \  /
+4  5 6
+
+Output: 6
+#管它是不是 CBT， 都可以traverse 一遍因为是O（n） 无重复来count 一下总共多少个
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        int ct = 0;
+        helper(root, ct);
+        return ct;
+    }
+    void helper(TreeNode* root, int & ct){
+        if(!root) return;
+        helper(root->left, ct);
+        helper(root->right, ct);
+        ct++;
+    }
+};
+#不过我猜身为一道medium题是想让我们从高度来算吧？
+CBT的话，中间不会有空缺，都是CBT 每个小CBT = 1 + count（left） +count（right）
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(!root) return 0;
+        TreeNode * curR= root;
+        TreeNode * curL= root;
+        int hr = 1, hl = 1;
+        while(curR->right) {
+            curR = curR->right;
+            hr++;
+        }
+        while(curL->left) {
+            curL = curL->left;
+            hl++;
+        }
+        if(hr == hl) return pow(2, hl) - 1;
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+};
+
+#time应该是有 lgN层，每个height 是logN 共O（lg2N） 但是实际比O（n）的还慢2333
+
+
+
