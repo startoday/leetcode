@@ -1,0 +1,79 @@
+Implement a MyCalendarTwo class to store your events. A new event can be added if adding the event will not cause a triple booking.
+
+Your class will have one method, book(int start, int end). Formally, this represents a booking on the half open interval [start, end), the range of real numbers x such that start <= x < end.
+
+A triple booking happens when three events have some non-empty intersection (ie., there is some time that is common to all 3 events.)
+
+For each call to the method MyCalendar.book, return true if the event can be added to the calendar successfully without causing a triple booking. Otherwise, return false and do not add the event to the calendar.
+
+Your class will be called like this: MyCalendar cal = new MyCalendar(); MyCalendar.book(start, end)
+Example 1:
+
+MyCalendar();
+MyCalendar.book(10, 20); // returns true
+MyCalendar.book(50, 60); // returns true
+MyCalendar.book(10, 40); // returns true
+MyCalendar.book(5, 15); // returns false
+MyCalendar.book(5, 10); // returns true
+MyCalendar.book(25, 55); // returns true
+
+Note:
+
+The number of calls to MyCalendar.book per test case will be at most 1000.
+In calls to MyCalendar.book(start, end), start and end are integers in the range [0, 10^9].
+
+#暴力解： 建立一个overlap list，每次check overlap，能过的话更新booked 和overlap！ 注意要更新所有可能的overlap，可能不止一个！！
+class MyCalendarTwo {
+public:
+    MyCalendarTwo() {
+    }
+    
+    bool book(int start, int end) {
+        for(auto x : overlap) {
+            if(max(start, x.first) < min(end, x.second)) return false;
+        }
+        for(auto m : booked) {
+            int st = max(start, m.first);
+            int en = min(end, m.second);
+            if(st < en) {
+                overlap.push_back({st,en});
+               //注意！！！这个地儿不可以直接break！可能与多个以后的booking 有交互，所以要全部更新！！！
+            }
+        }
+        booked.push_back({start, end});
+        return true;
+    }
+    vector<pair<int, int>> booked;
+    vector<pair<int, int>> overlap;
+};
+
+#time O(n2)
+#space O(n) :overlap 对每个stuff 不会超过2
+
+#另一种和calendar 三的解法一样的，计算每个区间已有的event数量，开始是1，end 是 -1 来check
+
+class MyCalendarTwo {
+public:
+    MyCalendarTwo() {
+        
+    }
+    
+    bool book(int start, int end) {
+        ++cal[start];
+        --cal[end];
+        int count = 0;
+        for(const auto & x : cal) { //可以快点
+            count += x.second;
+            if(count >= 3) {
+                --cal[start]; //don't update
+                ++cal[end];
+                return false;
+            }
+            //理论上讲快点但是反而慢了的
+            //if (x.first > end) break;//剪枝 快点
+        }
+        return true;
+    }
+    //<time, number>
+    map<int, int> cal;
+};
