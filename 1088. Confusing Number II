@@ -1,0 +1,89 @@
+We can rotate digits by 180 degrees to form new digits. When 0, 1, 6, 8, 9 are rotated 180 degrees, they become 0, 1, 9, 8, 6 respectively. When 2, 3, 4, 5 and 7 are rotated 180 degrees, they become invalid.
+
+A confusing number is a number that when rotated 180 degrees becomes a different number with each digit valid.(Note that the rotated number can be greater than the original number.)
+
+Given a positive integer N, return the number of confusing numbers between 1 and N inclusive.
+
+Example 1:
+
+Input: 20
+Output: 6
+Explanation: 
+The confusing numbers are [6,9,10,16,18,19].
+
+Note:
+1 <= N <= 10^9
+
+#注意！注意！注意！这道题翻完了数没变的不是confusing number， 1，0，8， 8698 这种都不是哈
+#permutation + 判断变完的数（直接从1-N数会超时）
+class Solution {
+private:
+    vector<int> avD = {0, 1, 6, 8, 9};
+    unordered_map<int, int> t = {{0,0}, {1,1}, {6,9}, {8,8},{9,6}};
+public:
+    int confusingNumberII(int N) {
+        int count = 0;
+        helper(count, 0, N);
+        return count;
+        
+    }
+    void helper( int & count, long st, const int & N) {
+        if(st > N) return;
+        if(st!= 0 && st <= N) {
+            if(check(st)) {
+                count++;
+            }
+        }
+        for(int i = 0; i < avD.size(); ++i) {
+            if(st*10 + avD[i] != 0) helper(count, st*10 + avD[i], N);
+        }
+        
+    }
+    bool check(int a ) {
+        int temp = a;
+        long rev = 0;
+        while (temp > 0) {
+            int x = temp%10;
+            rev = rev * 10 + t[x];
+            temp /= 10;
+        }
+        return a != rev;
+    }
+};
+
+
+#看了一下前面 快的答案。。超级长都，这个88ms的长度还ok哈， 没有一个个变，只有6，9变了
+class Solution {
+public:
+  int confusingNumberII(int N) {
+    n = N;
+    ans = 0;
+    search(0);
+    return ans;
+  }
+private:
+  int n, ans;
+  void search(long long num) {
+    if (num > n) return;
+    if (num) {
+      if (rotate(num) != num) ++ ans;
+    }
+    if (num) search(num * 10);
+    search(num * 10 + 1);
+    search(num * 10 + 6);
+    search(num * 10 + 8);
+    search(num * 10 + 9);
+  }
+  long long rotate(long long x) {
+    long long y = 0;
+    for (; x; x /= 10) {
+      int k = x % 10;
+      switch (k) {
+        case 6: k = 9; break;
+        case 9: k = 6; break;
+      }
+      y = y * 10 + k;
+    }
+    return y;
+  }
+};
