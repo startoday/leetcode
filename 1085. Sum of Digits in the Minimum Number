@@ -1,0 +1,33 @@
+Given an array A of positive integers, let S be the sum of the digits of the minimal element of A.
+
+Return 0 if S is odd, otherwise return 1.
+
+ 
+
+Example 1:
+
+Input: [34,23,1,24,75,33,54,8]
+Output: 0
+Explanation: 
+The minimal element is 1, and the sum of those digits is S = 1 which is odd, so the answer is 0.
+
+Note:
+1 <= A.length <= 100
+1 <= A[i].length <= 100
+
+
+
+#仔细读题，人家说的是每个位置数字和！
+
+class Solution {
+public:
+    int sumOfDigits(vector<int>& A) {
+        int x = *min_element(A.begin(),A.end());
+        int res = 0;
+        while(x > 0) {
+            res += x % 10;
+            x =x/10;
+        }
+        return res % 2 == 0;
+    }
+};
