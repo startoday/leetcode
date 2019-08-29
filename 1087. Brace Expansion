@@ -1,0 +1,90 @@
+A string S represents a list of words.
+
+Each letter in the word has 1 or more options.  If there is one option, the letter is represented as is.  If there is more than one option, then curly braces delimit the options.  For example, "{a,b,c}" represents options ["a", "b", "c"].
+
+For example, "{a,b,c}d{e,f}" represents the list ["ade", "adf", "bde", "bdf", "cde", "cdf"].
+
+Return all words that can be formed in this manner, in lexicographical order.
+
+ 
+
+Example 1:
+
+Input: "{a,b}c{d,e}f"
+Output: ["acdf","acef","bcdf","bcef"]
+Example 2:
+
+Input: "abcd"
+Output: ["abcd"]
+ 
+
+Note:
+
+1 <= S.length <= 50
+There are no nested curly brackets.
+All characters inside a pair of consecutive opening and ending curly brackets are different.
+
+#注意最后说了要按照lexico order输出
+class Solution {
+public:
+    vector<string> expand(string S) {
+        string cur = "";
+        vector<string> res{{}};
+        int st = 0;
+        while(st < S.size()) {
+            if(S[st] != '{') cur += S[st];
+            else {
+                st++;
+                vector<string> temp = res;
+                res.clear();
+                while(S[st] != '}') {
+                    if(S[st] !=',') { //别忘了逗号！！
+                        for(auto x: temp){
+                            string t = x + cur + S[st];
+                            res.push_back(t);  
+                        }
+                    }
+                    st++;
+                }
+                cur = "";
+            }
+            st++;
+        }
+        if(cur != "") {
+            for(int i =0; i<res.size(); ++i) {
+                res[i] += cur;
+            }
+        }   
+        sort(res.begin(), res.end());
+        return res;      
+    }
+};
+
+#看一下大佬的解法
+First, process the string extracting tokens and placing them into a group.
+
+Braces ('{' and '}') start a new group. A comma (',') starts a new token within the same group.
+
+For example, "{a,b}c{d,e}f" produces 4 groups: {{a}, {b}}, {{c}}, {{d}, {e}} and {{f}}.
+
+Finally, we generate Cartesian product of all groups. 
+##Note that tokens within the same group needs to be sorted to tokens in the result are sorted as well.
+
+vector<string> expand(string S) {
+  vector<vector<string>> groups(1, vector<string>(1));
+  vector<string> res(1);
+  for (auto i = 0; i < S.size(); ++i) {
+    if (S[i] == '{' || S[i] == '}') groups.push_back(vector<string>(1));
+    else if (S[i] == ',') groups.back().push_back(""); //隔开了各个字母！！
+    else groups.back().back() += S[i];
+  }
+  for (auto &group : groups) {
+      sort(begin(group), end(group));
+      vector<string> res1;
+      for (auto &r : res) {
+        for (auto &token : group) res1.push_back(r + token);
+      }
+      swap(res, res1); //巧妙哈 和clear是一个效果的
+  }
+  return res;
+}
