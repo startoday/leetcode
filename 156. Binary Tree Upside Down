@@ -1,0 +1,41 @@
+Given a binary tree where all the right nodes are either leaf nodes with a sibling (a left node that shares the same parent node) or empty, flip it upside down and turn it into a tree where the original right nodes turned into left leaf nodes. Return the new root.
+
+Example:
+
+Input: [1,2,3,4,5]
+
+    1
+   / \
+  2   3
+ / \
+4   5
+
+Output: return the root of the binary tree [4,5,2,#,#,3,1]
+   4
+  / \
+ 5   2
+    / \
+   3   1  
+   
+#这道题的题意。。。其实是这样的： 把原L变成root，原root成为right 原right 成为root 转了一圈
+
+                         Root                   L
+                         /  \                  /  \
+                        L    R                R   Root
+         注意转接root to left的时候，root不能是原本的root， 会出现环！set成左右都是null
+#还是需要从从底至上每转好一个就会成为新的root->right
+         
+class Solution {
+public:
+    TreeNode* upsideDownBinaryTree(TreeNode* root) {
+        if (!root || !root->left) return root; //到倒数第二层了
+        TreeNode* cur_left = root->left;
+        TreeNode* cur_right = root->right;
+        TreeNode* new_root = upsideDownBinaryTree(root->left);
+        cur_left->right = root;
+        cur_left->left = cur_right;
+        root->left = nullptr;
+        root->right = nullptr;
+        return new_root;
+    }
+};
