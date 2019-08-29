@@ -1,0 +1,46 @@
+Given a binary tree, count the number of uni-value subtrees.
+
+A Uni-value subtree means all nodes of the subtree have the same value.
+
+Example :
+
+Input:  root = [5,1,5,5,5,null,5]
+
+              5
+             / \
+            1   5
+           / \   \
+          5   5   5
+
+Output: 4
+
+#2333hin 怕又理解错额 所以上面的4是因为是三个叶子加上右二的 5么
+#看来我的recursion 还有待加强哈 又写这么长
+class Solution {
+public:
+    int countUnivalSubtrees(TreeNode* root) {
+        auto x = helper(root);
+        return x.second;
+    }
+    //num of trees, ct
+    pair<bool, int>  helper(TreeNode* root){
+        if(!root) return {true, 0};
+        auto[lc, ln] = helper(root->left);
+        auto[rc, rn] = helper(root->right);
+        if(lc && rc) {
+            if(!root->left && !root ->right) return {true, 1};
+            //如果这么写的话注意顺序，因为if不是按照有没有分类的，这个需要放在下两个前面
+            if(root ->left && root->right && root ->left->val == root ->val && root ->right->val == root ->val) {
+                return{true, 1 + ln + rn};
+            }
+            if(root->right && root ->right->val == root ->val) {
+                return {true, 1 + rn};
+            }             
+            if(root->left && root ->left->val == root ->val) {
+                return {true, 1 + ln};
+            } 
+
+        }
+        return {false, ln + rn};
+    }
+};
