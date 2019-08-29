@@ -28,14 +28,15 @@ Output: return the root of the binary tree [4,5,2,#,#,3,1]
 class Solution {
 public:
     TreeNode* upsideDownBinaryTree(TreeNode* root) {
-        if (!root || !root->left) return root; //到倒数第二层了
-        TreeNode* cur_left = root->left;
-        TreeNode* cur_right = root->right;
-        TreeNode* new_root = upsideDownBinaryTree(root->left);
-        cur_left->right = root;
-        cur_left->left = cur_right;
-        root->left = nullptr;
-        root->right = nullptr;
-        return new_root;
+        if (!root || !root->left) { return root; }
+        
+        TreeNode* newRoot = upsideDownBinaryTree(root->left);
+        
+        root->left->left = root->right, 
+        root->left->right = root;
+        root->left = NULL;
+        root->right = NULL;    
+        
+        return newRoot;
     }
 };
