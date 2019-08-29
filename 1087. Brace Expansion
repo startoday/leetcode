@@ -84,7 +84,7 @@ vector<string> expand(string S) {
       for (auto &r : res) {
         for (auto &token : group) res1.push_back(r + token);
       }
-      swap(res, res1); //巧妙哈 和clear是一个效果的
+      swap(res, res1); //巧妙哈 不需要clear res 并在之前用另一个vector<string> 存了！
   }
   return res;
 }
