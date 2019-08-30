@@ -1,0 +1,47 @@
+Given an array A of positive integers, 
+call a (contiguous, not necessarily distinct) subarray of A good if the number of different integers in that subarray is exactly K.
+
+(For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3.)
+
+Return the number of good subarrays of A.
+
+Example 1:
+
+Input: A = [1,2,1,2,3], K = 2
+Output: 7
+Explanation: Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2].
+
+Note:
+
+1 <= A.length <= 20000
+1 <= A[i] <= A.length
+1 <= K <= A.length
+
+#要求是return的subarray，也就是说，必须连续的
+subarrays with at most k different numbers
+res = f(K) - f(K-1), 如果是【i，j】的话有多少个subarray是 有 j-i+1个
+Time and space O(n)
+
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& A, int K) {
+        return helper(A, K) - helper(A, K - 1);
+    }
+    int helper(vector<int>& A, int K) {
+        int res = 0;
+        unordered_map<int, int> cur;
+        int j = 0;
+        for(int i = 0; i < A.size(); ++i) {
+            if(cur[A[i]]++ == 0) { //不可以在if 里面  cur[A[i]]++， 因为怎么都得++ ！！！！
+                K--;
+            } 
+            while(K < 0) {
+                cur[A[j]]--;
+                if(cur[A[j]] == 0) K++;
+                j++;
+            }
+            res += i - j + 1;
+        }
+        return res;
+    }
+};
