@@ -1,0 +1,49 @@
+In the "100 game," two players take turns adding, to a running total, any integer from 1..10. 
+The player who first causes the running total to reach or exceed 100 wins.
+
+What if we change the game so that players cannot re-use integers?
+
+For example, two players might take turns drawing from a common pool of numbers of 1..15 without replacement until they reach a total >= 100.
+
+Given an integer maxChoosableInteger and another integer desiredTotal, 
+determine if the first player to move can force a win, assuming both players play optimally.
+
+You can always assume that maxChoosableInteger will not be larger than 20 and desiredTotal will not be larger than 300.
+
+Example
+
+Input:
+maxChoosableInteger = 10
+desiredTotal = 11
+
+Output:
+false
+
+#可以/已经选择的状态是permutation， 挺大的所以可以/应该用bit 压缩状态 循环所有的状态，对手能输的话就可以return 1， 否则该state return -1
+recursion 需要用dp记录之前check过的，不需要map，vector就可以了
+
+class Solution {
+public:
+    bool canIWin(int maxChoosableInteger, int desiredTotal) {
+        if(desiredTotal <= 0) return true;
+        int sum = (maxChoosableInteger * (maxChoosableInteger + 1) )/ 2;
+        if(sum < desiredTotal) return false; //short cut check;
+        vector<int> dp (1 << maxChoosableInteger, 0);
+        return helper(maxChoosableInteger, desiredTotal, 0, dp);
+    }
+    // dp: o, unvisited, 1 can win, -1 will lose
+    bool helper(const int & m, int T, int s, vector<int> & dp) {
+        if(T <= 0) return false; //该选手的，所以需要return false！！
+        if(dp[s]) return dp[s] == 1; //!!!原本不是bool type！！
+        for(int i = 0; i < m; ++i) {
+            if (s & (1 << i)) continue; // i already used!!!!
+            if(!helper(m, T - (i + 1) , s | (1 << i), dp)) { //i 从零开始，所以i + 1
+                dp[s] = 1;
+                return true;
+            }
+        } 
+        dp[s] = -1;
+        return false;
+    }
+};
+
