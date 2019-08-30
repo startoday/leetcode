@@ -1,0 +1,32 @@
+Given a string s , find the length of the longest substring t  that contains at most 2 distinct characters.
+
+Example 1:
+
+Input: "eceba"
+Output: 3
+Explanation: t is "ece" which its length is 3.
+Example 2:
+
+Input: "ccaabbb"
+Output: 5
+Explanation: t is "aabbb" which its length is 5.
+
+#跟at most k 一样的sliding window
+
+class Solution {
+public:
+    int lengthOfLongestSubstringTwoDistinct(string s) {
+        int res = 0;
+        int j = 0;
+        unordered_map<char, int> ct;
+        int k = 2;
+        for(int i = 0; i < s.size(); ++i) {
+            if(ct[s[i]]++ == 0) k--;
+            while(k < 0) {
+                if(--ct[s[j++]] == 0) k++;
+            }
+            res = max(res, i - j + 1);
+        }
+        return res;
+    }
+};
