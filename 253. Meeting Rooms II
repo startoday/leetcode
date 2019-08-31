@@ -1,0 +1,28 @@
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+
+Example 1:
+
+Input: [[0, 30],[5, 10],[15, 20]]
+Output: 2
+
+#和my calendar 一样的想法
+class Solution {
+public:
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+        int res = 0; int curCt = 0;
+        for(int i = 0; i < intervals.size(); ++i) {
+            ++cal[intervals[i][0]];
+            --cal[intervals[i][1]];
+            curCt = 0;
+            for(auto x :cal) {
+                 curCt += x.second;
+                 res = max(res, curCt);
+                if(intervals[i][1] < x.first) break;
+            }           
+        }
+        return res;
+    }
+    map<int, int> cal;
+};
+不过时间复杂度是N2lgN的 ---把这个auto 拆出来最后比较也是一样的啊。。。 n*lgn了就
+
