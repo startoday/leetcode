@@ -1,0 +1,44 @@
+Given strings S and T, find the minimum (contiguous) substring W of S, so that T is a subsequence of W.
+
+If there is no such window in S that covers all characters in T, return the empty string "". If there are multiple such minimum-length windows, return the one with the left-most starting index.
+
+Example 1:
+Input: 
+S = "abcdebdde", T = "bde"
+Output: "bcde"
+Explanation: 
+"bcde" is the answer because it occurs before "bdde" which has the same length.
+"deb" is not a smaller window because the elements of T in the window must occur in order.
+ 
+
+Note:
+
+All the strings in the input will only contain lowercase letters.
+The length of S will be in the range [1, 20000].
+The length of T will be in the range [1, 100].
+
+#要求是从S中找到一个最短的substring 可以涵盖T（subsequence会是T）
+#如果有多个最短，return最左边的substring
+class Solution {
+public:
+    string minWindow(string S, string T) {
+       int m = S.size(), n = T.size(), start = -1, minLen = INT_MAX, i = 0, j = 0;
+        while (i < m) {
+            if (S[i] == T[j]) {
+                if (++j == n) { //already the last char in T 
+                    int end = i + 1;
+                    while (--j >= 0) {
+                        while (S[i--] != T[j]);
+                    } //结束了
+                    ++i; ++j; //another new check
+                    if (end - i < minLen) { //只有小于的时候才更新，所以记录的就是最左最小
+                        minLen = end - i;
+                        start = i;
+                    }
+                }
+            }
+            ++i;
+        }
+        return (start != -1) ? S.substr(start, minLen) : ""; 
+    }
+};
