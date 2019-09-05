@@ -1,0 +1,61 @@
+Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+
+You may assume that the intervals were initially sorted according to their start times.
+
+Example 1:
+
+Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+Output: [[1,5],[6,9]]
+Example 2:
+
+Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+Output: [[1,2],[3,10],[12,16]]
+Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
+
+#新来的interval 要merge一下
+#不过是nlogn 的做法
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        int start = newInterval[0];
+        int end = newInterval[1];
+        vector<vector<int>> res;
+        for(int i = 0; i < intervals.size(); ++i) {
+            if(intervals[i][1] < start || intervals[i][0] > end) res.push_back(intervals[i]);
+            else{
+                start = min(start, intervals[i][0]);
+                end = max(end, intervals[i][1]);
+            }
+        }
+        res.push_back({start,end});
+        sort(res.begin(), res.end());
+        return res;
+    }
+};
+
+#O(N)做法
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        int start = newInterval[0];
+        int end = newInterval[1];
+        vector<vector<int>> l;
+        vector<vector<int>> r;
+        int i = 0;
+        for(int i = 0; i < intervals.size(); ++i) {
+            if(intervals[i][1] < start ) l.push_back(intervals[i]);
+            else if(intervals[i][0] > end) {
+                r.push_back(intervals[i]);
+            }
+            else{
+                start = min(start, intervals[i][0]);
+                end = max(end, intervals[i][1]);
+            }
+        }
+        vector<vector<int>> res (move(l));
+        res.push_back({start, end});
+        res.insert(res.end(), r.begin(), r.end());
+        
+        return res;
+    }
+};
