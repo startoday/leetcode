@@ -1,0 +1,43 @@
+Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) 
+and lower right corner (row2, col2).
+
+Note:
+The matrix is only modifiable by the update function.
+You may assume the number of calls to update and sumRegion function is distributed evenly.
+You may assume that row1 ≤ row2 and col1 ≤ col2.
+
+#还是求matrix 上数字summation的题但是是可变的
+#利用列之和， colSum[i][j]是 从[0,j],[1,j]...[i,j]的和 那么就是 从左加到右，上下两个相减
+
+class NumMatrix {
+public:
+    NumMatrix(vector<vector<int>> &matrix) {
+        if (matrix.empty() || matrix[0].empty()) return;
+        mat = matrix;
+        colSum.resize(matrix.size() + 1, vector<int>(matrix[0].size(), 0));
+        for (int i = 1; i < colSum.size(); ++i) {
+            for (int j = 0; j < colSum[0].size(); ++j) {
+                colSum[i][j] = colSum[i - 1][j] + matrix[i - 1][j];
+            }
+        }
+    }
+
+    void update(int row, int col, int val) {
+        for (int i = row + 1; i < colSum.size(); ++i) {
+            colSum[i][col] += val - mat[row][col];
+        }
+        mat[row][col] = val;
+    }
+
+    int sumRegion(int row1, int col1, int row2, int col2) {
+        int res = 0;
+        for (int j = col1; j <= col2; ++j) {
+            res += colSum[row2 + 1][j] - colSum[row1][j];
+        } 
+        return res;
+    }
+
+private:
+    vector<vector<int>> mat;
+    vector<vector<int>> colSum;
+};
