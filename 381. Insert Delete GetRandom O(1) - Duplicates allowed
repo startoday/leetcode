@@ -1,0 +1,44 @@
+Design a data structure that supports all following operations in average O(1) time.
+
+Note: Duplicate elements are allowed.
+insert(val): Inserts an item val to the collection.
+remove(val): Removes an item val from the collection if present.
+getRandom: Returns a random element from current collection of elements. 
+The probability of each element being returned is linearly related to the number of same value the collection contains.
+#与380 的区别： 可以有重复元素
+#用一个map<int, vector> 来记录 vector 中的位置 删除的时候还是交换最后一个
+#对于insert 已有的话return false， 但是插入还是成功的！
+#Inserts another 1 to the collection. Returns false as the collection contained 1. Collection now contains [1,1].
+
+class RandomizedCollection {
+public:
+    /** Initialize your data structure here. */
+    RandomizedCollection() {
+        
+    }
+    
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    bool insert(int val) {
+        has[val].push_back(nums.size());
+        nums.push_back({val,has[val].size() - 1 }); //第几个， 0 based index
+        return has[val].size() == 1;
+    }
+    
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    bool remove(int val) {
+        if(!has.count(val)) return false;
+        has[nums.back().first][nums.back().second] = has[val].back(); //不一定是最后一个！！换的是second位置的 vector里面存的不是按照 second 排好序的！！！
+        swap(nums[has[val].back()], nums.back());
+        nums.pop_back();
+        has[val].pop_back();
+        if(has[val].empty()) has.erase(val);
+        return true;
+    }
+    
+    /** Get a random element from the collection. */
+    int getRandom() {
+        return nums[rand() % nums.size()].first;
+    }
+    unordered_map<int, vector<int>>has;
+    vector<pair<int,int>> nums;
+};
