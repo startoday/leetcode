@@ -1,0 +1,43 @@
+Given N axis-aligned rectangles where N > 0, determine if they all together form an exact cover of a rectangular region.
+
+Each rectangle is represented as a bottom-left point and a top-right point. For example, a unit square is represented as [1,1,2,2]. 
+(coordinate of bottom-left point is (1, 1) and top-right point is (2, 2)).
+
+#完了，看了例子更不明白这道题了。。
+根本没搞出来这个例子是啥意思
+#凹凸，overlapping 都不行
+
+#只有四个顶点出现一次，中间的顶点出现2次或者4次
++
+#小长方形面积和等于大长方形
+
+class Solution {
+public:
+    bool isRectangleCover(vector<vector<int>>& rectangles) {
+        set<pair<int, int>> has;
+        int area = 0;
+        for(auto & rec : rectangles) {
+            pair<int, int> lb {rec[0], rec[1]};
+            pair<int, int> lt {rec[0], rec[3]};
+            pair<int, int> rt {rec[2], rec[3]};
+            pair<int, int> rb {rec[2], rec[1]};
+            for(auto & p: {lb, lt, rt, rb}) {
+                //pair<iterator,bool> insert (value_type&& val);
+                /*
+                pair::first set to an iterator pointing to either the newly inserted element or to the equivalent element already in the set. 
+                The pair::second--true if a new element was inserted 
+                --false if an equivalent element already existed.
+                */
+                //have to be a const
+                const auto & temp = has.insert(p);
+                if(!temp.second) has.erase(temp.first); //if has even times, delete them -- only left with odd times.
+            }
+            area +=  (rb.first  - lb.first) * (lt. second - lb.second);
+        }
+        if(has.size() != 4) return false;
+        
+        auto lb = has.cbegin();
+        auto rt = has.crbegin();
+        return area == (rt->first - lb->first)*(rt->second - lb->second);
+    }
+};
