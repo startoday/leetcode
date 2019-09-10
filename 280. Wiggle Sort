@@ -1,0 +1,21 @@
+Given an unsorted array nums, reorder it in-place such that nums[0] <= nums[1] >= nums[2] <= nums[3]....
+
+Example:
+
+Input: nums = [3,5,2,1,6,4]
+Output: One possible answer is [3,5,1,6,2,4]
+#sort完之后两两交换即可 --O（nlgn）
+
+#根据单双位置的不同，判断是否需要交换，需要的话就交换
+#0小1大; 注意边界情况！
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        if(nums.size() == 0) return;
+        for(int i = 0; i < nums.size() - 1; ++i) {
+            if((i % 2 == 0) == (nums[i] > nums[i + 1])) {
+                swap(nums[i], nums[i + 1]);
+            }
+        }
+    }
+};
