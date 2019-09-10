@@ -1,0 +1,39 @@
+Given a string, sort it in decreasing order based on the frequency of characters.
+
+Example 2:
+Input:
+"cccaaa"
+Output:
+"cccaaa"
+Explanation:
+Both 'c' and 'a' appear three times, so "aaaccc" is also a valid answer.
+Note that "cacaca" is incorrect, as the same characters must be together.
+
+Example 3:
+Input:
+"Aabb"
+Output:
+"bbAa"
+Explanation:
+"bbaA" is also a valid answer, but "Aabb" is incorrect.
+Note that 'A' and 'a' are treated as two different characters.
+
+#可以用bucket sort的思想则是O（N)
+class Solution {
+public:
+    string frequencySort(string s) {
+        vector<string> buc (s.size() + 1, ""); //0 based so, max num is size
+        unordered_map<char, int> m;
+        for(auto c : s) {
+            m[c]++;
+        }
+        for(auto x : m) {
+            buc[x.second].append(x.second, x.first);
+        }
+        string res = "";
+        for(int i = s.size(); i > 0; --i) {
+            if(buc[i] != "") res += buc[i];
+        }
+        return res;
+    }
+};
