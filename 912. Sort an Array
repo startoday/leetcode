@@ -1,0 +1,39 @@
+Given an array of integers nums, sort the array in ascending order.
+
+ 
+
+Example 1:
+
+Input: [5,2,3,1]
+Output: [1,2,3,5]
+Example 2:
+
+Input: [5,1,1,2,0,0]
+Output: [0,0,1,1,2,5]
+
+#练习quick sort
+class Solution {
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        helper(nums, 0, nums.size() - 1);
+        return nums;
+    }
+    void helper(vector<int> & nums, int i , int j) {
+        if(i >= j) return;
+        int p = part(nums, i, j);
+        helper(nums, i, p - 1);
+        helper(nums, p + 1, j);
+    }
+    
+    int part(vector<int> & nums, int i , int j) {
+        int pivot = nums[j];
+        int p = i - 1;
+        for(int cur = i; cur < j; ++cur) {
+            if(nums[cur] <= pivot) {
+                swap(nums[cur], nums[++p]);
+            }
+        }
+        swap(nums[j], nums[++p]);
+        return p;
+    }
+};
