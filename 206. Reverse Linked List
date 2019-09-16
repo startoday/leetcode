@@ -22,18 +22,19 @@ public:
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if(!head  || !head->next) return head;
+        if(!head || !head->next) return head;
         ListNode * pre = NULL;
-        while(head) {
-            ListNode * temp = head ->next;
-            head ->next = pre;
-            pre = head; //不是往pre = pre->next 的方向
-            head = temp; // head 也往前移动，因为已经断开了直接赋值
+        ListNode * cur = head;
+        ListNode * temp;
+        while(cur) {
+            temp = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = temp;
         }
-        return pre;  //注意return的是pre！不是head！！！
+        return pre; //注意return的是pre，不是cur
     }
 };
-
 
 #recursive
 #实在是太睿智了！！
@@ -43,11 +44,11 @@ public:
     //定义这个函数会reverse传入的点 return转好的head
     //假设后面的点都reverse好了，只观察当前的点
     ListNode* reverseList(ListNode* head) {
-       
-        if(!head  || !head->next) return head;
-        ListNode * dummy = reverseList(head->next);
-        head->next->next = head;
-        head->next = NULL; //otherwise is a cycle
-        return dummy;
+        if(!head || !head->next) return head;
+        ListNode * cur = reverseList(head->next); //头
+        head->next->next = head; //尾巴
+        head->next = NULL;
+        return cur;
     }
 };
+
