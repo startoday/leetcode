@@ -67,7 +67,6 @@ public:
 
 #可以用BFS来实现
 #比起string，也可以用 ostream 来实现 以及queue上可以push NULL node
-#提供一个参考答案，学习一下一些点～
 #ref： https://www.cnblogs.com/grandyang/p/4913869.html 
 
 class Codec {
