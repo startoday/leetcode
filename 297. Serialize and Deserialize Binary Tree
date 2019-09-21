@@ -42,7 +42,7 @@ public:
             q.pop();
             if(!(in>>x)) break; //注意要括号起来！
             if(x != "N") {
-                TreeNode * lNode = new TreeNode(stoi(x)); //不可以用attoi
+                TreeNode * lNode = new TreeNode(stoi(x)); //不可以用atoi， 区别见learningNotes～
                 temp->left = lNode;
                 q.push(lNode);
             }
