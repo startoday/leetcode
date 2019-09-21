@@ -25,3 +25,66 @@ public:
 };
 
 
+#Rabin Karp --> 整数运算是O(1)
+#hash function abcde = a*31^4 + b *31^3 + e *31^0....+ % 10^6
+#abc -> abcd  (x*31 +d ) %10^6 - a*31*3 % 10^6 ..不停的取模 负数：+ 10^6
+#长度一定并每次deque 右移动一位
+#但是hash code不一定返回的完全对应，要double check一下O(m)！ ---total O(n + m)
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if(needle == "" ) return 0;
+        if(haystack == "" ||haystack.size() < needle.size() ) return -1;
+        int hashN = helper(needle);
+        //注意size
+        for(int i = 0; i <= haystack.size() - needle.size(); ++i) {
+            string t = haystack.substr(i, needle.size());
+            int temp = helper(t);
+            if (temp == hashN && t == needle) return i;
+        }
+        return -1;
+    }
+    //get number after hash function
+    int helper(const string & s) {
+        int mod = 10e6;
+        int res = 0;
+        for(int i = 0; i < s.size(); ++i) {
+            res = ((31 * res) % mod + s[i]) % mod;
+            if(res < 0) res += mod; 
+        }
+        return res% mod;
+    }
+};
+
+#另一种写法 -from 九章
+
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if(needle == "" ) return 0;
+        if(haystack == "" ||haystack.size() < needle.size() ) return -1;
+        int mod = 10e6;
+        int hashN = 0;
+        int power = 1;
+        for(int i = 0; i < needle.size(); ++i) {
+            power = 31 * power % mod;
+        }
+        for(int i = 0; i < needle.size(); ++i) {
+            hashN = ((31 * hashN) % mod + needle[i]) % mod;
+        }
+        int temp = 0;
+        for(int i = 0; i < haystack.size(); ++i) {
+            //abc + d
+            temp = ((31 * temp) % mod + haystack[i]) % mod;
+            if(i < (needle.size() -1))  continue;
+            //abc - a
+            if(i >= needle.size()) {
+                temp = temp - (haystack[i - needle.size()] * power) % mod;
+                if(temp < 0) temp += mod;
+            }
+            //注意！！不可以是else if！i一直后来都是大于needle.size的
+            if (temp == hashN && haystack.substr(i - needle.size() + 1, needle.size()) == needle) return i - needle.size() + 1;
+        }
+        return -1;
+    }
+};
