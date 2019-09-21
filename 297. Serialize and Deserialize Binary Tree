@@ -1,6 +1,68 @@
 #给一棵数，实现序列化（转换为string）和去序列化 （ 从string 转换成 Tree）
 
 #相似题449. Serialize and Deserialize BST
+//法1 BFS   time and space O(n)
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string res = "";
+        if(!root) return res;
+        queue<TreeNode *> q;
+        q.push(root);
+        while(!q.empty()) {
+            TreeNode * x = q.front();
+            q.pop();
+            if(x) {
+                res += to_string(x->val);
+                res += ' ';
+                q.push(x->left);
+                q.push(x->right);
+            } else {
+                res += "N";
+                res += ' ';
+            }
+        }      
+        return res;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if(data == "") return NULL;
+        queue<TreeNode*> q;
+        istringstream in(data);
+        string x;
+        in >> x;
+        TreeNode * root = new TreeNode(stoi(x));
+        TreeNode * cur = root;
+        q.push(cur);
+        while(!q.empty()) {
+            TreeNode * temp = q.front();
+            q.pop();
+            if(!(in>>x)) break; //注意要括号起来！
+            if(x != "N") {
+                TreeNode * lNode = new TreeNode(stoi(x)); //不可以用attoi
+                temp->left = lNode;
+                q.push(lNode);
+            }
+            if(!(in>>x)) break;
+            if(x != "N") {
+                TreeNode * rNode = new TreeNode(stoi(x));
+                temp->right = rNode;
+                q.push(rNode);
+            }
+        }
+        return root;
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
+
+
+
 
 
 #可以用BFS来实现
