@@ -41,3 +41,111 @@ public:
         return s.substr(0,1);   
     }
 };
+
+
+
+
+#直接想法dp space and time O(n2)
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        //dp[i,j] bool
+        //dp[i,j] if(i == j) check middle and we check the max size, and update it 
+        if(s.empty()) return "";
+        vector<vector<bool>> dp (s.size(), vector<bool> (s.size()));
+        int count = 1;
+        string res = "";
+        res += s[0];
+        for(int i = s.size() - 2; i >= 0; --i) {
+            for(int j = i + 1; j < s.size(); ++j) {
+                if(s[i] == s[j]) {
+                    if((i + 1) >= (j - 1)) dp[i][j] = true;
+                    else  dp[i][j] = dp[i + 1][j - 1]; 
+                    
+                    if(dp[i][j] && (j - i + 1) > count) {
+                        count = j - i + 1;
+                        res = s.substr(i, count);
+                    }   
+                }
+            }
+        }
+        return res;
+    }
+};
+
+
+#how to space O(1)
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        //every center, we check, total is 2n -1 center
+        if(s.empty()) return "";
+        string res = "";
+        int st = 0;
+        int ct = 0;
+        for(int i = 0; i < s.size(); ++i) {
+            int len1 = helper(s, i);
+            int len2 = helper2(s, i);
+            int l = max(len2, len1);
+            if(l > ct) {
+                ct = l;
+                st = i - (l - 1)/2; //handle even and odd also
+                res = s.substr(st, l);
+            }
+        }
+        return res;
+    }
+    //for i is midlle, return longest length 
+    int helper(const string & s, int & stp) {
+        int l = stp - 1;
+        int r = stp + 1;
+        while(l >= 0 && r < s.size() && s[l] == s[r]) {
+            l--;
+            r++;
+        }
+        return r - l - 1;
+    }
+        //for i is before midlle(middle is NULL), return longest length 
+    int helper2(const string & s, int & stp) {
+        int l = stp;
+        int r = stp + 1;
+        while(l >= 0 && r < s.size() && s[l] == s[r]) {
+            l--;
+            r++;
+        }
+        return r - l - 1;
+    }
+};
+
+//优化一下代码啊
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        //every center, we check, total is 2n -1 center
+        if(s.empty()) return "";
+        string res = "";
+        int st = 0;
+        int ct = 0;
+        for(int i = 0; i < s.size(); ++i) {
+            int len1 = helper(s, i, i);
+            int len2 = helper(s, i, i + 1);
+            int l = max(len2, len1);
+            if(l > ct) {
+                ct = l;
+                st = i - (l - 1)/2; //handle even and odd also
+                res = s.substr(st, l);
+            }
+        }
+        return res;
+    }
+    //just pass left and right
+    int helper(const string & s, int l, int r) {
+        while(l >= 0 && r < s.size() && s[l] == s[r]) {
+            l--;
+            r++;
+        }
+        return r - l - 1;
+    }
+};
+
