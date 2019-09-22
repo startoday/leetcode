@@ -71,3 +71,39 @@ public:
     }
     
 };
+
+#OK,重写时思路清晰了不少
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(!head || !head->next) return;
+        ListNode * slow = head;
+        ListNode * fast = head->next;
+        while(fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+        } //slow is more left(2 in the first example, not three)
+        
+        ListNode * hPt = slow->next;
+        slow->next = NULL;
+        //now reverse the hPt list
+        ListNode * l2= reverseList(hPt);
+        //mergeTwo list
+        ListNode *dum = head;
+        while(dum && l2) {
+            ListNode * temp = dum->next;
+            ListNode * tl2 = l2->next;
+            dum->next = l2;
+            l2->next = temp;
+            dum = temp;
+            l2 = tl2;
+        }
+    }
+    ListNode* reverseList(ListNode * he) {
+        if(!he || !he->next) return he;
+        ListNode * cur = reverseList(he->next);
+        he->next->next = he;
+        he->next = NULL;
+        return cur;
+    }
+};
