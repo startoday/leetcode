@@ -27,3 +27,59 @@ public:
         return clone;
     }
 };
+
+#BFS, 用map记录对应点，存在的时候说明处理过，不需要新建点； 都加入到neighbor里 O(m+n) time && O(n) space
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+    //对node BFS 并用hash——map 记录点 x - x'
+        if(!node) return node;
+        unordered_map<Node *, Node * > has;
+        queue<Node * > q;
+        q.push(node);
+        Node * start = new Node(node->val);
+        has.insert({node, start});
+        
+        while (!q.empty()) {
+            Node * temp = q.front();
+            q.pop(); 
+            for(auto x : temp ->neighbors) {              
+                if(has.count(x) == 0) {
+                    Node * aNode = new Node(x->val);
+                    q.push(x);
+                    has.insert({x, aNode});
+                    has[temp]->neighbors.push_back(aNode);
+                } else {
+                    has[temp]->neighbors.push_back(has[x]);
+                }
+            }
+        }
+        return has[node];
+    }
+};
+
+#总是可以简化代码，不用insert （然而慢）
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+    //对node BFS 并用hash——map 记录点 x - x'
+        if(!node) return node;
+        unordered_map<Node *, Node * > has;
+        queue<Node * > q;
+        q.push(node);
+        has[node] = new Node(node->val);
+        while (!q.empty()) {
+            Node * temp = q.front();
+            q.pop(); 
+            for(auto x : temp ->neighbors) {              
+                if(has.count(x) == 0) {
+                    q.push(x);
+                    has[x] = new Node(x->val);
+                } 
+                has[temp]->neighbors.push_back(has[x]);              
+            }
+        }
+        
+        return has[node];
+    }
+};
