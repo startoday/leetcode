@@ -72,3 +72,29 @@ public:
 };
 
 
+#重做
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(!head || !head->next) return head;
+        ListNode * dsm = new ListNode(-1);
+        ListNode * dst = dsm;
+        ListNode * dla = new ListNode(-1);
+        ListNode * dlt = dla;
+        dla ->next = dlt;
+        ListNode * cur = head;
+        while(cur) {
+            if(cur->val < x) {
+                dst->next = cur;
+                dst = dst->next;
+            } else {
+                dlt->next = cur;
+                dlt = dlt->next;
+            }
+            cur = cur->next;   
+        }
+        dlt->next = NULL;
+        dst->next = dla->next;
+        return dsm->next;
+    }
+};
