@@ -62,3 +62,37 @@ public:
         return 0;
     }
 };
+
+
+
+#重写代码思路是之前的，但要记得可以直接从wordlist里erase
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        //Note that beginWord is not a transformed word. ？？？
+        unordered_set<string> wl (wordList.begin(), wordList.end());
+        unordered_set<string> checked{beginWord};
+        queue<string> q ({beginWord});
+        int res = 1;
+        while(!q.empty()) {
+            for(int k = q.size(); k > 0; --k) {
+                string t = q.front();
+                q.pop();
+                if(t == endWord) return res;
+                for(int i = 0; i < t.size(); ++i) {
+                    string x = t;
+                    for(int j = 0; j < 26; ++j){
+                        x[i] = j +'a';
+                        if(wl.count(x) && !checked.count(x)) {
+                            q.push(x);
+                            checked.insert(x);
+                        }
+                    }
+                }
+            }
+
+            res++;
+        }
+        return 0;
+    }
+};
