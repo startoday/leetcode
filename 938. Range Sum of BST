@@ -48,3 +48,21 @@ public:
         return res;
     }
 };
+
+#better solution
+class Solution {
+   
+public:
+    int rangeSumBST(TreeNode* root, int L, int R) {
+        int res = 0;
+        if(!root) return res;
+        helper(root, L, R, res);
+        return res;    
+    }
+    void helper(TreeNode * root, int L, int R, int & res){
+        if(!root) return;
+        if(root->val > L) helper(root->left, L, R, res); 
+        if(L <= root->val && root->val <= R) res += root->val;
+        if(root->val < R) helper(root->right, L, R, res);
+    }
+};
