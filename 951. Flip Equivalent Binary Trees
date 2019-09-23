@@ -28,6 +28,11 @@ Id(LL,RL) Id(LR,RR), Id(LL, RR), Id(LR, RL)  ---->  4^2
   
   
 
-how many layers? height // logN ->total 4^lgN = 2^(2lgN) = 2^(lg(N^2)) = O(n^2)  
+how many layers? 
+assumption is a balanced tree
+logN ->total 4^lgN = 2^(2lgN) = 2^(lg(N^2)) = O(n^2)  
 #still only care about the laster layer (all together will all smaller than the last layer)
 #space   O(height)
+
+
+if not a balanced tree, some branch is NULL, return false may be four in one go to next level, faster than N^2 --> can be O(n)!
