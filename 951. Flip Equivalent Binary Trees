@@ -18,3 +18,16 @@ public:
         return flipEquiv(root1->left, root2->left) && flipEquiv(root1->right, root2->right) || flipEquiv(root1->left, root2->right) && flipEquiv(root1->right, root2->left);
     }
 };
+
+
+#time and space :
+       <root1 n node  root2 n node>    ----> 4^1
+       /       /       \           \
+Id(LL,RL) Id(LR,RR), Id(LL, RR), Id(LR, RL)  ---->  4^2
+  ...
+  
+  
+
+how many layers? height // logN ->total 4^lgN = 2^(2lgN) = 2^(lg(N^2)) = O(n^2)  
+#still only care about the laster layer (all together will all smaller than the last layer)
+#space   O(height)
