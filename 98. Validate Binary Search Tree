@@ -30,3 +30,19 @@ public:
         return root->val < traverse->val;
     }
 };
+
+
+#update better solutution time O(n*height)
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        long x = (long) INT_MIN - 1;
+        long y = (long) INT_MAX + 1;
+        return helper(root, x, y);
+    }
+    bool helper(TreeNode * root, long mi, long ma) {
+        if(!root) return true;
+        if(root->val <= mi || root->val >= ma) return false;
+        return helper(root->left, mi, root->val) && helper(root->right, root->val, ma);
+    }
+};
