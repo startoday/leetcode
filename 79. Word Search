@@ -1,0 +1,69 @@
+Given a 2D board and a word, find if the word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+Example:
+
+board =
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+
+Given word = "ABCCED", return true.
+Given word = "SEE", return true.
+Given word = "ABCB", return false.
+
+#dfs 注意一定要initialize！！！
+class Solution {
+    vector<vector<int>> dir {{1, 0},{-1, 0}, {0, 1}, {0, -1}};
+    int _r;
+    int _c;
+    
+public:
+        
+    bool exist(vector<vector<char>>& board, string word) {
+        if(word == "") return true;
+        int r = board.size();
+        if(r == 0) return false;
+        int c = board[0].size();
+        if(c == 0) return false;
+        
+        _r = r;
+        _c = c;
+        vector<vector<bool>> vis(r, vector<bool> (c, false));
+        for(int i = 0; i < r; ++i) {
+            for(int j = 0; j < c; ++j) {
+                if(board[i][j] == word[0]) {  
+                    string x = "";
+                    x += word[0];
+                    if(dfs(board, x, word, i, j, vis)) return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    bool dfs(const vector<vector<char>>& board, string cur, const string & word, int i, int j, vector<vector<bool>> & vis) {
+        if(cur == word) return true;       
+        if(cur.back() != word[cur.size() -1] || cur.size() > word.size()) return false; //需要提前终止！
+        vis[i][j] = true;
+        bool res = false;
+        for(auto & x : dir) {  //传address
+            int ni = i + x[0];
+            int nj = j + x[1];
+            if(ni >= 0 && nj >= 0 && ni < _r && nj < _c && (!vis[ni][nj])) {
+                string y = cur + board[ni][nj];
+                res = res || dfs(board, y, word, ni, nj, vis); 
+                if(res) {
+                    vis[i][j] = false;
+                    return true;
+                }
+            }
+        }
+        vis[i][j] = false;
+        return res;
+        
+    }
+};
