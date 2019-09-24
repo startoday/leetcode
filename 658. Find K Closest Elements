@@ -1,0 +1,33 @@
+Given a sorted array, two integers k and x, find the k closest elements to x in the array. The result should also be sorted in ascending order. If there is a tie, the smaller elements are always preferred.
+
+Example 1:
+Input: [1,2,3,4,5], k=4, x=3
+Output: [1,2,3,4]
+Example 2:
+Input: [1,2,3,4,5], k=4, x=-1
+Output: [1,2,3,4]
+
+#脑子清醒一点！！！这玩意你也能dedug半个小时怎的？？？？！！！！
+class Solution {
+public:
+    vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+        //find the closest number of x
+        int l = 0;
+        int r = arr.size() - 1;
+        int mid = l + (r - l)/2;
+        while((l + 1) < r) {
+            mid = l + (r - l)/2;
+            if(arr[mid] <= x) l = mid;
+            else r = mid;
+        } 
+        //left and right is close to each other
+        //use two ptrs to find the correct pos
+        while (l >= 0 && r < arr.size() && ((r - l - 1) < k)) {
+            if(abs(x - arr[l]) <= abs(x - arr[r])) l--; //when tie smaller prefered
+            else r++;
+        }
+        if(l == -1) return vector<int> (arr.begin(), arr.begin() + k);
+        if(r == arr.size()) return vector<int> (arr.end() - k, arr.end());
+        return vector<int> (arr.begin() + l + 1, arr.begin() + r);//不包括右侧！
+    }
+};
