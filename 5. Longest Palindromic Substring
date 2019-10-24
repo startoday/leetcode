@@ -31,7 +31,7 @@ public:
             }
         }
 
-        for(int j = size-1; j >= 0; --j){
+        for(int j = size-1; j >= 0; --j){ //j is the length!; or can use a max to record the length pair
             for(int i = 0; i <= size - 1 -j; ++i) {
                 if(store[i][i+j]) {
                     return  s.substr(i,j+1); 
