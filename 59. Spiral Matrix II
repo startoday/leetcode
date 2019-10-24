@@ -48,3 +48,35 @@ public:
         return res;
     }
 };
+
+
+#更新一个不容易错的做法～
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> res(n, vector<int> (n)) ;
+        int ct = 1;
+        int stop = n * n ;
+        int up = 0; int right = n - 1; int down = n -1; int left = 0;
+        while(ct <= stop) {
+            for(int i = left; i <= right; ++i) {
+                res[up][i] = ct++;
+            }
+            if(++up > right) break;
+            for(int i = up; i <= down; ++i) {
+                res[i][right] = ct++;
+            }
+            if(--right < left) break;
+            for(int i = right; i >= left; --i) {
+                res[down][i] = ct++;
+            }
+            if(--down < up) break;
+            for(int i = down; i >= up; --i) {
+                res[i][left] = ct++;
+            }
+            if(++left > right) break;
+        }
+        return res;
+    }
+};
+                
