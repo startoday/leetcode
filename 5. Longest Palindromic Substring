@@ -117,7 +117,7 @@ public:
     }
 };
 
-//优化一下代码啊
+//优化一下代码啊  -> time is still O(n^2)
 
 class Solution {
 public:
