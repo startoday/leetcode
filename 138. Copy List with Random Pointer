@@ -50,3 +50,25 @@ public:
 
 
 #类似题应该有 133. Clone Graph 
+
+
+#recursively
+
+class Solution {
+    //use a hash map to record the link relation
+    Map<Node, Node> finished = new HashMap<Node, Node>();
+    public Node copyRandomList(Node head) {
+        if(head == null) return null;
+        
+        if(this.finished.containsKey(head)) return this.finished.get(head);
+        
+        Node temp = new Node(head.val, null, null);
+        
+        this.finished.put(head, temp);
+        //set value to two properties
+        temp.next = this.copyRandomList(head.next);
+        temp.random = this.copyRandomList(head.random);
+        
+        return temp;
+    }
+}
