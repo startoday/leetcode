@@ -18,6 +18,17 @@ Input: cells = [0,1,0,1,1,0,0,1], N = 7
 Output: [0,0,1,1,0,0,0,0]
 Explanation: 
 The following table summarizes the state of the prison on each day:class Solution {
+
+Day 0: [0, 1, 0, 1, 1, 0, 0, 1]
+Day 1: [0, 1, 1, 0, 0, 0, 0, 0]
+Day 2: [0, 0, 0, 0, 1, 1, 1, 0]
+Day 3: [0, 1, 1, 0, 0, 1, 0, 0]
+Day 4: [0, 0, 0, 0, 0, 1, 0, 0]
+Day 5: [0, 1, 1, 1, 0, 1, 0, 0]
+Day 6: [0, 0, 1, 0, 1, 1, 0, 0]
+Day 7: [0, 0, 1, 1, 0, 0, 0, 0]
+
+#time O(nk) space O(1)
     public int[] prisonAfterNDays(int[] cells, int N) {
         //pay attention that the question said, the start and end will always be 0!!
         //14 is a loop
@@ -33,13 +44,3 @@ The following table summarizes the state of the prison on each day:class Solutio
         return cells;
     }
 }
-Day 0: [0, 1, 0, 1, 1, 0, 0, 1]
-Day 1: [0, 1, 1, 0, 0, 0, 0, 0]
-Day 2: [0, 0, 0, 0, 1, 1, 1, 0]
-Day 3: [0, 1, 1, 0, 0, 1, 0, 0]
-Day 4: [0, 0, 0, 0, 0, 1, 0, 0]
-Day 5: [0, 1, 1, 1, 0, 1, 0, 0]
-Day 6: [0, 0, 1, 0, 1, 1, 0, 0]
-Day 7: [0, 0, 1, 1, 0, 0, 0, 0]
-
-
