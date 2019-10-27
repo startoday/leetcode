@@ -1,0 +1,40 @@
+A string S of lowercase letters is given. We want to partition this string into as many parts as possible so that each letter appears in at most one part, and return a list of integers representing the size of these parts.
+
+Example 1:
+Input: S = "ababcbacadefegdehijhklij"
+Output: [9,7,8]
+Explanation:
+The partition is "ababcbaca", "defegde", "hijhklij".
+This is a partition so that each letter appears in at most one part.
+A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits S into less parts.
+Note:
+
+S will have length in range [1, 500].
+S will consist of lowercase letters ('a' to 'z') only.
+
+
+#只有小写字母。要把一个string尽可能的拆成多个部分，某个字母最多出现在某个部分中～return list of length of each part
+#想法：每个字母出现的最首和最尾巴， merge Interval   time O(nlgn)
+
+
+#另一个更优解法： 记录last 位置，每遇到一个字母时，记录最后一个该字母的位置，循环至此处说明区间内完全包括，可以加入length了
+#time and space O(n)
+class Solution {
+    public List<Integer> partitionLabels(String S) {
+        int[]pos = new int[26];
+        for(int i = 0; i < S.length(); ++i) {
+            pos[S.charAt(i) - 'a'] = i;
+        }
+        List<Integer> res = new ArrayList<>();
+        int left = 0;
+        int right = 0;
+        for(int i = 0; i < S.length(); ++i) {
+            right = Math.max(right, pos[S.charAt(i) - 'a']);
+            if(i == right) {
+                res.add(right - left + 1);
+                left = i + 1;
+            }
+        }
+        return res;            
+    }
+}
