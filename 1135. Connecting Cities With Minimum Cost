@@ -1,0 +1,54 @@
+There are N cities numbered from 1 to N.
+
+You are given connections, where each connections[i] = [city1, city2, cost] represents the cost to connect city1 and city2 together.  
+(A connection is bidirectional: connecting city1 and city2 is the same as connecting city2 and city1.)
+
+Return the minimum cost so that for every pair of cities, 
+there exists a path of connections (possibly of length 1) that connects those two cities together.  
+The cost is the sum of the connection costs used. If the task is impossible, return -1.
+
+#union and find!注意可能没连上要return -1；
+class Solution {
+    int [] rank;
+    int [] par;
+    
+    public int minimumCost(int N, int[][] connections) {
+        Arrays.sort(connections, (a, b) -> a[2] -b[2]);
+        int sum = 0;
+        rank = new int[ N + 1];
+        par = new int[ N + 1];
+        int connected = N;
+        for(int i = 0; i <= N; ++i) {
+            par[i] = i;
+        }
+        for(int i = 0; i < connections.length; ++i) {
+            int pu = find(connections[i][0]);
+            int pv = find(connections[i][1]);
+            if(pu!= pv) {
+                sum += connections[i][2];
+                union(pu,pv);
+                connected--;
+            }
+        }
+        return connected == 1? sum : -1;
+    }
+    
+    public void union(int a, int b){
+        if(rank[a] < rank[b]) {
+            par[a] = b;
+        } else if(rank[a] > rank[b]) {
+            par[b] = a;
+        } else {
+            par[a] = b;
+            rank[b]++;
+        }
+    }
+    public int find(int a) {
+        if(par[a] == a) return a;
+        par[a] = find(par[a]);
+        return par[a];
+    }
+    
+}
+
+
