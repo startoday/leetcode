@@ -1,0 +1,54 @@
+Given a string S, check if the letters can be rearranged so that two characters that are adjacent to each other are not the same.
+
+If possible, output any possible result.  If not possible, return the empty string.
+
+Example 1:
+
+Input: S = "aab"
+Output: "aba"
+Example 2:
+
+Input: S = "aaab"
+Output: ""
+Note:
+
+S will consist of lowercase letters and have length in range [1, 500].
+
+#狂放写作 Time Complexity: O((N + AlogA)->O(N). (A:26; fixed)
+# Space Complexity: O(N).
+class Solution {
+    class P{
+        protected char c;
+        protected int num;
+        public P(char ch, int x ){
+            this.c = ch;
+            this.num = x;
+        }
+    }
+    public String reorganizeString(String S) {
+        Map<Character, Integer> store = new HashMap<>();
+        
+        for(Character c : S.toCharArray()){
+            store.put(c, store.getOrDefault(c,0) + 1);
+        }
+        
+        PriorityQueue<P> pq = new PriorityQueue<>((a,b) -> b.num - a.num);
+        
+        for(Character x : store.keySet()) {
+            pq.add(new P(x, store.get(x)));
+        }
+        //nice way to control adjacent chars: will be one step behind to push on the pq
+        P t = null; 
+        StringBuilder res = new StringBuilder();
+        while(!pq.isEmpty()){
+            P temp = pq.poll();
+            res.append(temp.c);
+            --temp.num;
+            if( t!= null && t. num > 0) pq.add(t);
+            t = temp;
+        }
+        String x = res.toString();
+        return x.length() == S.length()? x:"";
+        
+    }
+}
