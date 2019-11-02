@@ -24,4 +24,5 @@ cache.get(4);       // returns 4
 
 
 #LRU, 缓存。每次存的是最近call的内容，capacity 是一定的， 要求操作都是O（1）
-#可以用list of hashmap 来实现
+#doublylinked list + hashMap
+
