@@ -43,12 +43,21 @@ class Solution:
 
 
 
+#recursive 
+the left of the same node in inorder will be the left subtree, and right side will be the right sub tree
 
-
-#Tree 真是，老老实实写recursive 吧以后ok？
-#记录一下当时的想法 根左右， 左根右，在inorder里遇到相同的就网上走回溯根，往右插入 ---但是如果根左是空这种，判断就失效了。。
-
-#recursive 的话，对于中序遍历当然以顶点切分左右，
+    # a nice solution https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/34543/Simple-O(n)-without-map
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        def build(stop):
+            if inorder and inorder[-1] != stop:
+                root = TreeNode(preorder.pop())
+                root.left = build(root.val)
+                inorder.pop() # when left side is done 
+                root.right = build(stop)
+                return root
+        preorder.reverse()
+        inorder.reverse()
+        return build(None)
 
 class Solution {
 public:
