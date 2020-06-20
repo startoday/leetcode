@@ -47,17 +47,18 @@ class Solution:
 the left of the same node in inorder will be the left subtree, and right side will be the right sub tree
 
     # a nice solution https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/34543/Simple-O(n)-without-map
+class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
-        def build(stop):
-            if inorder and inorder[-1] != stop:
-                root = TreeNode(preorder.pop())
-                root.left = build(root.val)
-                inorder.pop() # when left side is done 
-                root.right = build(stop)
-                return root
         preorder.reverse()
         inorder.reverse()
-        return build(None)
+        def helper(stop):
+            if inorder and inorder[-1]!=stop:
+                rt = TreeNode(preorder.pop())
+                rt.left = helper(rt.val) #left should not exceed root
+                inorder.pop() #if pass left means inorder[-1] == stop, this val is used
+                rt.right = helper(stop) #right side shoulde be the same stoper as root
+                return rt
+        return helper(None)
 
 class Solution {
 public:
