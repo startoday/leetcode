@@ -16,7 +16,35 @@ Return the following binary tree:
    15   7
    
  
-#哎。。。真是，就想用iterative的方法做，分析了一下该怎么走写出来的code，结果[3124][1234]这个case我手写都gg了？？？？？
+#iterative
+easy to think with stack, the before top == to the inorder, we insert in left, otherwise we start to insert in right
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        if len(preorder) == 0:
+            return None
+        root = TreeNode(preorder[0])
+        st = [root]
+        i = 1
+        j = 0
+        while i < len(preorder):
+            newNd = TreeNode(preorder[i])
+            if st and st[-1].val!= inorder[j]:
+                st[-1].left = newNd
+            else:
+                tmp = st[-1]
+                while st and st[-1].val == inorder[j]:
+                    tmp = st.pop()
+                    j+=1
+                tmp.right = newNd
+            st.append(newNd)    
+            i += 1
+        return root
+
+
+
+
+
+
 #Tree 真是，老老实实写recursive 吧以后ok？
 #记录一下当时的想法 根左右， 左根右，在inorder里遇到相同的就网上走回溯根，往右插入 ---但是如果根左是空这种，判断就失效了。。
 
