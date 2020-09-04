@@ -1,9 +1,9 @@
 <pre>
-      <b>F</b>IGHT
-    FO<b>R</b>
-      <b>O</b>BJECT
- REALI<b>Z</b>ATION
-     B<b>E</b>FORE
-      <b>N</b>OVEMBER
+       <b>F</b>ACEBOOK
+    MIC<b>R</b>OSOFT
+      G<b>O</b>OLE
+       <b>Z</b>OOM
+    SAL<b>E</b>SFORCE
+     LI<b>N</b>KEDIN
 </pre>
 
