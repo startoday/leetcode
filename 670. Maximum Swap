@@ -1,0 +1,18 @@
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        minPos = -1
+        maxPos = -1
+        swap = -1
+        tmp = [i for i in str(num)]
+
+        for i in range(len(tmp) -1, -1, -1):
+            if tmp[i] > tmp[maxPos]:
+                maxPos = i
+            if tmp[i] < tmp[maxPos]: # if not the max, the we push lefter to change
+                minPos = i
+                swap = maxPos #need it for able to swap the last max 
+        if minPos == -1:
+            return num
+        tmp[swap], tmp[minPos] = tmp[minPos], tmp[swap]
+        return int("".join(tmp))
+
