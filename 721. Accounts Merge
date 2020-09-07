@@ -1,0 +1,36 @@
+#Union and find, use the first email address in the list as the parent, store the relation of name and the first email address
+class Solution:
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        rank = defaultdict(int)
+        par = {}
+        emailName = {}
+        def union(u,v):
+            u = find(u)
+            v = find(v)
+            if u!=v:
+                if rank[v] < rank[u]:
+                    par[v]= u
+                elif rank[v] > rank[u]:
+                    par[u]=v
+                else:
+                    par[v]= u
+                    rank[u] += 1
+        def find(u):
+            if par[u] == u:
+                return u
+            par[u] = find(par[u])
+            return par[u]
+        
+        for emails in accounts:
+            for email in emails[1:]:
+                if email not in par:
+                    par[email] = email
+                union(email, emails[1])
+                emailName[email] = emails[0]
+        
+        tmp = defaultdict(list)
+        for i in par.keys():
+            tmp[find(i)].append(i)
+        
+        return [ [emailName[key]] + sorted(val) for key, val in tmp.items()]
+  # time and space O(A) where A = summation of len(accounts)
