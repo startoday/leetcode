@@ -1,0 +1,38 @@
+# use bit manip
+eg: 3, 32 
+3 << 0 : 3
+3<<1 : 6
+3<<2 : 12
+3<< 3 3*2^3 = 24
+3<< 4 3*2^4 > 32:
+
+the first will be 2^3 + (32-24...countinue)
+
+### pay attention to corner case MIN_INT = -2147483648. => it will be  2147483648  if not listed
+
+# time and space : O(lgN) N = divident ; O(1)
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        MAX_INT = 2147483647        # 2**31 - 1
+        MIN_INT = -2147483648       # -2**31
+
+        # Special case: overflow => the negative number will overflow
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+
+        sign = 1
+        if divisor < 0:
+            sign = -1
+            divisor = 0 -divisor
+        if dividend < 0:
+            sign = -1 *sign
+            dividend = 0 -dividend
+        res = 0
+        while dividend >= divisor:
+            cur = 1
+            while (divisor<< cur) < dividend:
+                cur += 1
+            cur -= 1
+            dividend -=  (divisor<< cur)
+            res += (1<<cur)
+        return res*sign
