@@ -1,0 +1,16 @@
+# 啥破玩意 想复杂了，读数，random取随机数，等于 0 的时候return （因为总会有零） the last number always exists
+class Solution:
+
+    def __init__(self, nums: List[int]):
+        self.nums = nums
+
+    def pick(self, target: int) -> int:
+        ct = 0
+        for i, num in enumerate(self.nums):
+            if num == target:
+                ct += 1
+                tmp = random.randint(0, ct-1) 
+                #randint(a,b)  [a,b]
+                if tmp == 0:
+                    res = i
+        return res
