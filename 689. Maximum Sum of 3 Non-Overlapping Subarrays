@@ -1,0 +1,30 @@
+class Solution:
+    def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
+        sumRecord = []
+        curM, tmp = 0,0
+        for i in range(len(nums)):
+            tmp += nums[i]
+            if i >= k:
+                tmp -= nums[i - k ]
+            if i >= k - 1:
+                sumRecord.append(tmp)
+                
+        maxRecord = [0]* len(sumRecord)
+        for i in range(len(sumRecord)) :   
+            if sumRecord[i] > sumRecord[curM]:
+                curM = i
+            maxRecord[i] = curM
+            
+        maxRecordBack = [0]* len(sumRecord)
+        curM = len(sumRecord) - 1 
+        for i in range(len(sumRecord) - 1 , -1, -1):
+            if sumRecord[i] >= sumRecord[curM]:
+                curM = i
+            maxRecordBack[i] = curM
+            
+        res = None
+        for i in range(k, len(sumRecord) - k):
+            tmpNum =  sumRecord[i] + sumRecord[maxRecord[i - k]] + sumRecord[maxRecordBack[i+k]]
+            if res == None or tmpNum > sumRecord[res[0]] + sumRecord[res[1]] + sumRecord[res[2]]:
+                res = [maxRecord[i - k], i, maxRecordBack[i+k]]
+        return res
