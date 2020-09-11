@@ -1,0 +1,20 @@
+class Solution:
+    def addOperators(self, num: str, target: int) -> List[str]:
+        res = []
+        def dfs(pos, curStr, curval, lastval):
+            if pos == len(num):
+                if curval == target:
+                    res.append(curStr)
+                return 
+            for i in range(pos + 1, len(num) + 1):
+                tmp = num[pos: i]
+                n = int(tmp)
+                if i == pos + 1 or num[pos] != "0":
+                    if lastval == None:
+                        dfs(i, tmp, n,n)
+                    else:
+                        dfs(i , curStr + "+" + tmp, curval + n , n)
+                        dfs(i , curStr + "-" + tmp, curval - n , -n)
+                        dfs(i , curStr + "*" + tmp, curval - lastval + lastval * n , lastval * n)
+        dfs(0,"", 0 ,None)
+        return res
