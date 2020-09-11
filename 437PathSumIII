@@ -19,3 +19,24 @@ public:
     }
     
 };
+
+
+# 利用presum的做法，从上到下累计的
+class Solution:
+    def pathSum(self, root: TreeNode, tar: int) -> int:
+        preS = Counter()
+        self.res = 0
+        preS[0] = 1 #pay attention! has to have it!!  否则一开始的就算不到了
+        def dfs(rt, curS):
+            if not rt:
+                return 
+            curS += rt.val
+            if curS - tar in preS:
+                self.res += preS[curS - tar]
+            preS[curS] += 1
+            dfs(rt.right, curS)
+            dfs(rt.left, curS)
+            preS[curS] -= 1  #记得取消，剪掉用过的
+        dfs(root, 0)
+        return self.res
+            
