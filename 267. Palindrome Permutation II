@@ -1,0 +1,54 @@
+Given a string s, return all the palindromic permutations (without duplicates) of it. Return an empty list if no palindromic permutation could be form.
+
+Example 1:
+
+Input: "aabb"
+Output: ["abba", "baab"]
+Example 2:
+
+Input: "abc"
+Output: []
+
+
+
+class Solution:
+    def generatePalindromes(self, s: str) -> List[str]:
+        #counter first, if there is more than one odd, return []
+        #cut in half and do the permutation and paste half
+        dic = Counter(s)
+        odd = None
+        l = []
+        for key, val in dic.items():
+            if val % 2 != 0:
+                if odd != None:
+                    return []
+                else:
+                    odd = key
+                    val -= 1
+                    if val == 0:
+                        continue
+            ct = 0
+            while ct < val /2:
+                l.append(key)
+                ct += 1
+        res = []
+        visited = [False] * len(l)
+        def dfs(cur):
+            if len(cur) == len(l):
+                s = "".join(cur)
+                if odd == None:
+                    res. append(s + s[::-1])
+                else:
+                    res.append(s + odd + s[::-1])
+                return 
+            for i in range(len(l)):
+                if visited[i] == True:
+                    continue
+                if i== 0 or l[i] != l[i -1] or visited[i -1] == True:
+                    visited[i] = True
+                    dfs(cur + [l[i]])
+                    visited[i] = False      
+        dfs([])
+        return res
+        
+   
