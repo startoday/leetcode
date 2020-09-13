@@ -1,0 +1,42 @@
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return all possible palindrome partitioning of s.
+
+Example:
+
+Input: "aab"
+Output:
+[
+  ["aa","b"],
+  ["a","a","b"]
+]
+
+
+
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        res = []
+        isPali = [[False] *len(s) for i in s]
+        for i in range(len(s)):
+            isPali[i][i] = True
+            if i < len(s) - 1:
+                isPali[i][i+1] = (s[i] == s[i+1])
+        for j in range(2,len(s)):
+            for i in range(0, j-1):
+                if s[i] == s[j]:
+                    isPali[i][j] = (isPali[i +1][j-1])
+        dic = defaultdict(list)
+        def dfs(pos):
+            if string in dic:
+                return 
+            for i in range(pos + 1, len(s) + 1):
+                if isPali[pos][i-1]:
+                    if s[i:] not in dic:
+                        dfs(i)
+                    if i == len(s): #pay attention to this! omg >_<
+                        dic[s[pos:]].append([s[pos:]])
+                    else:
+                        for x in  dic[s[i:]]:
+                            dic[s[pos:]].append([s[pos:i]] + x)
+        dfs(0)
+        return dic[s]
