@@ -1,0 +1,20 @@
+class Solution:
+    def scheduleCourse(self, courses: List[List[int]]) -> int:
+        # sort the end time
+        # record the total time, insert anything can be picked or try to switch with the max length exists and recalculate the total time 
+        courses.sort(key= lambda x:x[1])
+        res = 0
+        h = []
+        total = 0
+        for t, ed in courses:
+            if ed >= (total + t):
+                total += t
+                heappush(h, -t)
+                res += 1
+            elif len(h) > 0:
+                x = heappop(h)
+                total += x
+                x = max(-t, x)
+                heappush(h, x)
+                total -= x
+        return res
