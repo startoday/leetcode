@@ -40,3 +40,47 @@ public:
         return dummyHead->next;
     }
 };
+
+
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        size = len(lists)
+        interval = 1
+        while interval < size:
+            for i in range(0, size - interval, interval*2):
+                lists[i] = self.meTwoList(lists[i], lists[i + interval])
+            interval *=2
+        return lists[0] if size > 0 else None
+        
+    def meTwoList(self, l1, l2):
+        dumHead = ListNode(-1)
+        head = dumHead
+        while l1 and l2:
+            if l1.val <= l2.val:
+                head.next = l1 
+                l1 = l1.next
+            else:
+                head.next = l2
+                l2 = l2.next
+            head = head.next
+        while l1:
+            head.next = l1 
+            l1 = l1.next
+            head = head.next
+        while l2:
+            head.next = l2
+            l2 = l2.next
+            head = head.next
+            
+        return dumHead.next
