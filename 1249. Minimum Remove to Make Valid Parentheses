@@ -1,0 +1,75 @@
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        # the first round calculate and remove ")"
+        # second round just leave the right one
+        balance = 0
+        firstRun = ""
+        for i in s:
+            if i == "(":
+                balance +=1
+            if i == ")":
+                balance -=1
+                if balance < 0:
+                    balance +=1
+                    continue
+            firstRun += i
+        res = ""
+        #balance == 0 - no need to change  >0 :more left than right
+        for i in firstRun[::-1]:
+            if i == "(":
+                balance -= 1
+                if balance >= 0:
+                    continue
+            res += i
+        
+        return res[::-1]
+                
+            
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        # the first round calculate and remove ")"
+        # second round just leave the right one
+        left = 0
+        right = 0
+        firstRun = ""
+        for i in s:
+            if i == "(":
+                left +=1
+            if i == ")":
+                right +=1
+                if right > left:
+                    right -=1
+                    continue
+            firstRun += i
+        res = ""
+        for i in firstRun:
+            if i == "(":
+                right -= 1
+                if right < 0:
+                    continue
+            res += i
+        
+        return res
+ 
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        # stack of bracket ->TIME AND SPACE O(N)
+        invalid = set()
+        st = []
+        for i in range(len(s)):
+            if s[i] == ")":
+                if len(st) == 0 :
+                    invalid.add(i)
+                else:
+                    st.pop()
+            if s[i] == "(":
+                st.append(i)
+        invalid = invalid.union(set(st))
+        res =""
+        for i in range(len(s)):
+            if i not in invalid:
+                res+=s[i]
+        return res
+            
+            
+                
