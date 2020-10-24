@@ -49,3 +49,27 @@ class Solution:
         for i in range(len(nums)):
             nums[i] *=-1
         return nums
+
+# Another Good Way!
+class Solution:
+    def shuffle(self, nums: List[int], n: int) -> List[int]:
+        #另一道读题是魔鬼的题，重点在于nums的值都小于1000，所以bitwise 不会超过十位
+        # 两个数加在一起不会超过20 位， 可以bitwise 存在一个数字里面
+        # 所以想法就是用最后的n位存 前面的一起 再重新sign回去
+        j = n
+        while j < len(nums):
+            nums[j] <<= 10
+            nums[j] |= nums[j -n]
+            j += 1
+        i = 0
+        j = n
+        while j < len(nums):
+            n1 = nums[j] & 1023
+            n2 = nums[j] >> 10
+            nums[i] = n1
+            nums[i+1] = n2
+            j += 1
+            i += 2
+        return nums
+            
+            
