@@ -74,5 +74,31 @@ class Solution:
                         l += 1
         return res
         
+   
+way3
+# instead of using sorting, we can use a set to store duplicates
+# the key point is seen set becomes a map, only the component is as the current index, means it is the first time, seeing the counter part. This will eliminate duplex
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+    # time is also O(n^2)
+        res = set()
+        dup = set()
+        seen = {}
+        for i in range(len(nums)):
+            if nums[i] not in dup:
+                dup.add(nums[i])
+                l = i + 1
+                while l < len(nums):
+                    remain = -nums[i] - nums[l]
+                    if remain in seen and seen[remain] == i:
+                        res.add(tuple(sorted((nums[i], nums[l], remain)))) # has to be a set, otherwise case like [-2,0,0,2,2], you can't exclude 2 and 2 in this while loop
+                    else:
+                        seen[nums[l]] =i
+                    l += 1
+        return res
+                
+
+        
         
         
