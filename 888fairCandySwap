@@ -5,14 +5,11 @@
 
 class Solution:
     def fairCandySwap(self, A: List[int], B: List[int]) -> List[int]:
-        eq = (sum(A) + sum(B)) //2
-        sa = set()
-        for a in A:
-            sa.add(a)
-            eq -=a
-        #eq is how much a need
+        eq = (sum(B)-sum(A)) //2
+        sa = set(A)
+        #eq is how much A need
         for b in B:
-            if b -eq in sa:
+            if b - eq in sa:
                 return [b-eq, b]
         return[-1,-1]
             
