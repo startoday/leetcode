@@ -12,6 +12,34 @@ Output: 5
 Explanation: Paint house 0 into color 0, paint house 1 into color 2. Minimum cost: 1 + 4 = 5; 
              Or paint house 0 into color 2, paint house 1 into color 0. Minimum cost: 3 + 2 = 5. 
 
+# Add python's answer for O(nk) result; pay attention that we always needs to calcualte second min/first min looping the whole color range
+class Solution:
+    def minCostII(self, costs: List[List[int]]) -> int:
+        # to solve it in nk run time, I just need to store second min and min and color
+        n = len(costs)
+        if n == 0:
+            return 0
+        k = len(costs[0])
+        # everyTime we need to check firstMin(ind, val) and second(ind, val)
+        res = [(-1, 0), (-1, 0)]
+        for cost in costs:
+            cur = [(-1, math.inf), (-1, math.inf)]
+            for j in range(k):
+                if j != res[0][0]:
+                    tmp = cost[j] + res[0][1]
+                else:
+                    tmp = cost[j] + res[1][1]
+                if tmp < cur[0][1]:
+                    cur[1] = cur[0]
+                    cur[0] = (j, tmp)
+                elif tmp < cur[1][1]:
+                    cur[1] = (j, tmp)
+            res = cur  
+        return res[0][1]
+                            
+
+
+
 #这道题和easy模式的 paint House I一样的居然就是hard了！
 
 class Solution {
