@@ -1,0 +1,87 @@
+Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input would have exactly one solution.
+
+ 
+
+Example 1:
+
+Input: nums = [-1,2,1,-4], target = 1
+Output: 2
+Explanation: The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+ 
+
+Constraints:
+
+3 <= nums.length <= 10^3
+-10^3 <= nums[i] <= 10^3
+-10^4 <= target <= 10^4
+
+# 注意closest 可大可小 可相等
+# 从3sum closest 引申而来。。
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+    #O(n^2)
+    # Space Complexity: from O(logn) toO(n), depending on the implementation of the sorting algorithm.
+        nums.sort()
+        resl = -math.inf
+        resm = math.inf
+        if len(nums) <3:
+            return 0
+        for i in range(len(nums)):
+            # start to calculate
+            h = len(nums) -1
+            for l in range(i + 1, len(nums)):
+                while l < h:
+                    to = nums[i] + nums[l] + nums[h]
+                    if to ==target:
+                        return target
+                    if to< target:
+                        resl = max(resl, to)
+                        if h < len(nums)-2:
+                            resm = min(resm, nums[i] + nums[l] + nums[h+1])
+                        break
+                    else:
+                        h -= 1
+            x = i + 1
+            for y in range(len(nums) -1, i, -1):
+                while x < y:
+                    to = nums[i] + nums[x] + nums[y]
+                    if to ==target:
+                        return target
+                    if to > target:
+                        resm = min(resm, to)
+                        if x > i + 1:
+                            resl = max(resl, nums[i] + nums[x-1] + nums[y])
+                        break
+                    else:
+                        x += 1
+        if target - resl < resm- target:
+            return resl
+        return resm
+        
+        
+# If an interviewer asks you whether you can achieve \mathcal{O}(1)O(1) memory complexity, 
+# you can use the selection sort instead of a built-in sort in the Two Pointers approach. 
+# It will make it a bit slower, though the overall time complexity will be still O(n^2)
+
+
+# improve the implmentation: only record one difference; it is always target - dif (dif = tartget - curS) when the abs of diffence is smaller, update it!
+# and the left and right ptr will need to move into middle.
+
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        nums.sort()
+        diff = math.inf
+        for i in range(len(nums)):
+            l = i + 1
+            h = len(nums) -1
+            while l< h:
+                to = nums[i] + nums[l] + nums[h]
+                if abs(to- target) < abs(diff): # pay attention!! here has to be abs(diff)
+                    diff = target - to
+                if to > target:
+                    h -=1
+                else:
+                    l += 1
+        return target-diff
+
+
