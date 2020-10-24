@@ -48,4 +48,31 @@ class Solution:
                         while l < h and nums[l] == nums[l-1]: # pay attention to this! 
                             l+=1
         return res
+       
+  
+ way 2
+ # similar as two sum 1 , use a hashset to store the seen total, similar as way1, we can use the same way to avoid duplicity
+ class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # time is also O(n^2)
+        nums.sort()
+        res = []
+        for i in range(len(nums)):
+            if nums[i] > 0:
+                return res
+            if i == 0 or nums[i] != nums[i - 1]:
+                l = i + 1
+                s = set()
+                while l < len(nums):
+                    if -nums[i] - nums[l] in s:
+                        res.append([-nums[i] - nums[l], nums[i], nums[l]])
+                        l +=1
+                        while l < len(nums) and nums[l] == nums[l -1]:
+                            l += 1
+                    else:
+                        s.add(nums[l])
+                        l += 1
+        return res
+        
+        
         
