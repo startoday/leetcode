@@ -1,0 +1,47 @@
+You are given an inclusive range [lower, upper] and a sorted unique integer array nums, where all elements are in the inclusive range.
+
+A number x is considered missing if x is in the range [lower, upper] and x is not in nums.
+
+Return the smallest sorted list of ranges that cover every missing number exactly. That is, no element of nums is in any of the ranges, and each missing number is in one of the ranges.
+
+Each range [a,b] in the list should be output as:
+
+"a->b" if a != b
+"a" if a == b
+ 
+
+Example 1:
+
+Input: nums = [0,1,3,50,75], lower = 0, upper = 99
+Output: ["2","4->49","51->74","76->99"]
+Explanation: The ranges are:
+[2,2] --> "2"
+[4,49] --> "4->49"
+[51,74] --> "51->74"
+[76,99] --> "76->99"
+
+
+class Solution:
+    def findMissingRanges(self, nums: List[int], lower: int, upper: int) -> List[str]:
+        res =[]
+        i = 0
+        while lower <= upper and i < len(nums):
+            if lower == nums[i]:
+                i+= 1
+                lower += 1
+            else:
+                #not in add stuff 
+                if lower == nums[i] -1:
+                    res.append(str(lower))
+                else:
+                    res.append(str(lower) + "->" + str(nums[i] -1))
+                
+                # jump to the new
+                lower = nums[i]
+                
+        # don't forget tail check         
+        if lower<upper:
+            res.append(str(lower) + "->" + str(upper))
+        if lower == upper:
+            res.append(str(lower))
+        return res
