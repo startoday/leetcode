@@ -1,0 +1,67 @@
+Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed) parentheses substring.
+
+ 
+
+Example 1:
+
+Input: s = "(()"
+Output: 2
+Explanation: The longest valid parentheses substring is "()".
+
+"()(((((()))"
+6
+")()())"
+4
+
+
+# way1 dp to store the longest res with end at ith; thus can only ")" has number and "(" will always be 0
+# when dp[i-1] == 0 and is "(" i is ) => dp[i - 2] +  2 other wise , dp[i-1] + (when i- dp[i-1] -1 is "(") and dp[i- dp[i-1] -2] also needs to be check to ensure connecting with previous
+
+# way2: use stack to store index
+# time and space: O(n)
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        st =[-1]
+        res = 0
+        for i in range(len(s)):
+            if s[i] == ")":
+                st.pop()
+                if len(st) == 0:
+                    st.append(i) # bottom will not be used if there are multiple 
+                else:
+                    res = max(res, i-st[-1])
+            else:
+                st.append(i)
+        return res
+
+# way3, scan both sides and calculate when leftn == rightn, when rightn > leftn, reset them as 0
+#  time O(n) space O(1)
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        res = 0
+        l = 0
+        r = 0
+        for i in s:
+            if i == "(":
+                l+=1
+            else:
+                r+= 1
+                if l == r:
+                    res = max(res, 2*r)
+                elif r > l:
+                    r = 0
+                    l = 0
+        l = 0
+        r = 0
+        for i in s[::-1]:
+            if i == ")":
+                l+=1
+            else:
+                r+= 1
+                if l == r:
+                    res = max(res, 2*r)
+                elif r > l:
+                    r = 0
+                    l = 0
+        return res
+
