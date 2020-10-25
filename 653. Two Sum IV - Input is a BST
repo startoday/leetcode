@@ -13,6 +13,55 @@ Target = 9
 
 Output: True
 
+# search from root and write recursive stuff, give me a wrong answer! pay attention to the tricky idea.
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+# a starightforward and stupid think 
+class Solution:
+    def findTarget(self, root: TreeNode, k: int) -> bool:
+        # time and space : O(n)
+        def helper(r, l):
+            if not r:
+                return
+            helper(r.left, l)
+            l.append(r.val)
+            helper(r.right, l)
+        res =[]
+        helper(root, res)
+        l = 0
+        h = len(res) -1
+        while l <h:
+            if res[l] + res[h] == k:
+                return True
+            elif res[l] + res[h] < k:
+                l += 1
+            else:
+                h -=1
+        return False
+        
+        
+# way 2:
+# use a hash set to store and compare the root val with what in hash set! time and space are also O(n)
+class Solution:
+    def findTarget(self, root: TreeNode, k: int) -> bool:
+        s = set()
+        def helper(r, k):
+            if not r:
+                return False
+            if k -r.val in s:
+                return True
+            s.add(r.val)
+            return helper(r.left,k) or helper(r.right, k)
+        return helper(root, k)
+        
+
+
 #Tree 系列的two sum
 #这道题我的想法就是inorder traversal 之后再 two pointer比较low哈
 class Solution {
