@@ -4,6 +4,25 @@
 #左右子树也需要是BST
 
 #注意哈，所以应该是左边的max（左最右） 要小于node ， 右边的min（右最左）要大于node
+
+#python answer
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        def helper(rt):
+            if not rt:
+                return True, None, None
+            l, li,la = helper(rt.left)
+            r, ri, ra= helper(rt.right)
+            if not l or not r:
+                return False, None, None
+            if la and rt.val <= la:
+                return False, None, None
+            if ri and rt.val >= ri:
+                return False, None, None
+            return True, rt.val if not li else li, rt.val if not ra else ra
+        return helper(root)[0]
+
+
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
