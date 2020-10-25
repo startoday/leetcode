@@ -1,0 +1,52 @@
+Given an array nums of n integers and an integer target, are there elements a, b, c, and d in nums such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.
+
+Notice that the solution set must not contain duplicate quadruplets.
+
+ 
+
+Example 1:
+
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+Example 2:
+
+Input: nums = [], target = 0
+Output: []
+ 
+
+Constraints:
+
+0 <= nums.length <= 200
+-10^9 <= nums[i] <= 10^9
+-10^9 <= target <= 10^9
+
+
+# O(n^3)
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        if len(nums) < 4:
+            return []
+        nums.sort()
+        res = []
+        for i in range(len(nums)-3):
+            if i == 0 or nums[i] != nums[i-1]:
+                for j in range(i+1,len(nums)-2):
+                    if j ==i+1 or nums[j] != nums[j-1]:
+                        l = j + 1
+                        h = len(nums) -1
+                        com = target - nums[i] - nums[j]
+                        while l < h:
+                            if nums[l] + nums[h] == com:
+                                res.append([nums[i], nums[j], nums[l], nums[h]])
+                                l += 1
+                                h -= 1
+                                while l < h and nums[l] == nums[l-1]:
+                                    l += 1
+                            elif nums[l] + nums[h] < com:
+                                l += 1
+                            else:
+                                h -= 1
+        return res
+  
+ # more general case using 2ptr /hash set:
+ 
