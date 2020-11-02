@@ -1,3 +1,30 @@
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        #from end to front, find the first smaller number, find the before is a little larger than it, swap and resot the latter numbers
+        j = len(nums) -2
+        while j >= 0:
+            if nums[j] < nums[j +1]:
+                break
+            j -= 1
+        if j != -1: # when it is already the largest
+            i = len(nums) -1
+            while i >j :
+                if nums[i] > nums[j]:
+                    break
+                i -= 1
+            nums[i],nums[j] = nums[j],nums[i]
+        x = j + 1
+        y = len(nums) - 1
+        while x < y:
+            nums[x],nums[y] = nums[y],nums[x]
+            x += 1
+            y -= 1
+        return 
+
+
 #参见46 permuation 的分析
 #自己写的
 class Solution {
