@@ -19,6 +19,40 @@ Example 3:
 Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
 Output: false
 
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        w = set(wordDict)
+        dp = [False] *(len(s) + 1)
+        dp[0] = True
+        for i in range(len(s)):
+            for j in range(0, i + 1):
+                if dp[i + 1] == True:
+                    continue
+                dp[i+1] = (dp[j] and s[j: i+ 1] in w)
+        return dp[-1]
+
+# bottom up: have to store the level information 
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        w = set(wordDict)
+        vis = {}
+        def dfs(i):
+            if i == len(s):
+                return True
+            if i in vis :
+                return vis[i] 
+            tmp = ""
+            for j in range(i, len(s)):
+                tmp += s[j]
+                if tmp in w and dfs(j + 1):
+                    # include j
+                    vis[j] = True
+                    return True
+            vis[i] = False # pay attention to this!!
+            return False
+        return dfs(0)
+
 #一个stirng 越长越难拆解用array来储存到每个char为止是T or F， 该字([0,j])能不能拆取决于每个[0,i]是T的时候[i+1，j]这块是不是，是的话就是了
 #用hash set 存一波的话seach也是很快的---实际
 class Solution {
