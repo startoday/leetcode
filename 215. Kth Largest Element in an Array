@@ -1,0 +1,61 @@
+Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Example 1:
+
+Input: [3,2,1,5,6,4] and k = 2
+Output: 5
+Example 2:
+
+Input: [3,2,3,1,2,4,5,5,6] and k = 4
+Output: 4
+Note:
+You may assume k is always valid, 1 ≤ k ≤ array's length.
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        def par(i, j):
+            p = i -1
+            q = nums[j]
+            for cur in range(i, j):
+                if nums[cur] >= q:
+                    nums[cur], nums[p+1] = nums[p+1], nums[cur]
+                    p += 1
+            nums[j], nums[p+1] = nums[p+1], nums[j]
+            return p + 1
+        
+        def findk(i,j,k):
+            if i >j:
+                return -1
+            x = par(i,j)
+            if x == k:
+                return nums[x]
+            if x < k:
+                return findk(x+1, j, k)
+            return findk(i, x-1, k)
+        return findk(0, len(nums) -1 , k-1)
+ 
+ # the above is asking kth largest, if we do the normal smaller partion, then change the kth largest into n-k th smallest 
+ class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        # for sort by smallest
+        def par(i, j):
+            p = i -1
+            q = nums[j]
+            for cur in range(i, j):
+                if nums[cur] <= q:
+                    nums[cur], nums[p+1] = nums[p+1], nums[cur]
+                    p += 1
+            nums[j], nums[p+1] = nums[p+1], nums[j]
+            return p + 1
+        
+        def findk(i,j,k):
+            if i >j:
+                return -1
+            x = par(i,j)
+            if x == k:
+                return nums[x]
+            if x < k:
+                return findk(x+1, j, k) # no need to change
+            return findk(i, x-1, k)
+        
+        return findk(0, len(nums) -1 , len(nums) -k)
