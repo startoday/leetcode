@@ -4,13 +4,13 @@ class Solution:
         maxPos = -1
         swap = -1
         tmp = [i for i in str(num)]
-
+        # count back wards!
         for i in range(len(tmp) -1, -1, -1):
-            if tmp[i] > tmp[maxPos]:
+            if tmp[i] > tmp[maxPos]: #record the seeing max
                 maxPos = i
-            if tmp[i] < tmp[maxPos]: # if not the max, the we push lefter to change
+            if tmp[i] < tmp[maxPos]: # if not the max, we can change it
                 minPos = i
-                swap = maxPos #need it for able to swap the last max 
+                swap = maxPos #we need a different index to store the position can be swapped, which is only when we have a left side; it is not always the running max 
         if minPos == -1:
             return num
         tmp[swap], tmp[minPos] = tmp[minPos], tmp[swap]
