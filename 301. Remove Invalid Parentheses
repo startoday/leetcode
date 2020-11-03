@@ -1,0 +1,45 @@
+Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.
+
+Note: The input string may contain letters other than the parentheses ( and ).
+
+Example 1:
+
+Input: "()())()"
+Output: ["()()()", "(())()"]
+Example 2:
+
+Input: "(a)())()"
+Output: ["(a)()()", "(a())()"]
+Example 3:
+
+Input: ")("
+Output: [""]
+
+class Solution:
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        #"()())()"
+        self.res = []
+        def remove(in_s, stop, last_check, par):
+            ct = 0
+            i = stop
+            while i < len(in_s):
+                if in_s[i] == par[0]:
+                    ct+=1
+                if in_s[i] == par[1]:
+                    ct-=1
+                if ct < 0:
+                    break
+                i += 1
+            if ct< 0:
+                for j in range(last_check, i+1):
+                    if in_s[j] == par[1] and (j == last_check or in_s[j -1] != par[1]):
+                        remove(in_s[:j] + in_s[j+1:], i, j, par)
+                return 
+            else:
+                if par[1] ==")":
+                    remove(in_s[::-1], 0, 0, ")(")
+                else:
+                    self.res.append(in_s[::-1])
+        remove(s, 0, 0 ,"()")
+        return self.res
+                    
