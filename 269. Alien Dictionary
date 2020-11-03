@@ -1,0 +1,45 @@
+There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
+
+Example 1:
+
+Input:
+[
+  "wrt",
+  "wrf",
+  "er",
+  "ett",
+  "rftt"
+]
+
+Output: "wertf"
+
+# run once, get relation, and use topological sort to rebuild the string
+class Solution:
+    def alienOrder(self, words: List[str]) -> str:
+        ind = {c:0 for word in words for c in word} # we need all the chars
+        nb = defaultdict(set)
+        for i in range(len(words) - 1):
+            for j in range(min(len(words[i]), len(words[i + 1]))):
+                if words[i][j] != words[i + 1][j]:
+                    if words[i + 1][j] not in nb[words[i][j]]:
+                        ind[ words[i + 1][j]] += 1
+                        nb[words[i][j]].add( words[i + 1][j])
+                    break
+            else:
+                if len(words[i + 1]) <len(words[i]):
+                       return ""
+        q = deque()
+        for k,v in ind.items():
+            if v == 0:
+                q.append(k)
+        res = []
+        while q:
+            x = q.popleft()
+            res.append(x)
+            for y in nb[x]:
+                ind[y] -= 1
+                if ind[y] == 0:
+                    q.append(y)
+        if len(res) < len(ind):
+            return ""
+        return "".join(res)
