@@ -11,6 +11,30 @@ Example 2:
 Input: " 3/2 "
 Output: 1
 #做一个只有加减乘除没有括号的计算器
+class Solution:
+    def calculate(self, s: str) -> int:
+        num = 0
+        st = []
+        sign = "+"
+        s+= "+"
+        for i in range(len(s)):
+            if s[i].isnumeric():
+                num = num*10 + int(s[i])
+            if s[i] in "+-*/":
+                if sign == "+":
+                    st.append(num)
+                elif sign == "-":
+                    st.append(-num)
+                elif sign == "*":
+                    st.append(st.pop() * num)
+                else:
+                    st.append(int(st.pop() / num)) #pay attention to negative number--> "14-3/2"
+                sign = s[i]
+                num = 0
+        return sum(st)
+                      
+
+
 class Solution {
 public:
     int calculate(string s) {
