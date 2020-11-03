@@ -1,0 +1,67 @@
+Given two strings s and t, return the minimum window in s which will contain all the characters in t. 
+If there is no such window in s that covers all characters in t, return the empty string "".
+
+Note that If there is such a window, it is guaranteed that there will always be only one unique minimum window in s.
+
+ 
+
+Example 1:
+
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Example 2:
+
+Input: s = "a", t = "a"
+Output: "a"
+ 
+
+Constraints:
+
+1 <= s.length, t.length <= 105
+s and t consist of English letters.
+ 
+
+Follow up: Could you find an algorithm that runs in O(n) time?
+
+# need to have all chars in t for example, t is ABCCC, then s need three Cs in the sliding window
+# The s and t is case sensitive!!!
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        def contains(a, b):
+            # check if b contains a:
+            for k,v in a.items():
+                if k not in b:
+                    return False
+                if v > b[k]:
+                    return False
+            return True
+        sct = Counter(s)
+        tct = Counter(t)
+        if len(tct) > len(sct):
+            return ""
+        i = 0
+        j = 0
+        runningS = Counter()
+        r = len(s)
+        l = 0
+        while j < len(s):
+            runningS[s[j]] += 1
+            while contains(tct, runningS):
+                if j - i < r - l:
+                    r = j
+                    l = i
+                runningS[s[i]] -= 1
+                i += 1
+            j += 1     
+        while i < len(s):
+            runningS[s[i]] -= 1
+            if contains(tct, runningS):
+                if len(s) - i - 1< r - l:
+                    r = len(s) -1  
+                    l = i    
+            i += 1
+        if r -l == len(s):
+            return ""
+        return s[l:r + 1]
+    
