@@ -14,6 +14,29 @@ Note:
 
 S will consist of lowercase letters and have length in range [1, 500].
 
+class Solution:
+    def reorganizeString(self, S: str) -> str:
+        ct = Counter(S)
+        h = []
+        for k, v in ct.items():
+            heappush(h, (-v, k))
+        res = []
+        while h:
+            x, y = heappop(h)
+            res.append(y)
+            if len(h) == 0 and x < -1:
+                return ""
+            if len(h) > 0:
+                m,n = heappop(h)
+                res.append(n)
+                if m < -1 :
+                    heappush(h, (m+1, n))
+            if x < -1:
+                heappush(h, (x+1, y))
+        
+        return "".join(res)
+
+
 #狂放写作 Time Complexity: O((N + AlogA)->O(N). (A:26; fixed)
 # Space Complexity: O(N).
 class Solution {
