@@ -1,0 +1,44 @@
+Some people will make friend requests. The list of their ages is given and ages[i] is the age of the ith person. 
+
+Person A will NOT friend request person B (B != A) if any of the following conditions are true:
+
+age[B] <= 0.5 * age[A] + 7
+age[B] > age[A]
+age[B] > 100 && age[A] < 100
+Otherwise, A will friend request B.
+
+Note that if A requests B, B does not necessarily request A.  Also, people will not friend request themselves.
+
+How many total friend requests are made?
+
+Example 1:
+
+Input: [16,16]
+Output: 2
+Explanation: 2 people friend request each other.
+
+'''
+Write a sub function request(a, b) to check if age a will friend requests age b.
+I just copy it from description:
+return !(condition1 || condition2 || condition3)
+
+Count nunmber of all ages to a map.
+Because we have at most 20000 ages but only in range [1, 120].
+
+For each age a and each age b != a, if request(a, b), we will make count[a] * count[b] requests.
+
+For each age a, if request(a, a), we will make count[a] * (count[a] - 1) requests.
+'''
+
+class Solution:
+    def numFriendRequests(self, ages: List[int]) -> int:
+        ct = Counter(ages)
+        res  = 0
+        for a, c in ct.items():
+            for b,d in ct.items():
+                if b <= a and b > (a*0.5 + 7):
+                    if a == b:
+                        res += c*(c-1)
+                    else:
+                        res += c*d
+        return res
