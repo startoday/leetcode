@@ -11,6 +11,24 @@ Input: s = "aa", k = 1
 Output: 2
 Explanation: T is "aa" which its length is 2.
 
+
+class Solution:
+    def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
+        dic = defaultdict(int)
+        res = 0
+        j = 0
+        for i in range(len(s)):
+            dic[s[i]] += 1
+            if len(dic) <= k:
+                res = max(res, i - j + 1)
+            if len(dic) >k:
+                while len(dic) > k:
+                    dic[s[j]] -= 1
+                    if dic[s[j]] == 0:
+                        del dic[s[j]]
+                    j += 1
+        return res
+
 #sliding window, return 的是最长的长度
 class Solution {
 public:
