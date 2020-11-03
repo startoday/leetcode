@@ -1,0 +1,51 @@
+Convert a non-negative integer num to its English words representation.
+
+ 
+
+Example 1:
+
+Input: num = 123
+Output: "One Hundred Twenty Three"
+Example 2:
+
+Input: num = 12345
+Output: "Twelve Thousand Three Hundred Forty Five"
+
+
+class Solution:
+    def numberToWords(self, num: int) -> str:
+        # read by hundrd then calculate how many 3-digits you have
+        num2words = {1:"One", 2:"Two", 3:"Three", 4:"Four", 5:"Five", \
+         6:"Six", 7:"Seven", 8:"Eight", 9:"Nine", 10:"Ten", \
+         11:"Eleven", 12:"Twelve", 13:"Thirteen", 14:"Fourteen", \
+         15:"Fifteen", 16:"Sixteen", 17:"Seventeen", 18:"Eighteen", \
+         19:"Nineteen", 20:"Twenty", 30:"Thirty", 40:"Forty", \
+         50:"Fifty", 60:"Sixty", 70:"Seventy", 80:"Eighty", 90:"Ninety"}
+        num2tho = {1:"",1000:"Thousand ", 1000000:"Million ",1000000000:"Billion "}
+        if num == 0:
+            return "Zero"
+        def transferHunders(s):
+            r = ''
+            if s > 99:
+                r += num2words[s//100] + ' Hundred '
+                s %= 100
+            if s >19:
+                r += num2words[s//10 *10] + ' '
+                s %= 10
+            if s == 0:
+                return r
+            r += num2words[s] + ' '
+            return r        
+        res = ""
+        x= 1000000000
+        while x > 0 :
+            if num > (x - 1):
+                tmp = num // x
+                res += transferHunders(tmp) + num2tho[x]
+                num %= x
+            x //= 1000
+        if res[-1] == ' ':
+            return res[:-1]
+        return res
+            
+                
