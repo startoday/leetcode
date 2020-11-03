@@ -1,0 +1,63 @@
+Validate if a given string can be interpreted as a decimal number.
+
+Some examples:
+"0" => true
+" 0.1 " => true
+"abc" => false
+"1 a" => false
+"2e10" => true
+" -90e3   " => true
+" 1e" => false
+"e3" => false
+" 6e-1" => true
+" 99e2.5 " => false
+"53.5e93" => true
+" --6 " => false
+"-+3" => false
+"95a54e53" => false
+
+Note: It is intended for the problem statement to be ambiguous. You should gather all requirements up front before implementing one. However, here is a list of characters that can be in a valid decimal number:
+
+Numbers 0-9
+Exponent - "e"
+Positive/negative sign - "+"/"-"
+Decimal point - "."
+Of course, the context of these characters also matters in the input.
+
+
+# for this question, we need to find out all the restrictions
+'''
+If char == + or char == -, then prev char (if there is) must be e
+. cannot appear twice or after e
+e cannot appear twice, and there must be at least one digit before and after e
+All other non-digit char is invalid
+
+'''
+
+ def isNumber(self, s: str) -> bool:
+        s = s.strip()
+        hasDot = False
+        hasE = False
+        hasDigit = False
+        
+        for i in range(len(s)):
+            if s[i] == "+" or s[i] == "-":
+                if i>= 1 and s[i-1] != "e":
+                    return False
+            elif s[i] == ".":
+                if hasDot or hasE:
+                    return False
+                hasDot = True
+            elif s[i] == "e":
+                if hasE:
+                    return False
+                if i == 0 or not hasDigit:
+                    return False
+                hasE = True, 
+                hasDigit = False
+            elif s[i].isdigit():
+                hasDigit = True
+            else:
+                return False
+        return hasDigit
+                
