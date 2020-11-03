@@ -20,6 +20,26 @@ We cannot find a way to divide the set of nodes into two independent subsets.
 
 #The graph is undirected: if any element j is in graph[i], then i will be in graph[j].
 
+# with BFS
+
+class Solution:
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        dic = {}
+        q = deque()
+        for n in range(len(graph)):
+            if n not in dic:
+                q.append((n, 0))
+                while q:
+                    x,y = q.popleft()
+                    dic[x] = y
+                    for g in graph[x]:
+                        if g not in dic:
+                            q.append((g, 1-y))
+                        elif dic[g] != 1-y:
+                            return False
+        return True
+
+
 #这个题给的表示方法是index（row #） 是node， （col 里面的所有都是该row的list of adj）
 #dfs_all 吧，交替上色，有conflict return false 这种交替的就选择（-1）相乘吧！
 class Solution {
