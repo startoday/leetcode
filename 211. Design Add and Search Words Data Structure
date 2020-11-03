@@ -34,47 +34,158 @@ word in search consist of  '.' or lower-case English letters.
 At most 50000 calls will be made to addWord and search.
 
 
+# an easy way to write in dfs:
+class Tire:
+    def __init__(self):
+        self.tire = {}
+        self.end = False
+
 class WordDictionary:
 
     def __init__(self):
         """
         Initialize your data structure here.
         """
-        self.trie = {}
+        self.h = Tire()
+        
 
     def addWord(self, word: str) -> None:
         """
         Adds a word into the data structure.
         """
-        head = self.trie
-        for i in range(len(word)):
-            if word[i] not in head:
-                head[word[i]] = {}
-            head = head[word[i]]
-            if i == len(word) - 1:
-                head[word[i]] = "#"
+        head = self.h
+        for w in word:
+            if w not in head.tire:
+                head.tire[w] = Tire()
+            head = head.tire[w]
+        head.end = True
 
     def search(self, word: str) -> bool:
         """
         Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
         """
-        head = self.trie
-        def helper(word, head):
-            for i in range(len(word)):
-                if word[i] == ".":
-                    for x in head:
-                        if helper(word[1:], head[x]):
+        head = self.h
+        def dfs(w, head):
+            if not w:
+                return head.end 
+            if w[0] == ".":
+                for x in head.tire:
+                    if dfs(w[1:], head.tire[x]):
+                        return True
+            if w[0] not in head.tire:
+                return False
+            head = head.tire[w[0]]
+            return dfs(w[1:], head)
+        
+        return dfs(word, head)
+            
+                
+
+
+
+class WordDictionary:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        #a tire
+        self.tire = {}
+        
+
+    def addWord(self, word: str) -> None:
+        """
+        Adds a word into the data structure.
+        """
+        head = self.tire
+        for i, w in enumerate(word):
+            if w not in head:
+                head[w] = {}
+            head = head[w]
+            if i == len(word) -1:
+                head[w] = "#"
+            
+
+    def search(self, word: str) -> bool:
+        """
+        Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+        """
+        head = self.tire
+        def helper(head, word):
+            for i, w in enumerate(word):
+                if w == ".":
+                    for k, v in head.items() :
+                        if helper(v, word[1:]) : 
                             return True
-                    return False
+                    return  False
                 else:
-                    if word[i] not in head:
+                    if w not in head:
                         return False
-                    else:
-                        if i == len(word) - 1:
-                            if word[i] in head and "#" in head[word[i]]:
-                                return True
-                            return False
-                        return helper(word[i:], head[word[i]])
-                    
-        return helper(word, head)
- 
+                    if i == len(word) -1:
+                        if w in head and "#" in head[w]:
+                            return True
+                        return False
+                    return helper(head[w], word[1:])
+                
+        return helper(head, word)
+
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
+
+class TrieNode:
+    def __init__(self):
+        self.word = False
+        self.child = {}
+
+class WordDictionary:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.root = TrieNode()
+
+    def addWord(self, word: str) -> None:
+        """
+        Adds a word into the data structure.
+        """
+        cur = self.root
+        for char in word:
+            if char not in cur.child:
+                cur.child[char] = TrieNode()
+            cur = cur.child[char]
+        cur.word = True
+        
+
+    def search(self, word: str) -> bool:
+        """
+        Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+        """
+        cur = self.root
+        # self.res = False
+        return self.dfs(cur, word)
+        # return self.res
+       
+    def dfs(self, node, word):
+        if not word:
+            if node.word:
+                return True
+            return False 
+        if word[0] == ".":
+            for i in node.child.values():
+                if self.dfs(i, word[1:]):
+                    return True
+        else:
+            if word[0] not in node.child:
+                return False
+            cur = node.child.get(word[0])
+            return self.dfs(cur, word[1:])
+
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
