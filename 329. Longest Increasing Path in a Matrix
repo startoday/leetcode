@@ -13,9 +13,82 @@ Input: nums =
 Output: 4 
 Explanation: The longest increasing path is [1, 2, 6, 9].
 
+#Use Graph Idea (topological sort... everytime, add the whole level; and increment height
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        m = len(matrix)
+        if m == 0:
+            return 0
+        n = len(matrix[0])
+        if n == 0:
+            return 0
+        ind = [[0]*n for _ in range(m)]
+        direct = [[1,0],[-1,0],[0,1],[0,-1]]
+        
+        for oi in range(m):
+            for oj in range(n):
+                for a, b in direct:
+                    ni = a + oi
+                    nj = b + oj
+                    if ni >= 0 and ni < m and nj >= 0 and nj <n and matrix[ni][nj] > matrix[oi][oj]:
+                        ind[ni][nj] += 1
+        q = deque()
+        for i in range(m):
+            for j in range(n):
+                if ind[i][j] == 0:
+                    q.append((i,j))
+        res = 0
+        newQ = deque()
+        while q:
+            res += 1
+            newQ = deque()
+            while q:
+                oi, oj = q.popleft()
+                for a, b in direct:
+                    ni = a + oi
+                    nj = b + oj
+                    if ni >= 0 and ni < m and nj >= 0 and nj <n and matrix[ni][nj] > matrix[oi][oj]:
+                        ind[ni][nj] -= 1
+                        if ind[ni][nj] == 0:
+                            newQ.append((ni,nj))
+
+            q = newQ
+        return res
+
+
+
 #还是dp题， 如果 可以走就取 往各个方向走的最大值，因为是增加的序列，我们应该从最小的位置开始，就可以填满整个2d array了
 #如果bottom up 先sort的话可能不太好写（或者增加时间复杂度）--bottom up 应该可以想成是graph 用 TS来做 时间复杂度是一样的
 #或者直接top down(不需要size + 1 额外设定边界）
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        m = len(matrix)
+        if m == 0:
+            return 0
+        n = len(matrix[0])
+        if n == 0:
+            return 0
+        dp = [[0]*n for _ in range(m)]
+        res = 1 
+        direct = [[1,0],[-1,0],[0,1],[0,-1]]
+        def dfs(oi, oj):
+            if dp[oi][oj] != 0:
+                return dp[oi][oj]
+            dp[oi][oj] = 1
+            for a, b in direct:
+                ni = a + oi
+                nj = b + oj
+                if ni >= 0 and ni < m and nj >= 0 and nj <n and matrix[ni][nj] > matrix[oi][oj]:
+                    dp[oi][oj] = max(dp[oi][oj], 1+ dfs(ni,nj))
+            return dp[oi][oj]
+            
+        for i in range(m):
+            for j in range(n):
+                res = max(res, dfs(i,j))
+        return res
+
+
+
 
 
 class Solution {
