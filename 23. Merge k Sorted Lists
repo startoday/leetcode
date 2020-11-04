@@ -4,6 +4,7 @@
 #这种divide和mergeSort也类似 每次对半divide，把后面的merge到前面去
 #注意对半的mid应该是（n+1）/2 来处理奇偶数的区别 （奇数时中间会留下）， merge完的数量还是对的
 
+#pq
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -27,6 +28,42 @@ class Solution:
                 heappush(h, ( y.next))
             head = head.next
         return dm.next
+
+# divide and conquer : O(nlogk) space O(1)
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        def mergeTwoLists(l1, l2): # O(n)
+            dm = ListNode(-1)
+            head = dm
+            while l1 and l2:
+                if l1.val <= l2.val:
+                    head.next = l1
+                    l1 = l1.next
+                else:
+                    head.next = l2
+                    l2 = l2.next
+                head = head.next
+            if l1:
+                head.next = l1
+            if l2:
+                head.next = l2
+            return dm.next
+        
+        to = len(lists)
+        if to == 0:
+            return None
+        interval = 1
+        while interval <= to:
+            for i in range(0, to-interval, interval*2): # pay attentioN!! needs times two!!!!
+                lists[i] = mergeTwoLists(lists[i] , lists[i + interval])
+            interval *= 2
+                                        
+        return lists[0]
 
 class Solution {
 public:
