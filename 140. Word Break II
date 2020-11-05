@@ -14,6 +14,28 @@ Output:
   "cat sand dog"
 ]
 
+# a little easier：
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        w = set(wordDict)
+        mem = defaultdict(list)
+        def dfs(i):
+            if i == len(s):
+                return [""]
+            if i in mem:
+                return mem[i]
+            for j in range(i + 1, len(s) + 1):
+                tmp = s[i:j]
+                if tmp in w:
+                    res = dfs(j)
+                    for r in res:
+                        if len(r) == 0:
+                            mem[i].append(tmp)
+                        else:
+                            mem[i].append(tmp + " " + r)
+            return mem[i]
+        return dfs(0)
+
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
