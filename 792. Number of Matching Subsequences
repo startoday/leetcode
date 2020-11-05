@@ -10,6 +10,29 @@ Output: 3
 Explanation: There are three words in words that are a subsequence of S: "a", "acd", "ace".
 #ref:https://leetcode.com/problems/number-of-matching-subsequences/discuss/117634/Efficient-and-simple-go-through-words-in-parallel-with-explanation
 
+# the problem is remove the stuff in word list (won't be more than word list's number), so we can do this way! 
+"abcdeace"
+["a","bb","acd","ace"]
+
+class Solution:
+    def numMatchingSubseq(self, S: str, words: List[str]) -> int:
+        dic = defaultdict(list)
+        for w in words:
+            dic[w[0]].append(w)
+        res = 0
+        for ch in S:
+            if ch not in dic:
+                continue
+            tmp = dic[ch]
+            dic[ch] = []
+            for x in tmp:
+                if len(x) == 1:
+                    res += 1
+                else:
+                    dic[x[1]].append(x[1:])
+        return res
+                    
+
 
 class Solution {
 public:
