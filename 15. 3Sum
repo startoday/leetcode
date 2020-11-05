@@ -23,8 +23,31 @@ Output: [[-2,0,2]]
 # 要求 不能有重复一样的 triplet 在答案里
 
 Way 1 with sort
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        for i in range(0, len(nums) -2):
+            if i == 0 or nums[i-1] != nums[i]:
+                l = i + 1
+                r = len(nums)-1
+                while l < r:
+                    if nums[l] + nums[r] == 0 - nums[i]:
+                        res.append([nums[i], nums[l], nums[r]])
+                        l += 1
+                        r -= 1
+                        while l < r and nums[l] == nums[l -1]:
+                            l+= 1
+                    elif nums[l] + nums[r] < 0 - nums[i]:
+                        l +=1
+                    else:
+                        r -= 1
+        return res
+
+
 # 首先想法是sort， 然后跟two sum2 一样，用2ptrs 两侧寻找，注意当值相等时只算一次（相等的时候只run第一个，后面一样的跳过去）
-# 一个比较酷的点是为了去重，可以在 Num[i] > 0 的时候break， 因为先从小值（负值）开始， 已经算到了
+# 一个比较酷的点是可以在 Num[i] > 0 的时候break， 因为先从小值（负值）开始， 已经算到了
+
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         # time complexity: O(n^2) 
