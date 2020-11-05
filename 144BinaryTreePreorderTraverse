@@ -115,3 +115,18 @@ public:
     }
 };
 
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root:
+            return []
+        st = [root]
+        res = []
+        while st:
+            x = st.pop()
+            res.append(x.val)
+            if x.right:
+                st.append(x.right)
+            if x.left:
+                st.append(x.left)
+        return res
+
