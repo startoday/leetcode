@@ -13,6 +13,28 @@ Output:
   [3,2,1]
 ]
 
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        def helper(cmb, res):
+            if len(cmb) == len(nums):
+                res.append(copy.deepcopy(cmb))
+                return
+            else:
+                for i in nums:
+                    if i not in cmb:
+                        cmb.append(i)
+                        helper(cmb,res)
+                        cmb.pop()
+            return
+        helper([],res)
+        return res
+                
+
+
+
+
 #先来想一想next_permutation
 1,3,4,2,5 --> 1,3,4,5,2 找到左侧第一个小的与右侧第一个大的 
 9，1，3，5，4，2，0 -> 9140235 ==> 91,3,5420 =》91，4，5320 -> 914,0235
