@@ -14,6 +14,24 @@ s = "axc", t = "ahbgdc"
 
 Return false.
 
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        if len(s) == 0:
+            return True
+        if len(t) == 0:
+            return False
+        i = 0
+        j = 0
+        while j < len(t):
+            if t[j] == s[i]:
+                i += 1
+                if i == len(s):
+                    return True
+            j += 1
+        return False
+
+
+
 #这道题是medium 而longest word 是easy？？
 #暴力解也beat 92%
 class Solution {
