@@ -13,6 +13,30 @@ Note that this does not include any recursive calls to child functions.
 The CPU is single threaded which means that only one function is being executed at a given time unit.
 
 Return the exclusive time of each function, sorted by their function id.
+
+class Solution:
+    def exclusiveTime(self, n: int, logs: List[str]) -> List[int]:
+        st = []
+        res = [0] * n
+        cur = 0
+        for log in logs:
+            l = log.split(":")
+            l[2] = int(l[2])
+            if l[1] == "end":
+                x, y, z = st.pop()
+                res[x] += l[2] - cur + 1
+                cur = l[2] + 1
+            else:
+                if len(st) != 0:
+                    x, y, z = st[-1]
+                    res[x] += l[2] - cur
+                st.append((int(l[0]), l[1], l[2]))
+                cur = l[2]
+        return res
+
+
+
+
 class Solution:
     def exclusiveTime(self, n: int, logs: List[str]) -> List[int]:
         res = [0] *n
