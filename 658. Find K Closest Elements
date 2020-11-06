@@ -7,6 +7,32 @@ Example 2:
 Input: [1,2,3,4,5], k=4, x=-1
 Output: [1,2,3,4]
 
+class Solution:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        # use binary search to first the first closet! then use two ptrs to find the range
+        # actually it can take care of it
+        # if len(arr)  == 1:
+        #     return arr  
+        l = 0
+        r = len(arr) - 1
+        while l + 1 < r:
+            m = l + (r-l) //2
+            if arr[m] >= x:
+                r = m
+            else:
+                l = m
+        # after l is what we definitely want, we only need to track on side 
+        while r- l -1 < k and r < len(arr) and l >= 0:
+            if abs(arr[l] - x) <= abs(arr[r] -x):
+                l -= 1
+            else:
+                r += 1
+        if r == len(arr): # the end of the array, l might not able to control
+            return arr[len(arr) - k : ]
+        return arr[l + 1: l+k +1]
+
+
+
 #脑子清醒一点！！！这玩意你也能dedug半个小时怎的？？？？！！！！
 class Solution {
 public:
