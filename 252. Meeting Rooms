@@ -12,6 +12,18 @@ Output: true
 [[0,30],[30,40]] -- true
 [] --true
 
+[[13,15],[1,13]]  -- true
+
+
+class Solution:
+    def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
+        intervals.sort()
+        for i in range(1, len(intervals)):
+            if intervals[i][0] < intervals[i-1][1]: # 右开!!!
+                return False
+        return True
+
+
 #其实感觉有点贪心算法呢2333？
 
 class Solution {
