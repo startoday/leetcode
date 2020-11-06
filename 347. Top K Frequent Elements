@@ -12,6 +12,21 @@ Note:
 You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
 Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
 
+# requirement is better than NlgN, so we can use a heap, which is Nlogk, when k == n is O(n)
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        if len(nums) == k:
+            return nums
+        ct = Counter(nums)
+        h = []
+        for key, v in ct.items():
+            heappush(h, (v, key))
+            if len(h) > k:
+                heappop(h)
+        return [ key for v, key in h]
+        
+  
+
 #note 好像没啥特殊的case
 #惊觉要求nlgn 我写的这个 n方 -换成 max heap即可，当heap的size > map size -k 的时候 每个top都得要
 class Solution {
