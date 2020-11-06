@@ -39,3 +39,20 @@ Output: "/a/b/c"
 
 # 想想就是先 split by '/' then check stuff inside => "" or /(shouldn't be) or "." is do nothing; .. is go one above, pop from the stack 
 ( when is home(no named direction), no where to go) ; if it is a normal directory(name) just push it on stack. Finally, we contactinate the stack!
+
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        if len(path) == 0:
+            return ""
+        arr = path.split("/")
+        st = []
+        for a in arr:
+            if a == "" or a == ".":
+                continue
+            if a == "..":
+                if len(st) > 0:
+                    st.pop()
+            else:
+                st.append(a)   # can be any name 
+        return "/" + "/".join(st)
+        
