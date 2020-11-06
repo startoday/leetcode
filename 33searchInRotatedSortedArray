@@ -4,6 +4,31 @@
 #先按照 mid 在左还是在右划分
 #再按照target对于mid的相对位置划分
 
+
+
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        l = 0
+        r = len(nums) -1
+        while l + 1 <r:
+            m = l + (r-l) //2
+            if nums[m] > nums[l]:
+                if target <= nums[m] and target >= nums[l]:
+                    r = m
+                else:
+                    l = m
+            else:
+                if target >= nums[m] and target < nums[l]: # pay attention to this, has to be r if using <= (<=r) since l can be the result => or use < l 
+                    l = m
+                else:
+                    r= m
+        if nums[l] == target:
+            return l
+        if nums[r] ==target:
+            return r
+        return -1
+
+
 //O（lgN）is binary-search-like
 class Solution {
 public:
