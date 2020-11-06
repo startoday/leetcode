@@ -5,6 +5,51 @@ Example 1:
 Input: [[0, 30],[5, 10],[15, 20]]
 Output: 2
 
+
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        if len(intervals)== 0:
+            return 0
+        need = [ i[0] for i in intervals]
+        free = [ i[1] for i in intervals]
+        need.sort()
+        free.sort()
+        i = 0
+        j = 0
+        res = 0
+        ct = 0
+        while i < len(intervals):
+            if need[i] < free[j]:
+                ct += 1
+                res = max(res, ct)
+                i += 1
+            else:
+                ct -= 1
+                j += 1
+        return res
+
+
+# way one: use heap:first sort by start time, then heap by their end time, if the start time is smaller than end time. I have to put it into the heap. 
+# Otherwise, pop it! which means we are able to finish the last one and start a new meeting without extra room! record the max size
+
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        if len(intervals) == 0:
+            return 0
+        intervals.sort()
+        res = 0
+        h = []  # stores the end time of intervals
+        for i in intervals:
+            if h and i[0] >= h[0]: 
+                heappop(h)
+                heappush(h, i[1])
+            else:
+                # a new room is allocated
+                heappush(h, i[1])
+                res = max(res, len(h))
+        return res
+                 
+
 #和my calendar 一样的想法
 class Solution {
 public:
