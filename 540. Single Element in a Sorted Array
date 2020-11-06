@@ -22,6 +22,22 @@ Constraints:
 # O(lgn), O(1)
 class Solution:
     def singleNonDuplicate(self, nums: List[int]) -> int:
+        l = 0
+        r = (len(nums) -1)//2
+        while l < r:
+            m = (l + r)//2
+            if nums[2*m] == nums[2*m + 1]:
+                l = m + 1
+            else:
+                r = m
+        return nums[l*2] # pay attention, this mean the l pair and if there is sth wrong, always in even index!!!
+        
+
+
+
+
+class Solution:
+    def singleNonDuplicate(self, nums: List[int]) -> int:
         # We can always check the even index 01|23|45..... so always check m and m + 1 
         l = 0
         r = len(nums) -1 
