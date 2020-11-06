@@ -32,3 +32,18 @@ class Solution:
                 st.pop()
             j += 1
         return "".join(st)
+        
+# 有 i 和 j，i代表稳的， j 代表在check 的， 每次increment i and see if res[i] == res[i-1] => then i -= 2
+class Solution:
+    def removeDuplicates(self, S: str) -> str:
+        i = 0
+        j = 0
+        res = list(S)
+        while j < len(S):
+            res[i] = res[j]
+            if i > 0 and res[i] == res[i-1]:
+                i -= 2
+            i += 1
+            j += 1
+        return "".join(res[:i])
+            
