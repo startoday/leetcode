@@ -1,0 +1,61 @@
+There is a ball in a maze with empty spaces (represented as 0) and walls (represented as 1). The ball can go through the empty spaces by rolling up, down, left or right, but it won't stop rolling until hitting a wall. When the ball stops, it could choose the next direction.
+
+Given the maze, the ball's start position and the destination, where start = [startrow, startcol] and destination = [destinationrow, destinationcol], return true if the ball can stop at the destination, otherwise return false.
+
+You may assume that the borders of the maze are all walls (see examples).
+
+Constraints:
+
+1 <= maze.length, maze[i].length <= 100
+maze[i][j] is 0 or 1.
+start.length == 2
+destination.length == 2
+0 <= startrow, destinationrow <= maze.length
+0 <= startcol, destinationcol <= maze[i].length
+Both the ball and the destination exist on an empty space, and they will not be at the same position initially.
+The maze contains at least 2 empty spaces.
+
+
+class Solution:
+    def hasPath(self, maze: List[List[int]], start: List[int], destination: List[int]) -> bool:
+        # use bfs
+        direction = [[-1,0],[1,0],[0,1],[0,-1]]
+        q = deque()
+        q.append((start[0], start[1]))
+        vis = set()
+        row = len(maze)
+        col = len(maze[0])
+        vis.add((start[0], start[1]))
+        while q:
+            x, y = q.pop()
+            if x == destination[0] and y == destination[1]:
+                return True
+            r = y + 1
+            while r  < col and maze[x][r] != 1:
+                r+= 1
+            r -=1
+            if (x, r) not in vis:
+                vis.add((x, r))
+                q.append((x,r))
+            r = y - 1
+            while r  >= 0 and maze[x][r] != 1:
+                r-= 1
+            r +=1
+            if (x, r) not in vis:
+                vis.add((x, r))
+                q.append((x,r))
+            u = x + 1
+            while u  < row and maze[u][y] != 1:
+                u += 1
+            u -=1
+            if (u, y) not in vis:
+                vis.add((u, y))
+                q.append((u, y))
+            u = x - 1    
+            while u  >= 0 and maze[u][y] != 1:
+                u -= 1
+            u +=1
+            if (u, y) not in vis:
+                vis.add((u, y))
+                q.append((u, y))
+        return False  
