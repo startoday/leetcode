@@ -14,7 +14,30 @@ class Node:
         self.left = left
         self.right = right
 """
+class Solution:
+    def treeToDoublyList(self, root: 'Node') -> 'Node':
+        if not root:
+            return None
+        self.head = None
+        self.last = None
+        def helper(rt):
+            if not rt:
+                return
+            helper(rt.left)
+            if self.last == None:
+                self.head = rt
+            if self.last:
+                self.last.right = rt
+                rt.left = self.last
+            self.last = rt
+            helper(rt.right)
+        helper(root)
+        self.head.left = self.last
+        self.last.right = self.head
+        return self.head
 
+
+# another...same!
 class Solution:
     def treeToDoublyList(self, root: 'Node') -> 'Node':
         #like the setting next level idea
