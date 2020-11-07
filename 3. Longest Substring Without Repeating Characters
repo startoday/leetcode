@@ -17,6 +17,23 @@ Output: 3
 Explanation: The answer is "wke", with the length of 3. 
              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        m = {} #store the first apperance index
+        res = 0
+        i = 0
+        for j in range(len(s)):
+            if s[j] in m:
+                i = max(i, m[s[j]] + 1) # pay attention to this!! we don't want i be smaller!!
+            m[s[j]] = j
+            res = max(res, j - i + 1)  # always need to check res!!!
+        return res
+
+
+
+
+
 #还是注意substring 需要是连续的！
 #注意while loop 里面需要是 大于1 不是大于 0！多删了一个那样！
 class Solution {
