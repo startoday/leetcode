@@ -31,6 +31,51 @@ randomSet.getRandom();
 #都需要 O（1）
 #随机数的被取频率需要一样，get random 是 O（1）
 
+
+class RandomizedSet:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.m  = {}
+        self.l = []
+        # use index to easy get
+
+    def insert(self, val: int) -> bool:
+        """
+        Inserts a value to the set. Returns true if the set did not already contain the specified element.
+        """
+        if val in self.m:
+            return False
+        self.m[val] = len(self.l)
+        self.l.append(val)
+        return True
+        
+    def remove(self, val: int) -> bool:
+        """
+        Removes a value from the set. Returns true if the set contained the specified element.
+        """
+        if val not in self.m:
+            return False
+        ind = self.m[val] 
+        lastInd = len(self.l) -1
+        self.m[self.l[lastInd]] = ind
+        self.l[lastInd], self.l[ind] = self.l[ind], self.l[lastInd] # swap
+        self.l.pop()
+        del self.m[val]
+        return True
+        
+
+    def getRandom(self) -> int:
+        """
+        Get a random element from the set.
+        """
+        r = random.randrange(len(self.l))
+        return self.l[r]
+        
+
+
 #需要hashmap 建立数字和数组位置间的映射 删除的时候swap到最后的索引，删掉array里的元素 ， random 也是这个方法
 
 
