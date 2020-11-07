@@ -1,6 +1,23 @@
- If the current (sub)tree contains both p and q, then the function result is their LCA. 
- If only one of them is in that subtree, then the result is that one of them. 
- If neither are in that subtree, the result is null/None/nil.
+# Not a BST, find the stuff!
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        def helper(rt,p, q):
+            if not rt or rt == p or rt == q:
+                return rt
+            l = helper(rt.left, p,q)  # when one side return p, the other side return None, keep return p
+            r = helper(rt.right, p,q)
+            if not l:
+                return r
+            if not r:
+                return l
+            return rt
+        return helper(root, p, q) 
+
+
+If the current (sub)tree contains both p and q, then the function result is their LCA. 
+If only one of them is in that subtree, then the result is that one of them. 
+If neither are in that subtree, the result is null/None/nil.
 
 class Solution {
 public:
