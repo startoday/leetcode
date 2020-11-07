@@ -1,5 +1,25 @@
 Given a non-empty array containing only positive integers, 
 find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        tar = sum(nums)
+        if tar %2 == 1:
+            return False
+        tar //= 2
+        dp = [False] * (tar + 1)
+        pre = [False] * (tar + 1)
+        dp[0] = True
+        pre[0] = True
+        for n in nums:
+            for j in range(tar + 1):
+                if n <= j:
+                    dp[j] = pre[j] or pre[j - n]
+            pre = copy.deepcopy(dp)
+        return dp[-1]
+        
+
+
 #想法是dp， 背包问题
 class Solution {
 public:
