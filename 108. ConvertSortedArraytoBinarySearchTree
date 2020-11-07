@@ -2,6 +2,26 @@
 
 #BST是左根右的形态，所以中间的点应该是节点， root之下的左边节点是左半边的最中间，右侧同理，下同
 
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        def createNode(i,j): # [)
+            if i >=j:
+                return None
+            m = i +(j-i)//2
+            rt = TreeNode(nums[m])
+            rt.left =  createNode(i,m)
+            rt.right = createNode(m +1,j)
+            return rt
+        return createNode(0, len(nums))
+        
+
+
 class Solution {
 public:
     TreeNode* sortedArrayToBST(vector<int>& nums) {
