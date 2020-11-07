@@ -9,6 +9,26 @@ Note:
 The number of nodes in the tree is between 2 and 5000.
 Each node will have value between 0 and 100000.
 
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxAncestorDiff(self, root: TreeNode) -> int:
+        #idea: store min and max
+        self.res = 0
+        def helper(rt, minv, maxv):
+            if not rt:
+                return 
+            self.res = max(self.res, abs(rt.val-minv), abs(rt.val - maxv))
+            helper(rt.left, min(minv, rt.val), max(rt.val, maxv))
+            helper(rt.right, min(minv, rt.val), max(rt.val, maxv))
+        helper(root, root.val, root.val)
+        return self.res
+
 #注意提供的最大值最小值，可以设置default 来处理无子情况 （秀！）
 
 class Solution {
