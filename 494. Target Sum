@@ -15,5 +15,14 @@ Explanation:
 
 There are 5 ways to assign symbols to make the sum of nums be target 3.
 
-#target的值应该就是选择加的个数和减的个数的差值，排列组合，可用dp优化
-
+#....并不一定都是1 的！！！ 别瞎搞！
+class Solution:
+    def findTargetSumWays(self, nums: List[int], S: int) -> int:
+        last = {0:1}
+        for n in nums:
+            new = Counter()
+            for key,val in last.items():
+                new[key + n] += val
+                new[key - n] += val
+            last = new
+        return last[S]
