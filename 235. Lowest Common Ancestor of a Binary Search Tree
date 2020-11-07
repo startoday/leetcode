@@ -6,6 +6,17 @@ that has both p and q as descendants (where we ALLOW a node to be a descendant o
 点都不同 All of the nodes' values will be unique.
 p和q都存在于该树中  p and q are different and both values will exist in the BST.
 
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if not root:
+            return root
+        if root.val > max(p.val, q.val): # when root is larger than both, means the result are on the left side
+            return self.lowestCommonAncestor(root.left, p, q)
+        if root.val < min(p.val, q.val):
+            return self.lowestCommonAncestor(root.right, p, q)
+        return root
+
+
 #想法，丢给左子树找，左边找到了return LCA， 右边return为空
       丢给右子树找，右边找到了return LCA，左边return为空
       两个点一左一右 return 该root
