@@ -15,6 +15,33 @@ destination.length == 2
 Both the ball and the destination exist on an empty space, and they will not be at the same position initially.
 The maze contains at least 2 empty spaces.
 
+# a cleaner way of implementing it!
+class Solution:
+    def hasPath(self, maze: List[List[int]], start: List[int], destination: List[int]) -> bool:
+        # use bfs
+        direction = [[-1,0],[1,0],[0,1],[0,-1]]
+        q = deque()
+        q.append((start[0], start[1]))
+        vis = set()
+        row = len(maze)
+        col = len(maze[0])
+        vis.add((start[0], start[1]))
+        while q:
+            x, y = q.pop()
+            if x == destination[0] and y == destination[1]:
+                return True
+            for d in direction:
+                a = x + d[0]
+                b = y + d[1]
+                while b >= 0 and b < col and a >=0 and a < row and maze[a][b] != 1:
+                    a += d[0]
+                    b += d[1]
+                if (a-d[0], b-d[1]) not in vis:
+                    vis.add((a-d[0], b-d[1]))
+                    q.append((a-d[0], b-d[1]))
+        return False  
+        
+       
 
 class Solution:
     def hasPath(self, maze: List[List[int]], start: List[int], destination: List[int]) -> bool:
