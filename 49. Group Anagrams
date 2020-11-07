@@ -11,6 +11,21 @@ Output:
 ]
 Note:
 
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # use a map, key is stuff, and generate the group
+        if len(strs) == 0:
+            return [[]]
+        dic = defaultdict(list)
+        for s in strs:
+            tmp = [0]*26
+            for x in s:
+                tmp[ord(x)-ord('a')] += 1
+            dic[tuple(tmp)].append(s)  # easy to write in this way!
+        return dic.values()  # easy to write in this way as well!
+
+
+
 All inputs will be in lowercase.
 The order of your output does not matter.
 #time O(n*k) length of strs* max length word
