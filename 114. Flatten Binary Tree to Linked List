@@ -21,6 +21,38 @@ make it into
 
 #思路：这个题是把左节点连到右节点， 还是可以用divide and conque， 每个扁平化都是把左“插入”到原本根的右节点的上面，左节点设为NULL
 #具体“插入”的操作应该是 用一个temp暂存右节点，把左节点放到根的右节点，原本左节点位置设为NULL，把右节点连接到新的右节点的末尾
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+
+    def flatten(self, root: TreeNode) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        def helper(rt):
+            if not rt:
+                return
+            if not rt.left and not rt.right:
+                return rt
+            ltail = helper(rt.left)
+            rtail = helper(rt.right)
+            if ltail:
+                ltail.right = rt.right
+                rt.right = rt.left # think it!!!!!!
+                rt.left = None
+            if rtail:
+                return rtail
+            return ltail
+        
+        helper(root)
+
+
 class Solution {
 public:
     void flatten(TreeNode* root) {
