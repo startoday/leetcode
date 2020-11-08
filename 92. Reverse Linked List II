@@ -8,6 +8,47 @@ Example:
 Input: 1->2->3->4->5->NULL, m = 2, n = 4
 Output: 1->4->3->2->5->NULL
 
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
+        #[1,2,3,4,5]  2 4
+        def reverse(h):
+            if not h or not h.next:
+                return h
+            tmp = reverse(h.next)
+            h.next.next = h
+            h.next = None
+            return tmp
+        
+        if not head.next:
+            return head
+        dm = ListNode(-1, head)
+        slow = dm # since we are reverse slow.next, it can be the first head, so slow should be the dm
+        fast = dm
+        while m > 1:
+            slow = slow.next 
+            fast = fast.next
+            m-= 1 
+            n -= 1
+        while n > 0:
+            fast = fast.next
+            n -= 1
+        # slow at 1, fast at 4
+        end = fast.next
+        fast.next = None
+        newHead = reverse(slow.next)
+        slow.next.next = end
+        slow.next = newHead
+        return dm.next
+
+
+
+
 #和第19题 delete Node from Nth end 类似
 #保证距离就好，先控制距离，在找点交换 ---很好。。又理解错题意了。。。reverse form pos m to n。。。
 #其实是多重向前插入了 m-n 次
