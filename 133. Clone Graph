@@ -10,6 +10,27 @@ You must return the copy of the given node as a reference to the cloned graph.
 #无向图
 #要求return的是copy of 原始点！
 
+
+class Solution:
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        if not node:
+            return None
+        q = deque()
+        m = {node: Node(node.val)}
+        q.append(node)
+        while q:
+            x = q.popleft()
+            if x not in m:
+                m[x] = Node(x.val)
+            for n in x.neighbors:
+                if n not in m:
+                    m[n] = Node(n.val)
+                    q.append(n)
+                m[x].neighbors.append(m[n])
+        return m[node]
+
+
+
 class Solution {
 public:
     Node* cloneGraph(Node* node) {
