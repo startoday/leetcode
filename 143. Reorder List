@@ -10,6 +10,58 @@ Example 2:
 
 Given 1->2->3->4->5, reorder it to 1->5->2->4->3.
 
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        # find the middle, reverse the end, merge them!
+        def reverse(h):
+            if not h or not h.next:
+                return h
+            tmp = reverse(h.next)
+            h.next.next = h
+            h.next = None
+            return tmp
+        def findMid(h):
+            if not h or  not h.next:
+                return h
+            slow = h
+            fast = h.next
+            while fast and fast.next:
+                fast = fast.next.next
+                slow = slow.next
+            # slow's next is middle
+            return slow
+        def merge(l1,l2):
+            dm = ListNode(-1)
+            head = dm
+            while l1 and l2:
+                head.next = l1
+                l1 = l1.next
+                head = head.next
+                head.next = l2
+                l2 = l2.next
+                head = head.next
+            if l1:
+                head.next = l1
+            if l2:
+                head.next = l2
+            return dm.next
+        if not head or not head.next:
+            return head
+        x = findMid(head)
+        mid = x.next
+        x.next = None
+        newLine = reverse(mid)
+        return merge(head, newLine)
+
+
 #跟着sort list那道题来的，
 #提示我们可以先reverse 后半段 再一一merge！
 
