@@ -23,3 +23,21 @@ Constraints:
 1 <= words.length <= 5000
 0 <= words[i] <= 300
 words[i] consists of lower-case English letters.
+
+
+class Solution:
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        def isPali(s):
+            return s == s[::-1]
+        # prefix is pali, then check if what left's revers is in w
+        w = {word : i for i, word in enumerate(words)}
+        res = []
+        for i in range(len(words)):
+            for j in range(len(words[i]) + 1): # need suffix is empty as well 
+                prefix = words[i][:j]
+                suffix = words[i][j:]
+                if isPali(prefix) and suffix[::-1] in w and w[suffix[::-1]] != i :
+                    res.append([w[suffix[::-1]], i])
+                if j != len(words[i]) and isPali(suffix) and prefix[::-1] in w and w[prefix[::-1]] != i:  # pay attention, "" whole is the same as whole, "", so we only want one of it
+                    res.append([i, w[prefix[::-1]]])
+        return res
