@@ -15,6 +15,36 @@ Example 3:
 Input: "(1+(4+5+2)-3)+(6+8)"
 Output: 23
 
+
+class Solution:
+    def calculate(self, s: str) -> int:
+        cur = 0
+        num = 0
+        sign = 1
+        s += "+"
+        st = [] 
+        for c in s:
+            if c.isdigit():
+                num = num*10 + int(c)
+            elif c == "(":
+                st.append(cur)  # the stuff before
+                st.append(sign) # the sign before "("
+                cur = 0
+                sign = 1
+            elif c == "+" or  c == "-":
+                cur += sign* num
+                num = 0
+                sign = 1
+                if c == "-":
+                    sign = -1
+            elif c == ")":  # clear everything on this par
+                cur += sign* num
+                cur = cur * st.pop()
+                cur += st.pop()
+                num = 0
+                sign = 1
+        return cur
+
 #只做加减法的calculator 遇到+/ - 就算 遇到（ 开始累积解锁， 遇到） 返回结果
 class Solution {
 public:
