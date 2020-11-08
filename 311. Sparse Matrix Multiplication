@@ -1,0 +1,51 @@
+Given two sparse matrices A and B, return the result of AB.
+
+You may assume that A's column number is equal to B's row number.
+
+Example:
+
+Input:
+
+A = [
+  [ 1, 0, 0],
+  [-1, 0, 3]
+]
+
+B = [
+  [ 7, 0, 0 ],
+  [ 0, 0, 0 ],
+  [ 0, 0, 1 ]
+]
+
+Output:
+
+     |  1 0 0 |   | 7 0 0 |   |  7 0 0 |
+AB = | -1 0 3 | x | 0 0 0 | = | -7 0 3 |
+                  | 0 0 1 |
+ 
+
+Constraints:
+
+1 <= A.length, B.length <= 100
+1 <= A[i].length, B[i].length <= 100
+-100 <= A[i][j], B[i][j] <= 100
+
+class Solution:
+    def multiply(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+        ma = defaultdict(dict)
+        for i in range(len(A)):
+            for j in range(len(A[0])):
+                if A[i][j] != 0:
+                    ma[i][j] = A[i][j]
+        mb = defaultdict(dict)
+        for i in range(len(B)):
+            for j in range(len(B[0])):
+                if B[i][j] != 0:
+                    mb[i][j] = B[i][j]
+        res = [[0] *len(B[0]) for _ in range(len(A))]
+        for i in ma:
+            for k in ma[i]:
+                if k in mb:
+                    for j in mb[k]:
+                        res[i][j] += mb[k][j] * ma[i][k]
+        return res
