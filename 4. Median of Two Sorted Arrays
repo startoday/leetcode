@@ -15,6 +15,62 @@ Example 2:
 nums1 = [1, 2]
 nums2 = [3, 4]
 
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        # half has half numbers of total, if odd number, 
+        # both half will contain same numbers
+        m = len(nums1)
+        n = len(nums2)
+        if m >n:
+            return self.findMedianSortedArrays(nums2, nums1)
+        half = (m + n + 1)//2
+        imin = 0
+        imax = m
+        while imin <= imax:
+            i = (imax + imin) //2
+            j = half - i
+            # first two half are nums1[:i] nums2[:j]
+            # when I get too much i
+            if i >0 and nums1[i-1] > nums2[j]:
+                imax = i -1
+            #need more i from nums1, always check nums1 !!!
+            elif i< m and nums2[j-1] > nums1[i]:
+                imin = i +1
+            else: # correct place
+                if i == 0:
+                    left_max = nums2[j-1]
+                elif j == 0:
+                    left_max = nums1[i-1]
+                else:
+                    left_max = max(nums1[i-1],nums2[j-1])
+                # when it is odd number
+                if (m +n) %2 == 1:
+                    return left_max
+                # otherwise we are checking the right  min as well
+                if i == m:
+                    right_min = nums2[j]
+                elif j == n:
+                    right_min = nums1[i]
+                else:
+                    right_min = min(nums1[i],nums2[j]) 
+                return (left_max + right_min)/2
+        return -1
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 The median is (2 + 3)/2 = 2.5
 #候选元素 (x + y + 1) / 2
 #partition X + partition Y = (x + y + 1)/2
@@ -59,7 +115,7 @@ public:
     }
 };
 
-
+# 之前的辣鸡解法 
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
