@@ -10,6 +10,21 @@ Note:
 You may imagine nums[-1] = nums[n] = 1. They are not real therefore you can not burst them.
 0 ≤ n ≤ 500, 0 ≤ nums[i] ≤ 100
 
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        # dp [i][j] means a certain range's max (include j)
+        nums = [1] + nums + [1]
+        dp = [[0] * len(nums) for _ in range(len(nums))]
+        for l in range(1, len(nums) - 1): # need to have len(nums) -2
+            for i in range(1, len(nums) - l): # l has already control the len, so i just need to be here
+                j = i + l - 1
+                for k in range(i, j + 1):
+                    dp[i][j] = max(dp[i][j], dp[i][k-1] + dp[k+1][j] + nums[i-1] * nums[k] * nums[j + 1])
+             
+        return dp[1][-2] # dp[0][-1] has not been updated, so can't return it!
+
+
+
 #这里的dp array是看留下来的气球， i-j 段 k是最后一个扎的 那么 分两半+k的计算是 nums[k]*nums[i-1]*nums[j+1]
 #这种分段式计算的都是乘法链算法
 
