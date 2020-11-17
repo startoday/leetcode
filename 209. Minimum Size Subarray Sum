@@ -1,0 +1,25 @@
+Given an array of n positive integers and a positive integer s, find the minimal length of a contiguous subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+
+Example: 
+
+Input: s = 7, nums = [2,3,1,2,4,3]
+Output: 2
+Explanation: the subarray [4,3] has the minimal length under the problem constraint.
+
+class Solution:
+    def minSubArrayLen(self, s: int, nums: List[int]) -> int:
+        # pay attention that the question said it is postive numbers
+        # use two ptr， when left and right is fixed， left to right then right has to be right keep checking until to the end
+        pres = [0]
+        for n in nums:
+            pres.append(pres[-1] + n)
+        left = 0
+        right = 1
+        res = len(nums) + 1
+        while right <= len(nums):
+            if pres[right] - pres[left] >= s:
+                res = min(res, right - left)
+                left += 1
+            else:
+                right += 1
+        return res if res != len(nums) + 1 else 0
