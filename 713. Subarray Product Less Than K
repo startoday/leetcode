@@ -1,0 +1,53 @@
+Your are given an array of positive integers nums.
+
+Count and print the number of (contiguous) subarrays where the product of all the elements in the subarray is less than k.
+
+Example 1:
+Input: nums = [10, 5, 2, 6], k = 100
+Output: 8
+Explanation: The 8 subarrays that have product less than 100 are: [10], [5], [2], [6], [10, 5], [5, 2], [2, 6], [5, 2, 6].
+Note that [10, 5, 2] is not included as the product of 100 is not strictly less than k.
+Note:
+
+0 < nums.length <= 50000.
+0 < nums[i] < 1000.
+0 <= k < 10^6.
+
+
+class Solution:
+    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+        #need to think more about accumulate summation
+        if k <= 1: #coner case~
+            return 0
+        res = 0
+        left = 0
+        prod = 1
+        for right, val in enumerate(nums):
+            prod *= val
+            while prod >= k:
+                prod/= nums[left]
+                left += 1
+            res += right - left + 1
+        return res
+
+# my wrong way!
+class Solution:
+    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+        # pay attention, all positive number
+        pre = [1]
+        for n in nums:
+            pre.append(pre[-1]*n)
+        res = 0
+        left = 0
+        right = 0
+        print(pre)
+        while right < len(pre):
+            while right < len(pre) and pre[right]/pre[left] < k:
+                right += 1
+            print(left, right)
+            if pre[right-1]/ pre[left] < k:
+                res += pow(2, right- 1 - left) -1  #This way of calculation is wrong, since it will have duplicate calculation!
+            else:
+                right =left + 2
+            left += 1 
+        return res
