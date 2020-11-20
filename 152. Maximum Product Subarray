@@ -1,0 +1,24 @@
+Given an integer array nums, find the contiguous subarray within an array (containing at least one number) which has the largest product.
+
+Example 1:
+
+Input: [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+Example 2:
+
+Input: [-2,0,-1]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        runningMin = 1
+        runningMax = 1
+        res = nums[0]
+        for n in nums:
+            tmpMax= runningMax # pay attention I have to have a tmpMax, otherwise runningMin's calculation is wrong
+            runningMax = max(runningMin * n, runningMax * n, n)
+            runningMin = min(runningMin * n,tmpMax * n, n)
+            res = max(res, runningMax, runningMin)
+        return res
