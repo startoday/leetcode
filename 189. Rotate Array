@@ -30,6 +30,28 @@ Constraints:
 0 <= k <= 10^5
 
 
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # it can do k%n times to fill every place, and finally all of them are switched , time is O(n), space is O(n)
+        k %= len(nums)
+        ct = 0
+        st = 0
+        while ct < len(nums):
+            preInd, preNum = st, nums[st] # I have to use thsi preNum
+            while True:
+                curInd = (preInd + k)% len(nums)
+                nums[curInd],  preNum =  preNum , nums[curInd]
+                preInd  = curInd
+                ct += 1
+                if preInd == st:
+                    break
+            st += 1
+        
+
+
 # reverse 
 # time O(n) space  O(1)
 class Solution:
