@@ -8,10 +8,12 @@ Example 1:
 
 Input: nums = [1,2,0]
 Output: 3
+
 Example 2:
 
 Input: nums = [3,4,-1,1]
 Output: 2
+
 Example 3:
 
 Input: nums = [7,8,9,11,12]
@@ -24,6 +26,27 @@ Constraints:
 -2^31 <= nums[i] <= 2^31 - 1
 # [1] return 2
 # [] return 1
+
+#参考解法，答案应该是 【1，n+1】 中的数字 通过该值当作index pad 每一个见过的数 当这个数小于n的时候说明没有被pad过，可return
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        nums.append(0) # 在这里append 最后一步就不需要从1 开始算
+        n = len(nums)
+        for i in range(len(nums)): # 一定要通过i 来赋值！！！num 是不行的！ 不是同一个num！！！！
+            if nums[i] < 0 or nums[i] >= n:
+                nums[i] = 0
+        for i in range(n):
+            nums[nums[i] % n] += n
+        for i in range(n):
+            if nums[i] //n == 0: # need // in python3 so it means it wasn't padded 不然比如2 是数字，4是len 除完也不等于0 
+                return i
+        return n 
+
+
+# 只要 postive number， 所以我们可以把不可能是答案的，比如 负数和 大于size的数字都转换成1， 再用 negative sign代表check过！
+# Be careful that the sign should only change once！
+
+#标准答案解法（略）
 
 # the idea come to my mind is sort and using set
 class Solution:
