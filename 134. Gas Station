@@ -43,5 +43,19 @@ Therefore, you can't travel around the circuit once no matter where you start.
 
 Each element in the input arrays is a non-negative integer
 
-#给你一圈数，上面是能加的油，下面是走到此处的耗油数， 问最后能不能走完一圈， 不能的话return -1，能的话 return 该位置的 index。 如果答案存在的话保证是唯一的。 每个数都是非负的数。
-
+# 给你一圈数，上面是能加的油，下面是走到此处的耗油数， 问最后能不能走完一圈， 不能的话return -1，能的话 return 该位置的 index。 如果答案存在的话保证是唯一的。 每个数都是非负的数。
+# 我们可以随时记录当前步的cur油量，如果小于0的话说明答案可能是possible next； 记录total 油量，小于零的话说明没有答案
+# time O(n) space O(1)
+class Solution:
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        cur = 0
+        to = 0
+        res = 0
+        for i , g in enumerate(gas):
+            to += g - cost[i]
+            cur +=  g - cost[i]
+            if cur < 0:
+                res = i + 1
+                cur = 0
+        return res if to >= 0 else -1
+        
