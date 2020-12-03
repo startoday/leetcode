@@ -13,6 +13,7 @@ Output: [1,2]
 
 #要求线性且没有额外空间。。
 #需要想到 既然是大于n/3，最多只能有两个candidate，每次消去1 看最后的candidate是啥，再重新count
+# There can be at most two majority elements which are more than ⌊n/3⌋ times.!!!
 
 class Solution {
 public:
