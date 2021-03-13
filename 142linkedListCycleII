@@ -44,3 +44,27 @@ public:
 #time is O(n) basically, the first one if it finds the meeting point, slow ptr runs less than N and next for anotherPtr to 
 remeet fast ptr is running less than slow(N)
 
+
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head :
+            return None
+        slow = head
+        fast = head
+        
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if slow == fast :
+                break
+        if fast is None or fast.next is None:
+            return None
+        another = head
+        while another != slow:
+            another = another.next
+            slow = slow.next
+        return another
