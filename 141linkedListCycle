@@ -42,7 +42,7 @@ public:
 };
 
 
-# python version:
+# python version: Key points: check not head; all start from head; check if a == b later in the while loop; then 142 we can have an extra ptr start from head
 
 # Definition for singly-linked list.
 # class ListNode(object):
