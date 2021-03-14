@@ -1,0 +1,19 @@
+Given a non-empty, singly linked list with head node head, return a middle node of linked list.
+
+If there are two middle nodes, return the second middle node.
+#注意如果是复数个node数的话return后面那个node
+
+
+class Solution(object):
+    def middleNode(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        slow = head
+        fast = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+        return slow
+        
