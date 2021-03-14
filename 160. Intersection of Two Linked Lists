@@ -49,3 +49,17 @@ public:
 };
 
 
+#use set:
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        s = set()
+        while headA :
+            s.add(headA)
+            headA = headA.next
+
+        while headB:  #can't go at same time [1,9,1,2,4]
+  #[3,2,4]
+            if headB in s:
+                return headB
+            headB = headB.next    
+        return None
