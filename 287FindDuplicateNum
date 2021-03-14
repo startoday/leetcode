@@ -36,3 +36,13 @@ public:
 #space O（1）
 
 
+#python 做法
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        #change the number into negative if visited
+        ind = 0
+        while nums[ind] > 0:
+            nums[ind] = 0- nums[ind]
+            ind = - nums[ind]
+        return ind
