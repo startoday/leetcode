@@ -63,3 +63,31 @@ class Solution:
                 return headB
             headB = headB.next    
         return None
+        
+        
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        """
+        :type head1, head1: ListNode
+        :rtype: ListNode
+        """
+        if not headA or not headB:
+            return None
+        ta = headA
+        tb = headB
+        while ta != tb:
+            ta = ta.next
+            tb = tb.next
+            if not ta and not tb:
+                return None   # pay attention to the exit case!
+            if not ta:
+                ta = headB
+            if not tb:
+                tb = headA
+        return ta        
