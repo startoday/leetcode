@@ -13,3 +13,35 @@ Return true if there is a cycle in nums, or false otherwise.
 
 #注意要求： 环上的数字必须同符号； 长度必须大于1 ；
 ### 遇到第一个环的时候可以退出，如果后面有正确答案的话 :[1,-1,2,-1,1,3] #True   [1,-1] #False  [1,1,-2] #False  [1,1,2] #True
+
+class Solution(object):
+    def circularArrayLoop(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        '''
+        check if there is a cycle
+        check if the cycle is valid
+        '''
+        n = len(nums)
+        for i in range(n):
+            steps = 0
+            j = i
+            forward = nums[j] > 0
+            while True:
+                #when the direction is different can break
+                if forward != (nums[j] > 0):  
+                    break
+                    
+                #mode is slow, check direction first is faster    
+                nextJ = (j + nums[j]) % n
+                
+                if j == nextJ:  #easy check if this is a single step
+                    break
+                j = nextJ
+                
+                steps += 1
+                if steps > n:  # we always break once there is a cycle not qualified, so if there is a qualified cycle, step can be more than n
+                    return True
+        return False
