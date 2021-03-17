@@ -58,3 +58,27 @@ public:
         return false;
     }
 };
+
+python 快慢指针的思想 time  O(logN), space O(1)
+
+class Solution(object):
+    def isHappy(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        def nextOne(x):
+            tmp = 0
+            while x :
+                b = x %10
+                tmp += b*b
+                x /= 10
+            return tmp
+        
+        s = n
+        f = nextOne(n)
+        while s!= f:
+            s = nextOne(s)
+            f = nextOne(nextOne(f))
+        return f == 1
+
