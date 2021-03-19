@@ -68,3 +68,28 @@ public:
     }
 };
         
+   
+#python
+class Solution(object):
+    def rotateRight(self, head, k):
+        """
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        """
+        if not head :
+            return head
+        l = 1
+        pre = head
+        while pre.next:
+            pre = pre.next
+            l += 1
+        pre.next = head
+        
+        k = l- (k%l)  # 头成尾 尾成头
+        while k !=0 :
+            head = head.next
+            pre = pre.next
+            k -= 1
+        pre.next = None   # 连成环再断开
+        return head
