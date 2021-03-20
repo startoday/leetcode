@@ -36,3 +36,62 @@ public:
         return head;
     }
 };
+
+
+#Stupid way...
+
+class Solution(object):
+    def oddEvenList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head or not head.next:
+            return head
+        a = head
+        b = head.next
+        newo = ListNode(-1)
+        newe = ListNode(-1)
+        newo.next = a
+        newe.next = b
+        curo = newo
+        cure = newe
+        while  a and b:
+            curo.next =a
+            curo = curo.next
+            a.next = None
+            a = b.next
+            if a:
+                cure.next = b
+                cure = cure.next
+                b.next = None
+                b = a.next
+        if a:
+            curo.next = a
+            curo = curo.next
+        if b :
+            cure.next = b
+            cure = cure.next
+        curo.next =  newe.next
+        return newo.next
+        
+        
+  # simpler writting 
+  class Solution(object):
+    def oddEvenList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head or not head.next:
+            return head
+        odd = head
+        even = head.next
+        evenHead = even
+        while  even and even.next:
+            odd.next = even.next
+            odd = odd.next
+            even.next = odd.next
+            even = even.next
+        odd.next = evenHead
+        return head
