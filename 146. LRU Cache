@@ -26,3 +26,134 @@ cache.get(4);       // returns 4
 #LRU, 缓存。每次存的是最近call的内容，capacity 是一定的， 要求操作都是O（1）
 #doublylinked list + hashMap
 
+
+
+# Idea should be store the previous node information in the map
+
+class Node(object):
+    def __init__(self, k, v, nt = None):
+        self.k = k
+        self.v = v
+        self.next = nt
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.cap = capacity
+        self.size = 0
+        self.m = {}
+        self.tail = None
+        self.head = Node(-1, -1)
+        
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        
+        if key not in self.m:
+            return -1
+        val = self.m[key].next.v
+        #pop from list and insert into head
+        self.pop(key)
+        self.insert(key, val)
+        return val
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+        if key not in self.m:
+            self.insert(key, value)
+            if self.size > self.cap:
+                self.pop(self.tail)
+        else:
+            self.pop(key)
+            self.insert(key, value)
+            
+    #Insert in head        
+    def insert(self, key, val):
+        newNd = Node(key,val)
+        tmp = self.head.next
+        self.head.next = newNd
+        if self.size == 0:
+            self.tail = key
+        else:
+            newNd.next = tmp
+            self.m[tmp.k] = newNd 
+            
+        self.m[key] = self.head
+        self.size += 1
+    
+    def pop(self, key):
+        if key == self.tail:
+            self.tail = self.m[key].k
+        else:
+            tmp = self.m[key]  #prevNd
+            xnd = self.m[key].next.next
+            tmp.next = xnd
+            self.m[xnd.k] = tmp
+            
+        del self.m[key]
+        
+        self.size -= 1
+        
+        
+# older version I wrote
+
+class LN:
+    def __init__(self, k, v, next = None):
+        self.k = k
+        self.v = v
+        self.next = next
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.m = {}
+        self.size = 0
+        self.cap = capacity
+        self.dm = LN(-1, -1)
+        self.tail = None
+
+    def get(self, key: int) -> int:
+        if key not in self.m:
+            return -1
+        y = self.m[key].next.v
+        self.remove(key)
+        self.insert(key, y)
+        return y
+
+    def put(self, key: int, value: int) -> None:
+        if key not in self.m:
+            self.insert(key, value)
+            if self.size > self.cap:
+                self.remove(self.tail)
+        else:
+            self.remove(key)
+            self.insert(key,value)
+            
+    def remove(self, key):
+        pre = self.m[key]
+        if key == self.tail:
+            self.tail = pre.k
+        pre.next = pre.next.next
+        if pre.next:
+            self.m[pre.next.k] = pre
+        del self.m[key]
+        self.size -= 1
+        
+    def insert(self, key, val):
+        if self.size == 0:
+            self.tail = key
+        nd = LN(key, val, self.dm.next)
+        self.dm.next = nd
+        if nd.next:
+            self.m[nd.next.k] = nd
+        self.m[nd.k] = self.dm
+        self.size += 1
