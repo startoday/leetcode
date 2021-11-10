@@ -130,3 +130,29 @@ class Solution:
                 st.append(x.left)
         return res
 
+class Solution:
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        #root left right
+        st = []
+        res = []
+        while root or st:
+            while root:
+                res.append(root.val)
+                if root.right:
+                    st.append(root.right)
+                root = root.left
+            if st:    
+                root = st.pop()
+        return res
+        
+   shorter way
+       def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        st = [root]
+        res = []
+        while st:
+            x = st.pop()
+            if x:
+                res.append(x.val)
+                st.append(x.right)
+                st.append(x.left)
+        return res
