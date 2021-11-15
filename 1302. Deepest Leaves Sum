@@ -1,0 +1,50 @@
+Given the root of a binary tree, return the sum of values of its deepest leaves.
+
+Iterative:
+class Solution:
+    def deepestLeavesSum(self, root: Optional[TreeNode]) -> int:
+    #level order traversal
+        q = deque()
+        q.append(root)
+        res = 0
+        while q:
+            size = len(q)
+            res = 0
+            for i in range(size):
+                rt = q.popleft()
+                res +=rt.val
+                if rt.left:
+                    q.append(rt.left)
+                if rt.right:
+                    q.append(rt.right)
+        return res
+        
+        
+        
+Recursive: 
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    res = 0
+    maxHeight = 0
+    def deepestLeavesSum(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        self.calRes(root,0)
+        return self.res 
+    def calRes(self, rt, level):
+        if not rt:
+            return 
+        if level > self.maxHeight:
+            self.res = rt.val
+            #don't forget it!
+            self.maxHeight = level
+        #重点！！！一定得是elif 不然上面set 成 相同的了就是bug
+        elif level == self.maxHeight:
+            self.res += rt.val
+        self.calRes(rt.left, level+1)
+        self.calRes(rt.right, level+1)
