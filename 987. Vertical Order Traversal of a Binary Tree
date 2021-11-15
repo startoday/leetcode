@@ -33,3 +33,51 @@ class Solution:
             if i in dic:
                 res.append([v for k, v in sorted(dic[i])])            
         return res
+        
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
+        q = deque()
+        q.append((root,0,0))
+        dic = defaultdict(list)
+        leftMost = 0
+        rightMost = 0
+        while q:
+            rt,row,col = q.popleft()
+            dic[col].append((row, rt.val)) #need to sort by rt val if col and row are the same
+            leftMost = min(leftMost, col)
+            rightMost = max(rightMost, col)
+            if rt.left:
+                q.append((rt.left, row+1, col -1))
+            if rt.right:
+                q.append((rt.right, row +1, col+1))
+        res = []
+        #pay attention here the right most is also needed
+        for i in range(leftMost, rightMost + 1):
+            if i in dic:
+                res.append([v for k, v in sorted(dic[i])]) 
+                #have to sort by row then sort by val 
+                #below is wrong: case [3,1,4,0,2,2]
+                # cur = [v for k, v in dic[i]]
+                # res.append(sorted(cur))
+        return res        
+
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
+        dic = defaultdict(list) 
+        dq = deque()
+        dq.append((root,0))
+        while dq:
+            #level traversal
+            size = len(dq)
+            d = defaultdict(list) #for each row, add by col(can have same row and col, needs to sort them) - key is col, value is rt.val
+            for i in range(size):
+                rt, col = dq.popleft()
+                d[col].append(rt.val) 
+                if rt.left:  
+                    dq.append((rt.left, col-1)) 
+                if rt.right: 
+                    dq.append((rt.right,col+1))     
+            for col in d: 
+                dic[col].extend(sorted(d[col]))
+        #then we only need to sort by key in dic
+        return [dic[i] for i in sorted(dic)]
