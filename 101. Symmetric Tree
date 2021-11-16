@@ -20,3 +20,5 @@ class Solution:
             return False
         return l.val == r.val and self.helper(l.left, r.right) and self.helper(l.right, r.left) 
         
+
+Iterative: can do normal level traversal and check each level sym OR add by ll, rr, lr, rl and every time pull two to check, stop immediately
