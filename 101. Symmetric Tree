@@ -1,0 +1,22 @@
+判断一个binary tree是否对称
+
+对称的要求是 两侧左的左 ==右的右 ； 左的右 = 右的左 且当前value 相等
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        #pass two root is enough, other wise, need to check root
+        return self.helper(root, root)
+    def helper(self,l, r):
+        if not l and not r:
+            return True
+        if not l or not r: # do not write as [if l or r !!!]
+            return False
+        return l.val == r.val and self.helper(l.left, r.right) and self.helper(l.right, r.left) 
+        
