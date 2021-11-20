@@ -46,3 +46,19 @@ public:
     }
 
 };
+
+
+
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        return self.helper(root)[0]  
+    def helper(self, root):
+        if not root:
+            return True, 0
+        l  = self.helper(root.left)
+        r = self.helper(root.right)
+        if not l[0] or not r[0] or (abs(l[1]-r[1])>1):
+            return False, -1
+        
+        return True, max(l[1], r[1])+1
+    
