@@ -14,3 +14,32 @@ public:
         return min(minDepth(root->left),minDepth(root->right))+1;
     }
 };
+
+Level order traversal
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        q =deque()
+        q.append(root)
+        ct = 1;
+        while q:
+            size = len(q)
+            for i in range(size):
+                rt = q.popleft()
+                if not rt.left and not rt.right:
+                    return ct
+                if rt.left:
+                    q.append(rt.left)
+                if rt.right:
+                    q.append(rt.right)
+            ct +=1
+        return ct
+            
