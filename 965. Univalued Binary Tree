@@ -23,3 +23,21 @@ public:
         else return root->left->val==root->right->val;    //都有要判断左右儿子值是否相等
     }
 };
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+        v = root.val
+        def helper(rt):
+            if not rt:
+                return True
+            return rt.val == v and helper(rt.right) and helper(rt.left)
+        return helper(root)
