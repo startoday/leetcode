@@ -41,3 +41,26 @@ class Solution:
                 return True
             return rt.val == v and helper(rt.right) and helper(rt.left)
         return helper(root)
+
+
+class Solution:
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+        if root.left:
+            if root.val != root.left.val:
+                return False
+        if root.right:
+            if root.val != root.right.val:
+                return False
+        return self.isUnivalTree(root.right) and self.isUnivalTree(root.left)
+        
+        
+# a shorter version
+class Solution:
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+        lu = (not root.left) or (root.left.val == root.val and self.isUnivalTree(root.left))
+        ru = (not root.right) or (root.right.val == root.val and self.isUnivalTree(root.right))
+        return lu and ru
