@@ -28,3 +28,25 @@ public:
     }
     
 };
+
+
+#for some reason, res can't be a self for class in the leetcode
+
+
+class Solution:  
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:   
+        res =[]
+        def helper(root, remain, cur):
+            if not root:
+                return 
+            cur = cur+[root.val]
+            if not root.left and not root.right:
+                if root.val == remain:
+                    res.append(cur)
+                return 
+
+            helper(root.left,remain-root.val,cur )  
+            helper(root.right, remain-root.val,cur)
+            cur.pop()
+        helper(root, targetSum,[])
+        return res
