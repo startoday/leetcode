@@ -40,3 +40,28 @@ class Solution:
         dfs(root, 0)
         return self.res
             
+            
+       
+
+简易版
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        #int won't work.../ need to use self.res
+        res = [] 
+        
+        def helper(rt,preS):
+            if not rt:
+                return 
+            cur = rt.val + preS[-1]
+            for i in range(len(preS)):
+                if cur - preS[i] == targetSum:
+                    res.append(rt.val)
+            preS = preS+[cur]
+            helper(rt.left, preS )
+            helper(rt.right, preS)
+            preS.pop()
+            
+        helper(root, [0])
+        return len(res)
+       
+       
