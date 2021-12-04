@@ -87,3 +87,20 @@ public:
         return helper(root->left, sum) + helper(root->right, sum);
     }
 };
+
+
+
+class Solution:
+    def sumNumbers(self, root: Optional[TreeNode]) -> int:
+        self.res = 0
+        def helper(rt,cur):
+            if not rt:
+                return
+            cur = cur*10 + rt.val
+            if not rt.left and not rt.right:
+                self.res += cur 
+                return
+            helper(rt.left, cur)
+            helper(rt.right, cur)
+        helper(root, 0)
+        return self.res
