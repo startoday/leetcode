@@ -1,0 +1,29 @@
+#给一棵二叉树，找出从根到叶子的所有路径。 return的是某特定格式的string vector
+eg：
+Input:
+
+   1
+ /   \
+2     3
+ \
+  5
+
+Output: ["1->2->5", "1->3"] 
+
+
+
+class Solution:
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        res = []
+        def helper(rt, cur):
+            if not rt:
+                return   
+            cur += [str(rt.val)]
+            if not rt.left and not rt.right:
+                #can't just return otherwise the cur.pop()is missing
+                res.append("->".join(cur))
+            helper(rt.left, cur)
+            helper(rt.right, cur)
+            cur.pop()
+        helper(root,[])
+        return res
