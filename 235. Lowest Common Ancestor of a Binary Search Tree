@@ -15,6 +15,19 @@ class Solution:
         if root.val < min(p.val, q.val):
             return self.lowestCommonAncestor(root.right, p, q)
         return root
+        
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if p.val > q.val :
+            return self.lowestCommonAncestor(root, q,p)
+        if not root:
+            return None
+        if root.val < p.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        if root.val > q.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        return root
+
 
 
 #想法，丢给左子树找，左边找到了return LCA， 右边return为空
