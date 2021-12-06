@@ -2,6 +2,19 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        #pay attention is root not root.val
+        if not root or root == p or root == q:
+            return root
+        l = self.lowestCommonAncestor(root.left, p,q)
+        r = self.lowestCommonAncestor(root.right, p,q)
+        if not l:
+            return r
+        if not r:
+            return l
+        return root
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         def helper(rt,p, q):
             if not rt or rt == p or rt == q:
                 return rt
