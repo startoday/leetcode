@@ -37,3 +37,37 @@ public:
         return p;
     }
 };
+
+
+python version
+
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        if len(nums) <=1:
+            return nums
+        pivot = random.choice(nums)
+        left = [v for v in nums if v <pivot]
+        right = [v for v in nums if v > pivot]
+        mid = [v for v in nums if v == pivot]
+        return self.sortArray(left) + mid + self.sortArray(right)
+        
+        
+ class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        if len(nums) <=1:
+            return nums
+        pivot = random.choice(nums)
+        left,right,mid = [],[],[]
+        for v in nums:
+            if  v <pivot:
+                left.append(v)
+            elif v >pivot:
+                right.append(v)
+            else:
+                mid.append(v)
+        return self.sortArray(left) + mid + self.sortArray(right)       
+        
+    
+    
+Time complexity: O(nlogn) ~ O(n^2)
+Space complexity: O(logn) ~ O(n) ?
