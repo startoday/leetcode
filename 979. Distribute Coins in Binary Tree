@@ -47,3 +47,30 @@ public:
         return  root->val+ l + r - 1;
     }
 };
+
+#python version 
+#从子节点开始算，每个子节点必须只剩1个，非一个就需要传来or 传出去，其父亲是唯一接受着，则 父需传= 左右子传上来的 + 自己val -1； 
+#可以return 需要传的值（可以是负数）； 用一个global value，记录 绝对值 为需要的次数
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def __init__(self):
+        self.res = 0
+    def distributeCoins(self, root: Optional[TreeNode]) -> int:
+        #return this node's need chuan's #
+        def helper(rt):
+            if not rt:
+                return 0
+            l = helper(rt.left)
+            r = helper(rt.right)
+            self.res += abs(l)
+            self.res +=abs(r)
+            return l + r + rt.val -1
+                
+        helper(root)
+        return self.res
