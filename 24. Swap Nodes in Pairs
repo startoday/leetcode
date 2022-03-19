@@ -44,3 +44,24 @@ class Solution:
         head.next=self.swapPairs(new_head.next)
         new_head.next = head
         return new_head
+        
+        
+        
+        
+#itereation 注意条件也是有两个以上才会while 继续， 0/1个则break return自身即可！
+
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        dum = ListNode(-1,head)
+        pre = dum
+        while head and head.next:
+            temp = head.next
+            pre.next = temp
+            head.next = temp.next
+            temp.next = head
+            pre = head
+            head = head.next
+            
+        return dum.next
