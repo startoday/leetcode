@@ -1,20 +1,20 @@
 #就是reverse 一个linked list 
 #iteratively
 class Solution:
-    def reverseList(self, head: ListNode) -> ListNode:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
             return head
         pre = None
-        cur = head
-        x = cur.next
-        while x:
-            cur.next = pre
-            pre = cur
-            cur = x
-            x= x.next
-        cur.next = pre
-        return cur
+        while head and head.next:
+            x = head.next
+            head.next=pre
+            pre = head
+            head = x
+        head.next = pre
+        return head
 
+
+====
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
@@ -67,3 +67,20 @@ public:
     }
 };
 
+
+
+
+#python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        t = self.reverseList(head.next)
+        head.next.next = head
+        head.next = None
+        return t
