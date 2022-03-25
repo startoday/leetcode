@@ -6,20 +6,29 @@
 #注意哈，所以应该是左边的max（左最右） 要小于node ， 右边的min（右最左）要大于node
 
 #python answer
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
-    def isValidBST(self, root: TreeNode) -> bool:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        #return isValid, max, min in the tree
         def helper(rt):
             if not rt:
-                return True, None, None
-            l, li,la = helper(rt.left)
-            r, ri, ra= helper(rt.right)
-            if not l or not r:
+                return True,None,None
+            lv, lmax, lmin= helper(rt.left)
+            rv, rmax, rmin= helper(rt.right)
+            if not lv or not rv:
+                return False, None, None,
+            if lmax and rt.val <= lmax:
                 return False, None, None
-            if la and rt.val <= la:
-                return False, None, None
-            if ri and rt.val >= ri:
-                return False, None, None
-            return True, rt.val if not li else li, rt.val if not ra else ra
+            if rmin and rt.val >= rmin:
+                return False, None,None
+   
+            return True,  rt.val if not rmax else rmax, rt.val if not lmin else lmin
+        
         return helper(root)[0]
 
 
