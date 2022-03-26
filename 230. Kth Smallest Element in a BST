@@ -42,3 +42,30 @@ public:
         helper(root->right, k, res);
     }
 };
+
+
+#inorder traversal! 注意一定要是global val 不然root 永远会被return
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def __init__(self):
+        self.res = None
+        self.kk =  None
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        self.kk = k
+        def helper(rt):
+            if not rt:
+                return
+            helper(rt.left)
+            if self.kk==1:
+                self.res = rt.val
+            self.kk-=1
+            helper(rt.right)
+        helper(root)
+        return self.res
+                
+        
