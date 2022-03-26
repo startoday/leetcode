@@ -1,6 +1,30 @@
 #按照insertion sort的方法sort list
 # O (n^2)
 
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dum = ListNode(-1, head)
+        cur = head 
+        while cur and cur.next:
+            if cur.val >cur.next.val:
+                tmp = cur.next
+                cur.next = tmp.next
+                pre = dum
+                while pre.next.val<tmp.val:
+                    pre = pre.next
+                tmp.next = pre.next
+                pre.next = tmp
+            else: #pay attention, only move it when cur is good!!
+                cur = cur.next
+        return dum.next
+                    
+
+
 class Solution {
 public:
     ListNode* insertionSortList(ListNode* head) {
