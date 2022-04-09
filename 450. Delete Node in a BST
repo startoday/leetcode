@@ -5,6 +5,29 @@
 #可供参考 http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/9-BinTree/BST-delete2.html
 
 
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
+        #recursively switch and remove
+        if not root:
+            return 
+        if root.val == key:
+            if not root.right:
+                return root.left
+            suc = root.right
+            while suc.left:
+                suc = suc.left
+            root.val, suc.val = suc.val, root.val
+        #the value might be switched to one side, keep pushing forward
+        root.left = self.deleteNode(root.left, key)
+        root.right = self.deleteNode(root.right, key)
+        return root
+
 
 #很简洁的写法 也适用于非BST 赞！！
 #https://leetcode.com/problems/delete-node-in-a-bst/discuss/93293/very-concise-c-solution-for-general-binary-tree-not-only-bst
