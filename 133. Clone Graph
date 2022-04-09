@@ -10,6 +10,32 @@ You must return the copy of the given node as a reference to the cloned graph.
 #无向图
 #要求return的是copy of 原始点！
 
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+"""
+
+class Solution:
+    def __init__(self):
+        self.store = {}
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        #dfs
+        def helper(nd):
+            if not nd:
+                return None
+            if nd in self.store.keys():
+                return self.store[nd] 
+            new_nd = Node(nd.val)
+            self.store[nd] = new_nd
+            for nei in nd.neighbors:
+                new_nd.neighbors.append(helper(nei))
+            return new_nd
+        return helper(node)
+       
+
 
 class Solution:
     def cloneGraph(self, node: 'Node') -> 'Node':
