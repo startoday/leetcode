@@ -1,5 +1,40 @@
 #一棵二叉树 只有两个点调换了 请复原这棵数
 
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def __init__(self):
+        self.pre = None
+        self.w1 = None
+        self.w2 = None
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        #it is ok only swap the value
+        #do a inorder taveral and will find the two pointer, then reassign
+        def helper(rt):
+            if not rt:
+                return 
+            helper(rt.left)
+            if not self.pre:
+                self.pre = rt
+            else:
+                if self.pre.val > rt.val:
+                    self.w1 = self.pre
+                    self.w2 = rt
+                else:
+                    self.pre = rt
+            helper(rt.right)
+        helper(root)
+        self.w1.val, self.w2.val = self.w2.val, self.w1.val
+        
+
+
 #如果允许O（N）的话可以中序遍历一波，sort 一下 重新赋值
 class Solution {
 public:
