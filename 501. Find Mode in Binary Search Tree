@@ -16,6 +16,44 @@ Given BST [1,null,2,2],
      2
     /
    2
+   
+   
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def __init__(self):
+        self.curCt = 0
+        self.maxCt = 0
+        self.res = []
+        self.curN = None
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        #do a inorder recursion, count the max number and update!
+        if not root:
+            return []
+        self.curN = root.val
+        def helper(rt):
+            if not rt:
+                return 
+            helper(rt.left)
+            if rt.val == self.curN:
+                self.curCt+=1
+            else:
+                self.curN = rt.val
+                self.curCt = 1
+            if self.curCt> self.maxCt:
+                self.res = [rt.val]
+                self.maxCt = self.curCt
+            elif self.curCt == self.maxCt:
+                self.res.append(rt.val)
+            helper(rt.right)
+        helper(root)
+        return self.res 
+            
+           
 
 #没想到什么好方法啊。。可以用hashmap 存点和对应的次数， 记录一下最大出现次数，再遍历hash map 找最大值加入res
 class Solution {
@@ -50,7 +88,3 @@ public:
 
 
 
-#不过这道题还要求不能用额外space来着。。
-#看了一下，可以利用二叉树的性质啊！中序遍历就是一个上升数组，这样就可以查找个数了
-#所以我们需要传上一个节点（用来比较是否相等）， 传一个count， 传一个max， 传一下result的vector
-#写的有点问题啊。。还在debug
