@@ -9,8 +9,36 @@ Input:
 11010
 11000
 00000
-
 Output: 1
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        direction = [[1,0],[-1, 0],[0,1],[0,-1]]
+        r = len(grid)
+        if r == 0:
+            return 0
+        c = len(grid[0])
+        if c== 0:
+            return 0 
+        vis = [[False] * c for _ in range(r)]
+        res = 0
+        def dfs(i,j):
+            vis[i][j] = True
+            for x in direction:
+                ni = x[0] + i
+                nj = x[1] + j
+                if ni>= 0 and ni < r and nj >= 0 and nj < c and vis[ni][nj] == False and grid[ni][nj] == "1":
+                    dfs(ni, nj) 
+                
+        for i in range(r):
+            for j in range(c):
+                if grid[i][j] == "1" and vis[i][j] == False:
+                    dfs(i,j)
+                    res += 1
+        return res
+
+
+
 #dfs的优化写法，用坐标
 class Solution {
 public:
