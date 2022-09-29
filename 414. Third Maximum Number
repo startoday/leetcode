@@ -34,3 +34,51 @@ Constraints:
 -2^31 <= nums[i] <= 2^31 - 1
 
 找第三大的数字，不包括重复数，如果一共不足三个，return最大的
+
+class Solution:
+    def thirdMax(self, nums: List[int]) -> int:
+        min_heap = []    
+        for index in range(len(nums)):
+            # If current number was already taken, skip it.
+            if nums[index] in min_heap:
+                continue
+            # If min heap already has three numbers in it.
+            # Pop the smallest if current number is bigger than it.
+            if len(min_heap) == 3:
+                if min_heap[0] < nums[index]:
+                    heappop(min_heap)
+                    heappush(min_heap, nums[index])
+                    
+            # If min heap does not have three number we can push it.
+            else:
+                heappush(min_heap, nums[index])
+    
+        if len(min_heap) <3:
+            while len(min_heap):
+                x =  min_heap[0]
+                heappop(min_heap)
+            return x
+        
+        return min_heap[0]
+        
+   # an easy way to do:
+   class Solution:
+    def thirdMax(self, nums: List[int]) -> int:
+        a = b = c = None
+        for i in nums:
+            if c == i or a == i or b == i:
+                continue #do this check first!
+            if a is None or i > a : #can check it together
+                c = b
+                b = a 
+                a = i
+            elif b is None or i>b:
+                c = b
+                b = i
+            elif c is None or i>c:
+                c = i
+        if c is None:
+            return a
+        return c 
+    
+
