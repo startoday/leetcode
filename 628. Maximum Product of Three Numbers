@@ -1,0 +1,36 @@
+Given an integer array nums, find three numbers whose product is maximum and return the maximum product.
+
+
+
+class Solution:
+    def maximumProduct(self, nums: List[int]) -> int:
+        #find max 3 and min 2
+        #if min two are not all nega, return max3 production
+        #if max1 is not pos, return max3 production
+        #else track min 2 vs max 2 and max3
+        x = nums[0:3]
+        x.sort()
+        a = x[2]
+        b = x[1]
+        c = x[0]
+        d = x[1]
+        e = x[0]
+        for i in nums[3:]:
+            if i > a:
+                c = b 
+                b = a 
+                a = i
+            elif i >b:
+                c = b
+                b = i
+            elif i >c:
+                c = i 
+            if i < e:
+                d = e
+                e = i
+            elif i < d:
+                d = i
+        if d>=0  or a <=0 or d*e<b*c:
+            return a*b*c
+        return a*d*e
+        
