@@ -32,4 +32,21 @@ class Solution:
             else:
                 dup = x
         return [dup, s.pop()]        
+        
+        
+Const space:
+
+class Solution:
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        dup = -1 
+        mis = 1
+        for n in nums:
+            if nums[abs(n)-1] > 0:   #pay attention you need to use abs as n might be modified
+                nums[abs(n)-1] *= -1
+            else: #has touched
+                dup = abs(n)
+        for i in range(len(nums)):
+            if nums[i] > 0: # not touched:
+                mis = i +1
+        return [dup, mis]
                 
