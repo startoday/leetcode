@@ -33,3 +33,20 @@ public:
         return res;
     }
 };
+
+
+
+
+
+因为是查存在，同一个数作为index时指向的东西是相同的，遇见就直接变成负数，再loop一次如果还是正数 那么其对应的index是需要在意的！
+注意abs index 以及index
+
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        for n in nums:
+            nums[abs(n)-1] = -abs(nums[abs(n)-1])
+        res = []
+        for i in range(len(nums)):
+            if nums[i]> 0:
+                res.append(i+1)
+        return res
