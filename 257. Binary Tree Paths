@@ -27,3 +27,22 @@ class Solution:
             cur.pop()
         helper(root,[])
         return res
+
+
+
+
+class Solution:
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        self.res = []
+        self.updatePath(root, '')
+        return self.res
+    def updatePath(self, root, cur_path):
+        if not root.left and not root.right:
+            #ends
+            self.res.append(cur_path+ str(root.val))
+        if root.left:
+            #leave the next spot open   cur_node->
+            self.updatePath(root.left, cur_path+str(root.val)+"->") 
+        if root.right:
+            #leave the next spot open   cur_node->
+            self.updatePath(root.right, cur_path+str(root.val)+"->")
